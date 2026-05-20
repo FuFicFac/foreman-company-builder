@@ -1,0 +1,10 @@
+{
+  "name": "creative-writing",
+  "version": "1.0.0",
+  "description": "Creative writing studio — dispatches chapters, inspects with StoryCraft Machine editorial personas",
+  "domain": "creative-writing",
+  "inspectors": ["VEGA", "RIFF", "IRIS", "FINCH", "STORM", "ZIGGY"],
+  "builders": ["chapter-draft", "scene-revision", "outline-expansion"],
+  "loop_mode": "deluxe",
+  "source": "built-in"
+}

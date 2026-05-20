@@ -1,0 +1,11 @@
+{
+  "name": "software",
+  "version": "1.0.0",
+  "description": "Software development company — dispatches code, inspects for bugs, verifies builds",
+  "domain": "software",
+  "inspectors": ["bug-detection", "security-review", "performance-check"],
+  "builders": ["feature-implementation", "bugfix", "refactor"],
+  "loop_mode": "lean",
+  "high_stakes_loop": "deluxe",
+  "source": "built-in"
+}
