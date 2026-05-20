@@ -330,26 +330,111 @@ if [[ "$FLEET_MODE" == "none" ]]; then
 fi
 
 # ──────────────────────────────────────────────
-# STEP 5: Paperclip (optional)
+# STEP 5: Service Discovery
 # ──────────────────────────────────────────────
-PAPERCLIP_URL="" PAPERCLIP_COMPANY=""
-if [[ "$SKIP_PROMPTS" != "--yes" ]]; then
-  echo -e "${B}Step 5: Paperclip${NC} ${DIM}(optional — adds dashboards and worktrees)${NC}"
-  echo -e "${BOLD}Connect to Paperclip?${NC} [y/N] \c"
-  read -r PC_ANSWER
-  if [[ "$PC_ANSWER" =~ ^[Yy]$ ]]; then
-    echo -e "  Paperclip URL [http://127.0.0.1:3100]: \c"
-    read -r PAPERCLIP_URL
-    PAPERCLIP_URL="${PAPERCLIP_URL:-http://127.0.0.1:3100}"
-    echo -e "  Company ID: \c"
-    read -r PAPERCLIP_COMPANY
-    if curl -s "${PAPERCLIP_URL}/api/health" 2>/dev/null | grep -q "ok"; then
-      echo -e "  ${G}✓${NC} Connected to Paperclip at $PAPERCLIP_URL"
+echo -e "${B}Step 5: Services${NC} ${DIM}(detect running platforms, register Foreman)${NC}"
+echo ""
+
+PAPERCLIP_URL="" PAPERCLIP_COMPANY="" OPENCLAW_DETECTED=false
+
+# Paperclip — check common ports
+PC_PORTS=(3100 3000 8080)
+PC_FOUND=false
+for port in "${PC_PORTS[@]}"; do
+  if curl -s "http://127.0.0.1:$port/api/health" 2>/dev/null | grep -q "ok"; then
+    PC_FOUND=true
+    PAPERCLIP_URL="http://127.0.0.1:$port"
+    PC_VER=$(curl -s "http://127.0.0.1:$port/api/health" 2>/dev/null | grep -o '"version":"[^"]*"' | cut -d'"' -f4 || echo "available")
+    echo -e "  ${G}✓${NC} ${BOLD}Paperclip${NC} ${DIM}(running at $PAPERCLIP_URL, v$PC_VER)${NC}"
+    break
+  fi
+done
+if [[ "$PC_FOUND" == false ]]; then
+  echo -e "  ${DIM}  ○ Paperclip (not running)${NC}"
+fi
+
+# OpenClaw — check for CLI + gateway
+if command -v openclaw >/dev/null 2>&1; then
+  OPENCLAW_DETECTED=true
+  OC_VER=$(openclaw --version 2>/dev/null | head -1 || echo "available")
+  echo -e "  ${G}✓${NC} ${BOLD}OpenClaw${NC} ${DIM}($OC_VER)${NC}"
+  # Check for running agents
+  OC_AGENTS=$(openclaw status 2>/dev/null | grep -c 'agent' || echo "0")
+  [[ "$OC_AGENTS" -gt 0 ]] && echo -e "    ${DIM}$OC_AGENTS agent(s) detected${NC}"
+else
+  echo -e "  ${DIM}  ○ OpenClaw (not found)${NC}"
+fi
+
+# Telegram bots — check for common indicators
+if [[ -d "$HOME/.openclaw" ]]; then
+  TG_CONFIG=$(find "$HOME/.openclaw" -name 'config*' -maxdepth 1 2>/dev/null | head -1 || true)
+  if [[ -n "$TG_CONFIG" ]]; then
+    echo -e "  ${G}✓${NC} ${BOLD}OpenClaw config${NC} ${DIM}($TG_CONFIG)${NC}"
+  fi
+fi
+
+echo ""
+
+# Connect to Paperclip if found
+if [[ "$PC_FOUND" == true ]] && [[ "$SKIP_PROMPTS" != "--yes" ]]; then
+  echo -e "${BOLD}Register Foreman in Paperclip?${NC} [Y/n] \c"
+  read -r PC_REG
+  if [[ ! "$PC_REG" =~ ^[Nn]$ ]]; then
+    # Get company list
+    PC_COMPANIES=$(curl -s "${PAPERCLIP_URL}/api/companies" 2>/dev/null || true)
+    if [[ -n "$PC_COMPANIES" ]]; then
+      PC_FIRST_ID=$(echo "$PC_COMPANIES" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d[0]['id'] if d else '')" 2>/dev/null || true)
+      if [[ -n "$PC_FIRST_ID" ]]; then
+        # Register Foreman as an agent in Paperclip
+        PC_RESULT=$(curl -s "${PAPERCLIP_URL}/api/companies/$PC_FIRST_ID/agents" \
+          -X POST -H "Content-Type: application/json" \
+          -d '{"name":"Foreman","role":"pm"}' 2>/dev/null || true)
+        PC_AGENT_ID=$(echo "$PC_RESULT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('id',''))" 2>/dev/null || true)
+        if [[ -n "$PC_AGENT_ID" ]]; then
+          PAPERCLIP_URL="$PAPERCLIP_URL"
+          PAPERCLIP_COMPANY="$PC_FIRST_ID"
+          echo -e "  ${G}✓${NC} Foreman registered as agent in Paperclip (role: pm, id: ${PC_AGENT_ID:0:8}...)"
+        else
+          echo -e "  ${Y}⚠${NC} Could not register in Paperclip"
+        fi
+      fi
     else
-      echo -e "  ${Y}⚠${NC} Could not reach Paperclip at $PAPERCLIP_URL"
-      PAPERCLIP_URL="" PAPERCLIP_COMPANY=""
+      echo -e "  ${Y}⚠${NC} No Paperclip companies found. Run `paperclipai onboard` first."
     fi
   fi
+elif [[ "$PC_FOUND" == true ]] && [[ "$SKIP_PROMPTS" == "--yes" ]]; then
+  # Auto-register in --yes mode
+  PC_COMPANIES=$(curl -s "${PAPERCLIP_URL}/api/companies" 2>/dev/null || true)
+  PC_FIRST_ID=$(echo "$PC_COMPANIES" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d[0]['id'] if d else '')" 2>/dev/null || true)
+  if [[ -n "$PC_FIRST_ID" ]]; then
+    PC_RESULT=$(curl -s "${PAPERCLIP_URL}/api/companies/$PC_FIRST_ID/agents" \
+      -X POST -H "Content-Type: application/json" \
+      -d '{"name":"Foreman","role":"pm"}' 2>/dev/null || true)
+    PC_AGENT_ID=$(echo "$PC_RESULT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('id',''))" 2>/dev/null || true)
+    if [[ -n "$PC_AGENT_ID" ]]; then
+      PAPERCLIP_URL="$PAPERCLIP_URL"
+      PAPERCLIP_COMPANY="$PC_FIRST_ID"
+      echo -e "  ${G}✓${NC} Foreman auto-registered in Paperclip (role: pm, id: ${PC_AGENT_ID:0:8}...)"
+    fi
+  fi
+fi
+
+# Register with OpenClaw if found
+if [[ "$OPENCLAW_DETECTED" == true ]] && [[ "$SKIP_PROMPTS" != "--yes" ]]; then
+  echo -e "${BOLD}Register Foreman with OpenClaw?${NC} [Y/n] \c"
+  read -r OC_REG
+  if [[ ! "$OC_REG" =~ ^[Nn]$ ]]; then
+    echo -e "  ${G}✓${NC} Foreman detected OpenClaw. Install script will be generated for OpenClaw integration."
+    # Create a skill installation note
+    mkdir -p "$CONFIG_DIR"
+    echo "# Foreman can be installed as an OpenClaw skill" >> "$CONFIG_DIR/openclaw-integration.md"
+    echo "Run: openclaw skill install foreman" >> "$CONFIG_DIR/openclaw-integration.md"
+  fi
+elif [[ "$OPENCLAW_DETECTED" == true ]] && [[ "$SKIP_PROMPTS" == "--yes" ]]; then
+  mkdir -p "$CONFIG_DIR"
+  echo -e "  ${G}✓${NC} OpenClaw detected. Integration note saved."
+  echo "# Foreman can be installed as an OpenClaw skill" > "$CONFIG_DIR/openclaw-integration.md"
+  echo "Run: openclaw skill install foreman" > "$CONFIG_DIR/openclaw-integration.md"
 fi
 echo ""
 
