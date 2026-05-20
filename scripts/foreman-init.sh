@@ -87,7 +87,7 @@ if command -v ollama >/dev/null 2>&1; then
   OLLAMA_VER=$(ollama --version 2>/dev/null | head -1 || echo "available")
   OLLAMA_LIST=$(ollama list 2>/dev/null || true)
   OLLAMA_COUNT=$(echo "$OLLAMA_LIST" | grep -c '^[a-zA-Z]' 2>/dev/null || echo "0")
-  OLLAMA_STRONGEST=$(echo "$OLLAMA_LIST" | grep -oE '^[a-zA-Z0-9._:-]+' | head -1 || true)
+  OLLAMA_STRONGEST=$(echo "$OLLAMA_LIST" | tail -n +2 | grep -oE '^[a-zA-Z0-9][a-zA-Z0-9._:-]+' | head -1 || true)
   echo -e "  ${G}✓${NC} ${BOLD}Ollama${NC} ${DIM}($OLLAMA_VER, $OLLAMA_COUNT models)${NC}"
   FOUND=$((FOUND + 1))
 else
