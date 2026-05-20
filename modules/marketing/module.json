@@ -1,0 +1,10 @@
+{
+  "name": "marketing",
+  "version": "1.0.0",
+  "description": "Marketing and content agency — dispatches copy, inspects for brand fit, clarity, and conversion",
+  "domain": "marketing",
+  "inspectors": ["brand-check", "clarity-check", "conversion-check"],
+  "builders": ["ad-copy", "email-sequence", "landing-page", "social-posts"],
+  "loop_mode": "lean",
+  "source": "built-in"
+}
