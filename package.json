@@ -1,0 +1,26 @@
+{
+  "name": "foreman",
+  "version": "0.1.0",
+  "description": "The dispatch and verification runtime for AI agent companies",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FuFicFac/foreman-company-runner.git"
+  },
+  "keywords": [
+    "ai-agents",
+    "orchestration",
+    "verification",
+    "dispatch",
+    "inspector-loop",
+    "paperclip",
+    "cursor",
+    "claude",
+    "codex",
+    "ollama"
+  ],
+  "scripts": {
+    "fleet-check": "bash scripts/fleet-check.sh",
+    "test": "echo 'No tests yet' && exit 0"
+  }
+}
