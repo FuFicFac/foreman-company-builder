@@ -3,113 +3,229 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Foreman — Dispatch and Verification Runtime</title>
+  <title>Author Company — Give your manuscript a company</title>
   <style>
+    :root {
+      --paper: #fbf3e6;
+      --paper-2: #f7e8d8;
+      --ink: #352b26;
+      --muted: #75685f;
+      --sage: #8fa58a;
+      --sage-dark: #50694d;
+      --rose: #d9a5a3;
+      --terracotta: #bf765d;
+      --lavender: #c9badf;
+      --blue: #b6d3df;
+      --gold: #d6a85f;
+      --card: rgba(255, 250, 241, 0.82);
+      --line: rgba(92, 71, 57, 0.18);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #0a0a0a; color: #e5e5e5; line-height: 1.6; }
-    .container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
-    header { padding: 80px 0 40px; text-align: center; }
-    h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
-    h1 span { color: #f59e0b; }
-    .tagline { font-size: 1.1rem; color: #a3a3a3; margin-bottom: 32px; }
-    .install-box { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 20px 24px; text-align: center; margin-bottom: 48px; }
-    .install-box code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.95rem; color: #f59e0b; display: block; margin-bottom: 8px; }
-    .install-box small { color: #737373; font-size: 0.8rem; }
-    h2 { font-size: 1.4rem; margin-bottom: 16px; color: #f5f5f5; }
-    .what-list { list-style: none; margin-bottom: 40px; }
-    .what-list li { padding: 8px 0; padding-left: 24px; position: relative; color: #d4d4d4; }
-    .what-list li::before { content: '→'; position: absolute; left: 0; color: #f59e0b; }
-    .domains { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 48px; }
-    .domain { background: #1a1a1a; border: 1px solid #262626; border-radius: 8px; padding: 16px; }
-    .domain h3 { font-size: 0.95rem; margin-bottom: 4px; color: #f5f5f5; }
-    .domain p { font-size: 0.85rem; color: #737373; }
-    .how { margin-bottom: 48px; }
-    .how-step { margin-bottom: 20px; }
-    .how-step strong { color: #f59e0b; }
-    .how-step p { color: #a3a3a3; font-size: 0.95rem; margin-top: 4px; }
-    footer { text-align: center; padding: 40px 0; color: #525252; font-size: 0.85rem; border-top: 1px solid #1a1a1a; }
-    footer a { color: #737373; text-decoration: none; }
-    footer a:hover { color: #f59e0b; }
+
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      line-height: 1.65;
+      background:
+        radial-gradient(circle at 16% 10%, rgba(217, 165, 163, 0.34), transparent 30%),
+        radial-gradient(circle at 78% 8%, rgba(182, 211, 223, 0.42), transparent 28%),
+        radial-gradient(circle at 74% 56%, rgba(201, 186, 223, 0.24), transparent 32%),
+        linear-gradient(135deg, var(--paper), #fff8ee 48%, var(--paper-2));
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.32;
+      background-image: radial-gradient(rgba(83, 66, 54, 0.18) 0.5px, transparent 0.5px);
+      background-size: 18px 18px;
+    }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 24px 56px; position: relative; }
+
+    nav { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 10px 0 50px; }
+    .brand { font-family: Georgia, "Times New Roman", serif; font-size: 1.08rem; font-weight: 700; letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.92rem; color: var(--muted); }
+    .nav-links a { color: inherit; text-decoration: none; }
+    .nav-links a:hover { color: var(--sage-dark); }
+
+    .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); gap: 48px; align-items: center; padding: 22px 0 72px; }
+    .eyebrow { color: var(--terracotta); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.78rem; margin-bottom: 14px; }
+    h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(3rem, 7vw, 6.4rem); line-height: 0.94; letter-spacing: -0.055em; margin-bottom: 22px; }
+    .lead { font-size: clamp(1.1rem, 2vw, 1.38rem); color: #594b42; max-width: 680px; margin-bottom: 28px; }
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .btn { border: 1px solid transparent; border-radius: 999px; padding: 13px 18px; text-decoration: none; font-weight: 750; display: inline-flex; align-items: center; gap: 8px; transition: transform 150ms ease, box-shadow 150ms ease; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--sage-dark); color: #fffdf7; box-shadow: 0 12px 24px rgba(80, 105, 77, 0.22); }
+    .btn-secondary { border-color: var(--line); color: var(--ink); background: rgba(255,255,255,0.42); }
+
+    .manuscript-card { background: var(--card); border: 1px solid var(--line); border-radius: 30px; padding: 26px; box-shadow: 0 24px 70px rgba(89, 61, 44, 0.14); transform: rotate(1.2deg); }
+    .paper { background: #fffaf1; border: 1px solid rgba(96, 75, 60, 0.14); border-radius: 20px; padding: 24px; min-height: 360px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.62); }
+    .paper h2 { font-family: Georgia, "Times New Roman", serif; font-size: 1.25rem; margin-bottom: 8px; }
+    .paper-lines { display: grid; gap: 12px; margin: 22px 0; }
+    .line { height: 10px; border-radius: 999px; background: linear-gradient(90deg, rgba(80,105,77,0.28), rgba(217,165,163,0.20)); }
+    .line:nth-child(2) { width: 86%; }
+    .line:nth-child(3) { width: 64%; }
+    .note { border-left: 4px solid var(--gold); background: rgba(214, 168, 95, 0.12); padding: 12px 14px; border-radius: 12px; color: #5c4b40; font-size: 0.94rem; }
+
+    section { padding: 58px 0; }
+    .section-head { max-width: 760px; margin-bottom: 28px; }
+    .section-head h2 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.02; margin-bottom: 12px; letter-spacing: -0.03em; }
+    .section-head p { color: var(--muted); font-size: 1.05rem; }
+
+    .workflow { display: grid; grid-template-columns: repeat(7, minmax(100px, 1fr)); gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+    .stage { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 16px; min-height: 124px; position: relative; }
+    .stage strong { display: block; font-family: Georgia, "Times New Roman", serif; font-size: 1.04rem; margin-bottom: 8px; }
+    .stage small { color: var(--muted); }
+    .stage::after { content: "→"; position: absolute; right: -12px; top: 42%; color: var(--terracotta); font-weight: 800; }
+    .stage:last-child::after { display: none; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .panel { background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 24px; box-shadow: 0 16px 40px rgba(89, 61, 44, 0.08); }
+    .panel h3 { font-family: Georgia, "Times New Roman", serif; font-size: 1.45rem; margin-bottom: 10px; }
+    .panel p, .panel li { color: var(--muted); }
+    .panel ul { margin-left: 20px; margin-top: 12px; }
+
+    .status-card { display: grid; gap: 12px; }
+    .status { display: flex; justify-content: space-between; gap: 16px; padding: 13px 14px; background: rgba(255,255,255,0.46); border-radius: 16px; border: 1px solid rgba(92,71,57,0.12); }
+    .pill { border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 800; }
+    .green { background: rgba(143,165,138,0.24); color: var(--sage-dark); }
+    .yellow { background: rgba(214,168,95,0.22); color: #835f1e; }
+
+    .install-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; }
+    .install { border: 2px solid rgba(80,105,77,0.22); }
+    .install.recommended { background: linear-gradient(145deg, rgba(143,165,138,0.22), rgba(255,250,241,0.88)); }
+    .badge { display: inline-block; margin-bottom: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(80,105,77,0.16); color: var(--sage-dark); font-size: 0.78rem; font-weight: 800; }
+    code { display: block; margin-top: 14px; padding: 13px; border-radius: 14px; background: #3a302b; color: #fff4df; overflow-x: auto; }
+
+    footer { padding: 48px 0 20px; color: var(--muted); border-top: 1px solid var(--line); margin-top: 30px; }
+    footer a { color: var(--sage-dark); text-decoration: none; }
+
+    @media (max-width: 880px) {
+      .hero, .two-col, .install-grid { grid-template-columns: 1fr; }
+      .workflow { grid-template-columns: repeat(7, 180px); }
+      nav { align-items: flex-start; flex-direction: column; padding-bottom: 28px; }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1><span>Foreman</span></h1>
-      <p class="tagline">Paperclip is the company. Foreman runs the crew.</p>
-    </header>
+  <div class="wrap">
+    <nav>
+      <div class="brand">Author Company</div>
+      <div class="nav-links">
+        <a href="#workflow">Workflow</a>
+        <a href="#paperclip">Paperclip</a>
+        <a href="#install">Install</a>
+        <a href="https://github.com/FuFicFac/foreman-company-runner">GitHub</a>
+      </div>
+    </nav>
 
-    <div class="install-box">
-      <code>curl -fsSL https://get.foreman.dev | zsh</code>
-      <small>One command. Discovers your AI tools. Assigns roles. Starts dispatching.</small>
-    </div>
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow">For writers, not project managers</div>
+          <h1>Give your manuscript a company.</h1>
+          <p class="lead">Author Company helps writers move a book from draft to publishing workflow with a visible AI team for editing, metadata, launch planning, reader follow-up, and daily status.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#install">Start with Hermes</a>
+            <a class="btn btn-secondary" href="#workflow">See the manuscript workflow</a>
+          </div>
+        </div>
+        <div class="manuscript-card" aria-label="Manuscript project card preview">
+          <div class="paper">
+            <h2>The Orchard at Night</h2>
+            <p>Book workspace · Draft imported</p>
+            <div class="paper-lines">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+            <div class="note"><strong>What needs you today:</strong> approve the developmental edit plan, then the company can move the manuscript into revision tasks.</div>
+          </div>
+        </div>
+      </section>
 
-    <h2>What it does</h2>
-    <ul class="what-list">
-      <li>Discovers what AI tools you have (Cursor, Claude, Codex, Ollama, whatever)</li>
-      <li>Assigns roles — inspector (strongest), builder (fastest), cheap (classification)</li>
-      <li>Dispatches builders to do the work</li>
-      <li>Dispatches inspectors to review the work</li>
-      <li>Arbitrates — accept, reject, or send back for fixes</li>
-      <li>Escalates after 3 failed attempts (no infinite retry spirals)</li>
-    </ul>
+      <section>
+        <div class="section-head">
+          <h2>You wrote the book. Now comes the machine.</h2>
+          <p>Editing, metadata, launch planning, reader follow-up, storefront details, decisions, blockers — the work around the writing can swallow the writer. Author Company gives that work a visible place to live.</p>
+        </div>
+      </section>
 
-    <h2>Built for</h2>
-    <div class="domains">
-      <div class="domain">
-        <h3>Software</h3>
-        <p>Dispatch code. Inspect for bugs. Verify builds.</p>
-      </div>
-      <div class="domain">
-        <h3>Creative Writing</h3>
-        <p>Dispatch chapters. Six editors review independently.</p>
-      </div>
-      <div class="domain">
-        <h3>YouTube</h3>
-        <p>Dispatch scripts. Inspect hooks, pacing, retention.</p>
-      </div>
-      <div class="domain">
-        <h3>Marketing</h3>
-        <p>Dispatch copy. Inspect brand fit, clarity, conversion.</p>
-      </div>
-    </div>
+      <section id="workflow">
+        <div class="section-head">
+          <h2>A publishing workflow your manuscript can live inside.</h2>
+          <p>Drop in a manuscript, outline, or draft. The company builds the path around it.</p>
+        </div>
+        <div class="workflow">
+          <div class="stage"><strong>Draft</strong><small>Bring in the manuscript, notes, outline, or serial.</small></div>
+          <div class="stage"><strong>Intake</strong><small>Create the project dossier and living wiki.</small></div>
+          <div class="stage"><strong>Edit</strong><small>Plan developmental edits and revision tasks.</small></div>
+          <div class="stage"><strong>Proof</strong><small>Coordinate copyedit, proofread, and final checks.</small></div>
+          <div class="stage"><strong>Metadata</strong><small>Prepare positioning, descriptions, keywords, categories.</small></div>
+          <div class="stage"><strong>Launch</strong><small>Build launch checklist, assets, and publishing tasks.</small></div>
+          <div class="stage"><strong>Follow-up</strong><small>Newsletter, reader support, analytics, next steps.</small></div>
+        </div>
+      </section>
 
-    <h2>How it works</h2>
-    <div class="how">
-      <div class="how-step">
-        <strong>1. Init</strong>
-        <p>foreman init — discovers your fleet, detects API keys, picks a brain</p>
-      </div>
-      <div class="how-step">
-        <strong>2. Dispatch</strong>
-        <p>foreman dispatch — sends work to the right agent for the job</p>
-      </div>
-      <div class="how-step">
-        <strong>3. Inspect</strong>
-        <p>An independent reviewer checks the work before it ships</p>
-      </div>
-      <div class="how-step">
-        <strong>4. Accept or fix</strong>
-        <p>Good enough → ship. Problems → specific feedback → one more try</p>
-      </div>
-      <div class="how-step">
-        <strong>5. Escalate</strong>
-        <p>Three strikes and the problem goes up the chain. No spirals.</p>
-      </div>
-    </div>
+      <section id="paperclip">
+        <div class="two-col">
+          <div class="panel">
+            <h3>Paperclip shows the company.</h3>
+            <p>Paperclip is where you see inside your Author Company: which agents are working, which tasks are blocked, what stage your manuscript is in, and what needs your decision.</p>
+            <ul>
+              <li>agents and roles</li>
+              <li>queues and approvals</li>
+              <li>pipeline stage</li>
+              <li>blockers and next actions</li>
+            </ul>
+          </div>
+          <div class="panel status-card">
+            <h3>Every morning, your company checks in.</h3>
+            <div class="status"><span>Runtime and tools</span><span class="pill green">Ready</span></div>
+            <div class="status"><span>Manuscript pipeline</span><span class="pill green">Ready</span></div>
+            <div class="status"><span>Waiting on author</span><span class="pill yellow">1 approval</span></div>
+            <p>The daily check-in is the trust layer: what is ready, what is blocked, and what needs you.</p>
+          </div>
+        </div>
+      </section>
 
-    <h2>Modules</h2>
-    <ul class="what-list">
-      <li>Four built-in swarm templates: software, creative writing, YouTube, marketing</li>
-      <li>Install community modules from GitHub</li>
-      <li>Write your own — a module is just a folder with module.json and SKILL.md</li>
-      <li>Foreman notifies you when modules have updates</li>
-    </ul>
+      <section>
+        <div class="section-head">
+          <h2>Simple workspace. Living wiki. No giant knowledge system required.</h2>
+          <p>Each book gets a local workspace for the manuscript, notes, research, outputs, company files, heartbeats, and a small living wiki. Hermes can manage those documents in the background. A full Second Brain is optional, not required.</p>
+        </div>
+      </section>
+
+      <section id="install">
+        <div class="section-head">
+          <h2>Choose your runtime.</h2>
+          <p>Author Company uses an agent runtime to do real work. The recommended path is Hermes.</p>
+        </div>
+        <div class="install-grid">
+          <div class="panel install recommended">
+            <span class="badge">Recommended</span>
+            <h3>Install with Hermes</h3>
+            <p>Hermes runs the agents, tools, skills, scheduled checks, and follow-up that make Author Company feel alive.</p>
+            <code>Install with Hermes</code>
+          </div>
+          <div class="panel install">
+            <span class="badge">Advanced / DIY</span>
+            <h3>Install with OpenClaw</h3>
+            <p>OpenClaw is supported as an alternate path, but it may require more assembly. Choose this if you already know OpenClaw and are comfortable adding missing tools or connectors yourself.</p>
+            <code>Install with OpenClaw</code>
+          </div>
+        </div>
+      </section>
+    </main>
 
     <footer>
-      <a href="https://github.com/FuFicFac/foreman-company-runner">GitHub</a> ·
-      <a href="https://github.com/FuFicFac/paperclip">Paperclip</a> ·
-      FF Factory Media LLC
+      Under the hood: Paperclip shows the company, Hermes runs it, Foreman provides publishing discipline, and Printing Press gives agents tools. The stack supports the brand; it is not the brand.
+      <br><a href="../docs/author-company-product-brief.md">Product brief</a> · <a href="../docs/author-company-website-brief.md">Website brief</a>
     </footer>
   </div>
 </body>

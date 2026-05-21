@@ -1,14 +1,27 @@
 # Foreman
 
-The dispatch and verification runtime for AI agent companies.
+The dispatch, verification, and operating-discipline layer for AI agent companies.
 
-**Foreman gets shit done. Paperclip makes it pretty.**
+**Foreman keeps agent companies honest. Paperclip shows the work. Hermes runs the crew.**
 
-Foreman is a standalone feedback loop that dispatches builders, inspects their work, and only accepts what passes verification. It runs on any machine with any CLI setup — Cursor, Claude, Codex, Ollama, Hermes, or just one of those.
+Foreman began as a standalone feedback loop that dispatches builders, inspects their work, and only accepts what passes verification. It runs on any machine with any CLI setup — Cursor, Claude, Codex, Ollama, Hermes, or just one of those.
 
-Foreman is also growing into the shared discipline layer for **Paperclip holding companies**: Paperclip tracks many companies, Hermes/Hank acts as chairman runtime, each company gets a spawnable CEO/worker/inspector roster, and Foreman enforces builder → inspector → arbitration → escalation loops.
+That loop still matters. But the current product direction is broader: Foreman is growing into the shared discipline layer for specialized agent companies and Paperclip holding companies. Paperclip tracks companies, Hermes runs agents and scheduled work, each company gets a spawnable CEO/worker/inspector roster, and Foreman enforces builder → inspector → arbitration → escalation loops.
 
-If you want the visual Kanban board, org charts, and company model, you can plug Foreman into Paperclip. That's a supercharger, not a requirement.
+The first front-facing company suite is **Author Company**:
+
+> **Put in your manuscript. Get a visible publishing workflow around it.**
+
+Author Company is for writers who want help with the publishing operation around a book — editing coordination, metadata, launch planning, reader follow-up, blockers, approvals, and daily status — without turning themselves into project managers.
+
+For this direction:
+
+- **Paperclip** is the preferred interface for seeing inside each company.
+- **Hermes** is the recommended runtime that runs agents, tools, skills, scheduled checks, and follow-up.
+- **Foreman** provides the publishing discipline, verification loop, and daily trust checks.
+- **Printing Press** gives agents the external tools they need.
+- Each book gets a simple local workspace and living wiki. A full Second Brain is optional, not required.
+- **OpenClaw** can be an advanced alternate runtime path, but Hermes is the recommended default.
 
 ## How Foreman Works (Headless / Standalone)
 
