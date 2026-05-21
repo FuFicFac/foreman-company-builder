@@ -6,6 +6,8 @@
 - [The Feedback Loop](feedback-loop.md)
 - [Provider Auto-Discovery](provider-discovery.md)
 - [Paperclip Integration](paperclip-integration.md)
+- [Holding Company Architecture](holding-company-architecture.md)
+- [Paperclip Holding-Company Adapter](paperclip-holding-company-adapter.md)
 
 ## Guides
 

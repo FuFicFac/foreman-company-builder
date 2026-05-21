@@ -1,0 +1,36 @@
+{
+  "name": "publishing",
+  "version": "1.0.0",
+  "description": "Publishing company — editorial production plus direct sales, audience growth, launch ops, and customer support",
+  "domain": "publishing",
+  "capabilities": [
+    "editorial",
+    "metadata",
+    "digital-commerce",
+    "audience-growth",
+    "email-marketing",
+    "analytics",
+    "customer-support",
+    "launch-operations"
+  ],
+  "required_capabilities": ["editorial", "metadata", "launch-operations"],
+  "recommended_capabilities": ["digital-commerce", "email-marketing", "analytics"],
+  "conditional_capabilities": {
+    "selling_direct": ["digital-commerce", "customer-support"],
+    "running_ads": ["analytics"],
+    "serial_publishing": ["audience-growth", "email-marketing"],
+    "print_fulfillment": ["customer-support", "launch-operations"]
+  },
+  "inspectors": ["VEGA", "RIFF", "IRIS", "FINCH", "STORM", "ZIGGY", "Commerce", "Metadata", "Launch"],
+  "builders": ["chapter-draft", "scene-revision", "metadata-package", "product-page", "launch-plan", "email-sequence"],
+  "loop_mode": "deluxe",
+  "tool_manifest": {
+    "editorial": ["storycraft", "epub-export", "pdf-tools"],
+    "digital-commerce": ["shopify", "stripe", "gumroad"],
+    "email-marketing": ["klaviyo", "mailchimp", "beehiiv"],
+    "analytics": ["google-ads", "dub"],
+    "research": ["wikipedia", "company-goat"],
+    "operations": ["linear", "notion", "slack"]
+  },
+  "source": "built-in"
+}

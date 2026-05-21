@@ -4,7 +4,9 @@ The dispatch and verification runtime for AI agent companies.
 
 **Foreman gets shit done. Paperclip makes it pretty.**
 
-Foreman is a standalone feedback loop that dispatches builders, inspects their work, and only accepts what passes verification. It runs on any machine with any CLI setup — Cursor, Claude, Codex, Ollama, or just one of those.
+Foreman is a standalone feedback loop that dispatches builders, inspects their work, and only accepts what passes verification. It runs on any machine with any CLI setup — Cursor, Claude, Codex, Ollama, Hermes, or just one of those.
+
+Foreman is also growing into the shared discipline layer for **Paperclip holding companies**: Paperclip tracks many companies, Hermes/Hank acts as chairman runtime, each company gets a spawnable CEO/worker/inspector roster, and Foreman enforces builder → inspector → arbitration → escalation loops.
 
 If you want the visual Kanban board, org charts, and company model, you can plug Foreman into Paperclip. That's a supercharger, not a requirement.
 
@@ -61,6 +63,27 @@ Foreman auto-discovers your CLIs and adapts. You don't need a full fleet.
 | Codex only | top model | default model | cheap model |
 
 One provider is enough. The feedback loop uses different model tiers for different roles — Opus inspects, Sonnet builds, Haiku plans fixes. Same loop, whatever you've got.
+
+## Capability Templates + Tool Supply
+
+Foreman templates are capability bundles, not stereotypes. A publishing company is not only a writing room — if it sells ePubs directly, it may need Shopify, Stripe, Gumroad, email marketing, launch operations, support, and analytics.
+
+Built-in templates now include:
+
+- `software`
+- `creative-writing`
+- `publishing`
+- `youtube`
+- `marketing`
+
+Printing Press can supply agent-native CLIs for those capabilities:
+
+```bash
+./scripts/foreman-tools.sh doctor
+./scripts/foreman-tools.sh search wikipedia
+./scripts/foreman-tools.sh install wikipedia
+./scripts/foreman-tools.sh manifest publishing
+```
 
 ## Paperclip Supercharger (Optional)
 

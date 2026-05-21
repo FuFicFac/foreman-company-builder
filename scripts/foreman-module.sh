@@ -47,7 +47,7 @@ case "$ACTION" in
   add)
     if [[ -z "$TARGET" ]]; then
       echo -e "${R}Usage: foreman module add <name>${NC}"
-      echo -e "${DIM}  Built-in: software, creative-writing, youtube, marketing${NC}"
+      echo -e "${DIM}  Built-in: software, creative-writing, publishing, youtube, marketing${NC}"
       echo -e "${DIM}  GitHub:   foreman module add github:user/repo${NC}"
       exit 1
     fi

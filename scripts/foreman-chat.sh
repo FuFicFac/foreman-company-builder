@@ -19,6 +19,8 @@ if [[ ! -f "$PROFILE_FILE" ]]; then
   exit 1
 fi
 
+FORCE_ONBOARD="${1:-}"
+
 # Read brain config from profile
 BRAIN_PROVIDER=$(python3 -c "import json; print(json.load(open('$PROFILE_FILE'))['brain']['provider'])" 2>/dev/null || echo "none")
 BRAIN_MODEL=$(python3 -c "import json; print(json.load(open('$PROFILE_FILE'))['brain']['model'])" 2>/dev/null || echo "none")
@@ -27,9 +29,8 @@ BRAIN_KEY_ENV=$(python3 -c "import json; print(json.load(open('$PROFILE_FILE'))[
 # Source secrets if available
 [[ -f "$CONFIG_DIR/secrets.env" ]] && source "$CONFIG_DIR/secrets.env" 2>/dev/null
 
-if [[ "$BRAIN_PROVIDER" == "none" ]]; then
-  echo -e "${R}No brain configured. Run ${BOLD}foreman init${NC} to set up a brain model."
-  exit 1
+if [[ "$BRAIN_PROVIDER" == "none" ]] && [[ "$FORCE_ONBOARD" != "--onboard" ]]; then
+  echo -e "${Y}⚠${NC} No brain configured. Onboarding can still save a company profile; chat requires ${BOLD}foreman init${NC}."
 fi
 
 echo ""
@@ -42,7 +43,6 @@ echo ""
 # ──────────────────────────────────────────────
 # Check if onboarding is needed
 # ──────────────────────────────────────────────
-FORCE_ONBOARD="${1:-}"
 HAS_TEMPLATE=false
 LOADED_TEMPLATE=""
 
@@ -58,22 +58,24 @@ if [[ "$FORCE_ONBOARD" == "--onboard" ]] || [[ "$HAS_TEMPLATE" == false ]]; then
   echo ""
   echo -e "  ${BOLD}1)${NC} Software / app development"
   echo -e "  ${BOLD}2)${NC} Creative writing / fiction / novels"
-  echo -e "  ${BOLD}3)${NC} YouTube / video production"
-  echo -e "  ${BOLD}4)${NC} Marketing / content agency"
-  echo -e "  ${BOLD}5)${NC} Physical product / e-commerce"
-  echo -e "  ${BOLD}6)${NC} Something else (describe it)"
+  echo -e "  ${BOLD}3)${NC} Publishing / books / direct sales"
+  echo -e "  ${BOLD}4)${NC} YouTube / video production"
+  echo -e "  ${BOLD}5)${NC} Marketing / content agency"
+  echo -e "  ${BOLD}6)${NC} Physical product / e-commerce"
+  echo -e "  ${BOLD}7)${NC} Something else (describe it)"
   echo ""
-  echo -e "${BOLD}Choose [1-6]:${NC} \c"
+  echo -e "${BOLD}Choose [1-7]:${NC} \c"
   read -r CHOICE
 
   TEMPLATE=""
   case "$CHOICE" in
     1) TEMPLATE="software" ;;
     2) TEMPLATE="creative-writing" ;;
-    3) TEMPLATE="youtube" ;;
-    4) TEMPLATE="marketing" ;;
-    5) TEMPLATE="software" ;;  # Default to software for now
-    6) TEMPLATE="" ;;
+    3) TEMPLATE="publishing" ;;
+    4) TEMPLATE="youtube" ;;
+    5) TEMPLATE="marketing" ;;
+    6) TEMPLATE="software" ;;  # Default to software for now
+    7) TEMPLATE="" ;;
     *) TEMPLATE="" ;;
   esac
 
@@ -143,6 +145,36 @@ EOF
   "name": "${PROJECT_NAME:-unnamed}",
   "genre": "${GENRE:-fiction}",
   "word_count": "${WORD_COUNT:-0}",
+  "created": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+}
+EOF
+      ;;
+    publishing)
+      echo -e "  ${BOLD}Imprint / publishing company name:${NC} \c"
+      read -r PROJECT_NAME
+      echo -e "  ${BOLD}Publishing focus (fiction/nonfiction/comics/courses/mixed):${NC} \c"
+      read -r PUBLISHING_FOCUS
+      echo -e "  ${BOLD}Formats (epub/pdf/print/audio/serial):${NC} \c"
+      read -r FORMATS
+      echo -e "  ${BOLD}Sell direct from your own site? (yes/no):${NC} \c"
+      read -r SELL_DIRECT
+      echo -e "  ${BOLD}Storefront/payment tools (shopify/stripe/gumroad/etc):${NC} \c"
+      read -r COMMERCE_TOOLS
+      echo -e "  ${BOLD}Email marketing tools (klaviyo/mailchimp/beehiiv/etc):${NC} \c"
+      read -r EMAIL_TOOLS
+      echo -e "  ${BOLD}Human approval gates (pricing,publish,ads,refunds,email):${NC} \c"
+      read -r APPROVAL_GATES
+      cat > "$CONFIG_DIR/project.json" << EOF
+{
+  "template": "$TEMPLATE",
+  "name": "${PROJECT_NAME:-unnamed}",
+  "focus": "${PUBLISHING_FOCUS:-mixed}",
+  "formats": "${FORMATS:-epub}",
+  "selling_direct": "${SELL_DIRECT:-no}",
+  "commerce_tools": "${COMMERCE_TOOLS:-}",
+  "email_tools": "${EMAIL_TOOLS:-}",
+  "approval_gates": "${APPROVAL_GATES:-pricing,publish,ads,refunds,email}",
+  "capabilities": ["editorial", "metadata", "launch-operations", "digital-commerce", "email-marketing", "analytics", "customer-support"],
   "created": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 }
 EOF
@@ -230,6 +262,10 @@ EOF
 
 else
   # ── Normal chat mode ──
+  if [[ "$BRAIN_PROVIDER" == "none" ]]; then
+    echo -e "${R}No brain configured. Run ${BOLD}foreman init${NC} to set up a brain model, or use ${BOLD}foreman chat --onboard${NC} to save a company profile.${NC}"
+    exit 1
+  fi
   echo -e "${G}Template loaded:${NC} ${BOLD}$LOADED_TEMPLATE${NC}"
   echo -e "${DIM}Type your message and Foreman's brain will respond. Type 'exit' to quit.${NC}"
   echo ""
