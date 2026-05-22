@@ -4,7 +4,7 @@ This folder contains design artifacts generated from `docs/marketing-design-brie
 
 ## Files
 
-- `foreman-lph-brand-mockup-board.html` — browsable brand and website concept board covering:
+- `foreman-lph-brand-mockup-board.html` — browsable image-led showroom built from the generated art direction, covering:
   - Foreman homepage concept A: Company Builder
   - Foreman homepage concept B: Operating Discipline
   - Foreman homepage concept C: Featured Company / marketplace
@@ -13,16 +13,23 @@ This folder contains design artifacts generated from `docs/marketing-design-brie
   - Little Publishing House subpage concept C: Editorial command desk
   - Foreman logo/icon explorations
   - Little Publishing House logo/icon explorations
-  - shared workflow icon set
-  - shared design token proposal
+  - live HTML overlays on generated imagery
+  - portal-style concept navigation
+  - Paperclip preview / daily heartbeat treatment
   - YouTube-first recommendation notes
+
+## Image Assets
+
+- `assets/foreman-floorplan.png` — illustrated Foreman operations-room hero
+- `assets/foreman-template-desk.png` — template/company chooser desk scene
+- `assets/lph-garden-workflow.png` — Little Publishing House publishing-path scene
 
 ## Recommendation
 
 The strongest public launch pairing is:
 
-- Foreman homepage: **Operating Discipline**
-- Little Publishing House page: **Book Stage Finder**
-- Reusable hero demo component: **What needs you today**
+- Foreman homepage: **Storybook operations room / company floorplan**
+- Little Publishing House page: **Publishing garden workflow**
+- Later `/companies` page: **Template desk / company chooser**
 
-That combination keeps the architecture clean: Foreman explains the system, Little Publishing House proves it, and the education layer stays optional.
+That combination keeps the architecture clean while adding the right whimsy: Foreman explains the system, Little Publishing House proves it, and the education layer stays optional.

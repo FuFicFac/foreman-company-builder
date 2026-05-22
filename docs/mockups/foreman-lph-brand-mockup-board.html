@@ -3,29 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Foreman + Little Publishing House Brand Mockup Board</title>
+  <title>Foreman + Little Publishing House Showroom</title>
   <style>
     :root {
-      --ink: #272421;
-      --blue: #2f5f7c;
-      --steel: #6d7882;
-      --green: #5f7f63;
-      --gold: #d0a14a;
-      --paper: #f6efe3;
-      --white: #fffdf8;
-      --brown: #352b26;
-      --sage: #8fa58a;
-      --sky: #b6d3df;
-      --terracotta: #bf765d;
-      --rose: #d9a5a3;
-      --lavender: #c9badf;
-      --line: rgba(39, 36, 33, 0.14);
-      --soft: rgba(39, 36, 33, 0.08);
-      --shadow: 0 28px 80px rgba(39, 36, 33, 0.12);
-      --radius: 8px;
+      --ink: #241f1a;
+      --walnut: #4b3326;
+      --forest: #44512c;
+      --moss: #69754d;
+      --sage: #aeb994;
+      --clay: #b65f42;
+      --rose: #b58780;
+      --plum: #87709b;
+      --gold: #cfaa62;
+      --paper: #fbf2df;
+      --vellum: rgba(255, 248, 231, 0.82);
+      --line: rgba(73, 52, 36, 0.24);
+      --shadow: 0 26px 80px rgba(42, 28, 16, 0.26);
+      --soft-shadow: 0 18px 50px rgba(42, 28, 16, 0.16);
       --serif: Charter, "Iowan Old Style", Georgia, serif;
       --sans: "Avenir Next", "Segoe UI", system-ui, sans-serif;
-      --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      --script: "Snell Roundhand", "Bradley Hand", "Segoe Script", cursive;
+      --swish: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { box-sizing: border-box; }
@@ -35,1067 +33,1216 @@
     body {
       margin: 0;
       color: var(--ink);
-      background:
-        linear-gradient(90deg, rgba(47,95,124,0.05) 1px, transparent 1px),
-        linear-gradient(rgba(39,36,33,0.05) 1px, transparent 1px),
-        linear-gradient(135deg, #fffaf0 0%, #f1eadf 46%, #e8f0ed 100%);
-      background-size: 42px 42px, 42px 42px, 100% 100%;
       font-family: var(--sans);
-      font-size: 16px;
-      line-height: 1.5;
+      background:
+        linear-gradient(90deg, rgba(76, 55, 35, 0.055) 1px, transparent 1px),
+        linear-gradient(rgba(76, 55, 35, 0.052) 1px, transparent 1px),
+        radial-gradient(circle at 18% 0%, rgba(207, 170, 98, 0.20), transparent 30%),
+        linear-gradient(135deg, #241a13 0%, #3a281f 38%, #182018 100%);
+      background-size: 34px 34px, 34px 34px, 100% 100%, 100% 100%;
+      line-height: 1.48;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0.22;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.20) 0 1px, transparent 1px),
+        radial-gradient(circle at 70% 60%, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px);
+      background-size: 7px 7px, 11px 11px;
+      mix-blend-mode: soft-light;
     }
 
     a { color: inherit; }
 
-    .page {
-      width: min(1480px, calc(100% - 40px));
-      margin: 0 auto;
+    .shell {
+      width: min(1760px, calc(100% - 22px));
+      margin: 10px auto 28px;
+      border: 1px solid rgba(255, 246, 221, 0.25);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #f8efd9;
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.42);
     }
 
-    .topbar {
+    .nav {
       position: sticky;
-      top: 14px;
-      z-index: 3;
-      width: min(1120px, calc(100% - 32px));
-      margin: 14px auto 0;
+      top: 0;
+      z-index: 10;
+      height: 86px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-      padding: 10px 10px 10px 16px;
-      border: 1px solid rgba(39, 36, 33, 0.12);
-      border-radius: 999px;
-      background: rgba(255, 253, 248, 0.86);
+      gap: 22px;
+      padding: 0 42px;
+      border-bottom: 1px solid rgba(73, 52, 36, 0.20);
+      background: rgba(255, 248, 231, 0.92);
       backdrop-filter: blur(18px);
-      box-shadow: 0 16px 60px rgba(39, 36, 33, 0.10);
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 0;
-      font-weight: 700;
+      gap: 13px;
+      min-width: 268px;
+      text-decoration: none;
     }
 
-    .brand-mark {
-      width: 34px;
-      height: 34px;
+    .mark {
+      width: 46px;
+      height: 46px;
       display: grid;
       place-items: center;
       flex: 0 0 auto;
-      border-radius: 8px;
-      background: var(--ink);
-      color: var(--gold);
+      border: 1px solid rgba(73, 52, 36, 0.28);
+      border-radius: 50%;
+      color: var(--forest);
+      background: rgba(255, 253, 242, 0.66);
     }
 
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.65;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    .nav a,
-    .button {
-      min-height: 34px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border: 1px solid transparent;
-      border-radius: 999px;
-      color: rgba(39, 36, 33, 0.76);
-      font-size: 13px;
-      font-weight: 650;
-      text-decoration: none;
-      transition: transform 420ms var(--ease), background 420ms var(--ease), color 420ms var(--ease);
-    }
-
-    .nav a:hover,
-    .button:hover {
-      transform: translateY(-1px);
-      background: rgba(47, 95, 124, 0.10);
-      color: var(--ink);
-    }
-
-    .hero-board {
-      min-height: calc(100dvh - 96px);
+    .brand-title {
       display: grid;
-      grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
-      align-items: center;
-      gap: clamp(28px, 4vw, 72px);
-      padding: 72px 0 42px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      margin: 0 0 18px;
-      padding: 6px 10px;
-      border: 1px solid rgba(39, 36, 33, 0.14);
-      border-radius: 999px;
-      background: rgba(255, 253, 248, 0.68);
-      color: rgba(39, 36, 33, 0.70);
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    h1, h2, h3, p { margin-top: 0; }
-
-    h1 {
-      max-width: 860px;
-      margin-bottom: 20px;
+      gap: 0;
       font-family: var(--serif);
-      font-size: 92px;
+      font-size: 31px;
       line-height: 0.95;
       font-weight: 700;
     }
 
+    .brand-title small {
+      font-family: var(--sans);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      color: rgba(36, 31, 26, 0.82);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .nav-links a {
+      position: relative;
+      text-decoration: none;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -8px;
+      height: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      background: var(--clay);
+      transition: transform 500ms var(--swish);
+    }
+
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 22px;
+      border: 1px solid rgba(73, 52, 36, 0.22);
+      border-radius: 8px;
+      background: var(--clay);
+      color: #fff8ec;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 12px 28px rgba(145, 65, 39, 0.24);
+      transition: transform 500ms var(--swish), box-shadow 500ms var(--swish), background 500ms var(--swish);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: #a84f36;
+      box-shadow: 0 20px 38px rgba(145, 65, 39, 0.30);
+    }
+
+    .button.secondary {
+      background: rgba(255, 248, 231, 0.78);
+      color: var(--walnut);
+      box-shadow: none;
+    }
+
+    .hero {
+      min-height: 930px;
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(430px, 0.62fr) minmax(620px, 1fr);
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(255, 248, 231, 0.94) 0%, rgba(255, 248, 231, 0.88) 34%, rgba(255, 248, 231, 0.20) 60%, transparent 100%),
+        url("assets/foreman-floorplan.png") right 44px top 28px / 64% auto no-repeat,
+        #fbf2df;
+    }
+
+    .book-spine {
+      position: absolute;
+      left: 0;
+      top: 86px;
+      bottom: 130px;
+      width: 82px;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,0.18), transparent 24px),
+        linear-gradient(#63402f, #263320);
+      box-shadow: inset -18px 0 40px rgba(255, 233, 185, 0.12);
+    }
+
+    .book-spine::before,
+    .book-spine::after {
+      content: "";
+      position: absolute;
+      left: 17px;
+      width: 42px;
+      height: 170px;
+      border-radius: 4px;
+      background: linear-gradient(#87614a, #2e2b24);
+      border: 1px solid rgba(255, 239, 204, 0.22);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18);
+    }
+
+    .book-spine::before { top: 28px; }
+    .book-spine::after { bottom: 32px; }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      padding: 80px 38px 96px 168px;
+      align-self: center;
+    }
+
+    .script {
+      font-family: var(--script);
+      color: var(--clay);
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    h1,
+    h2,
+    h3,
+    p { margin-top: 0; }
+
+    h1 {
+      max-width: 560px;
+      margin-bottom: 22px;
+      font-family: var(--serif);
+      font-size: 74px;
+      line-height: 0.98;
+      font-weight: 700;
+    }
+
     h2 {
-      margin-bottom: 12px;
+      margin-bottom: 16px;
       font-family: var(--serif);
       font-size: 58px;
       line-height: 1;
+      font-weight: 700;
     }
 
     h3 {
       margin-bottom: 10px;
-      font-size: 22px;
-      line-height: 1.12;
+      font-family: var(--serif);
+      font-size: 28px;
+      line-height: 1.06;
     }
 
     .lead {
-      max-width: 680px;
-      color: rgba(39, 36, 33, 0.74);
-      font-size: 22px;
-      line-height: 1.38;
+      max-width: 530px;
+      color: rgba(36, 31, 26, 0.82);
+      font-size: 20px;
+      line-height: 1.55;
+    }
+
+    .hero-line {
+      width: 250px;
+      height: 1px;
+      margin: 24px 0 20px;
+      background: linear-gradient(90deg, transparent, var(--forest), transparent);
     }
 
     .cta-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
       margin-top: 28px;
     }
 
-    .button {
-      min-height: 46px;
-      padding: 10px 18px;
-      background: var(--ink);
-      color: var(--white);
-      border-color: rgba(39, 36, 33, 0.24);
-    }
-
-    .button.secondary {
-      background: rgba(255, 253, 248, 0.68);
-      color: var(--ink);
-    }
-
-    .button .dot {
-      width: 24px;
-      height: 24px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      background: rgba(255, 253, 248, 0.14);
-      transition: transform 420ms var(--ease);
-    }
-
-    .button:hover .dot { transform: translateX(2px); }
-
-    .system-board {
-      display: grid;
-      gap: 12px;
-      padding: 12px;
-      border: 1px solid rgba(39, 36, 33, 0.12);
-      border-radius: var(--radius);
-      background: rgba(255, 253, 248, 0.58);
-      box-shadow: var(--shadow);
-    }
-
-    .workflow-strip {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .workflow-step,
-    .status-card,
-    .sample-card,
-    .token,
-    .logo-tile,
-    .icon-tile,
-    .concept-visual,
-    .note-card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255, 253, 248, 0.82);
-      box-shadow: 0 16px 44px rgba(39, 36, 33, 0.08);
-    }
-
-    .workflow-step {
-      min-height: 112px;
-      padding: 12px;
+    .note-line {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 22px;
+      color: rgba(36, 31, 26, 0.70);
+      font-size: 14px;
+      font-weight: 750;
     }
 
-    .small-label {
-      color: rgba(39, 36, 33, 0.58);
+    .floorplan-overlays {
+      position: relative;
+      min-height: 100%;
+      z-index: 2;
+    }
+
+    .hotspot {
+      position: absolute;
+      width: 146px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 249, 229, 0.82);
+      border-radius: 10px;
+      background: rgba(67, 80, 43, 0.88);
+      color: #fff8ec;
+      box-shadow: 0 12px 36px rgba(49, 40, 28, 0.30);
+      text-align: center;
+      transition: transform 500ms var(--swish), filter 500ms var(--swish);
+    }
+
+    .hotspot:hover {
+      transform: translateY(-4px) scale(1.03);
+      filter: saturate(1.1);
+    }
+
+    .hotspot strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: 18px;
+    }
+
+    .hotspot span {
+      display: block;
+      margin-top: 2px;
       font-size: 11px;
-      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .hotspot.intake { left: 17%; top: 16%; }
+    .hotspot.edit { right: 11%; top: 15%; }
+    .hotspot.metadata { right: 8%; top: 39%; }
+    .hotspot.launch { left: 14%; top: 55%; }
+    .hotspot.heartbeat { right: 18%; bottom: 28%; }
+
+    .tool-dock {
+      position: absolute;
+      left: 12%;
+      right: 3%;
+      bottom: 92px;
+      z-index: 3;
+      padding: 13px 18px 16px;
+      border: 1px solid rgba(73, 52, 36, 0.18);
+      border-radius: 10px;
+      background: rgba(255, 248, 231, 0.88);
+      box-shadow: var(--soft-shadow);
+      text-align: center;
+    }
+
+    .tool-dock small {
+      display: block;
+      margin-bottom: 10px;
+      color: rgba(36, 31, 26, 0.62);
+      font-size: 10px;
+      font-weight: 850;
       text-transform: uppercase;
     }
 
-    .workflow-step strong { font-size: 15px; }
-
-    .status-grid {
+    .tool-list {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
     }
 
-    .status-card {
-      padding: 16px;
-      min-height: 148px;
-    }
-
-    .status-card.big {
-      grid-column: 1 / -1;
-      min-height: 190px;
-      background:
-        linear-gradient(135deg, rgba(47,95,124,0.10), transparent 42%),
-        rgba(255, 253, 248, 0.90);
-    }
-
-    .pill-row {
+    .tool {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .pill {
-      display: inline-flex;
       align-items: center;
-      gap: 6px;
-      min-height: 28px;
-      padding: 6px 10px;
-      border: 1px solid rgba(39, 36, 33, 0.12);
-      border-radius: 999px;
-      background: rgba(255, 253, 248, 0.72);
-      color: rgba(39, 36, 33, 0.72);
-      font-size: 12px;
-      font-weight: 700;
+      justify-content: center;
+      gap: 8px;
+      min-height: 38px;
+      color: rgba(36, 31, 26, 0.78);
+      font-size: 13px;
+      font-weight: 800;
     }
 
-    .pill.ready { background: rgba(95, 127, 99, 0.16); }
-    .pill.blocked { background: rgba(191, 118, 93, 0.18); }
-    .pill.waiting { background: rgba(208, 161, 74, 0.18); }
-    .pill.author { background: rgba(182, 211, 223, 0.25); }
+    .benefit-ribbon {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 4;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      min-height: 130px;
+      padding: 22px 72px;
+      border-top: 1px solid rgba(73, 52, 36, 0.13);
+      background: linear-gradient(90deg, #dcebf0, #edf3ef);
+    }
 
-    section {
-      padding: 84px 0;
-      border-top: 1px solid rgba(39, 36, 33, 0.10);
+    .benefit {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 0 20px;
+      border-right: 1px solid rgba(73, 52, 36, 0.18);
+    }
+
+    .benefit:last-child { border-right: 0; }
+
+    .badge {
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--forest);
+      color: #fff8ec;
+      box-shadow: inset 0 0 0 4px rgba(255,255,255,0.18);
+    }
+
+    .badge svg { width: 29px; height: 29px; }
+
+    .benefit strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: 18px;
+    }
+
+    .benefit span {
+      display: block;
+      margin-top: 2px;
+      color: rgba(36, 31, 26, 0.72);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .showroom {
+      padding: 84px 54px;
+      background:
+        radial-gradient(circle at 90% 0%, rgba(135, 112, 155, 0.16), transparent 30%),
+        linear-gradient(#fbf2df, #f2e2c5);
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      border: 1px solid rgba(73, 52, 36, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 248, 231, 0.70);
+      color: rgba(73, 52, 36, 0.70);
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
     }
 
     .section-head {
       display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.55fr);
-      gap: 28px;
+      grid-template-columns: minmax(0, 0.85fr) minmax(300px, 0.55fr);
+      gap: 34px;
       align-items: end;
-      margin-bottom: 28px;
+      margin-bottom: 34px;
     }
 
     .section-head p {
-      color: rgba(39, 36, 33, 0.68);
-      font-size: 17px;
+      color: rgba(36, 31, 26, 0.74);
+      font-size: 18px;
     }
 
-    .concept-grid {
+    .portal-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+      gap: 22px;
     }
 
-    .concept {
-      display: flex;
-      flex-direction: column;
-      min-height: 720px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
+    .portal {
+      position: relative;
+      min-height: 540px;
+      border: 1px solid rgba(73, 52, 36, 0.20);
+      border-radius: 14px;
       overflow: hidden;
-      background: rgba(255, 253, 248, 0.76);
+      color: #fff8ec;
       box-shadow: var(--shadow);
+      text-decoration: none;
+      transform: translateZ(0);
     }
 
-    .concept.foreman { --accent: var(--blue); --accent2: var(--green); }
-    .concept.lph { --accent: var(--terracotta); --accent2: var(--sky); }
-
-    .mini-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      min-height: 48px;
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(39, 36, 33, 0.10);
-      font-size: 12px;
-      font-weight: 750;
+    .portal img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1800ms var(--swish), filter 1200ms var(--swish);
     }
 
-    .mini-nav span:last-child {
-      padding: 5px 8px;
+    .portal::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.66)),
+        linear-gradient(90deg, rgba(32,24,18,0.45), transparent 54%);
+    }
+
+    .portal:hover img {
+      transform: scale(1.06);
+      filter: saturate(1.06) contrast(1.03);
+    }
+
+    .portal-copy {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      z-index: 2;
+    }
+
+    .portal-copy small {
+      display: inline-flex;
+      padding: 6px 9px;
       border-radius: 999px;
-      background: rgba(39, 36, 33, 0.08);
+      background: rgba(255,248,231,0.18);
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
     }
 
-    .concept-hero {
-      min-height: 250px;
-      padding: 22px;
-      display: grid;
-      align-content: end;
-      background:
-        radial-gradient(circle at 18% 18%, rgba(208, 161, 74, 0.22), transparent 31%),
-        linear-gradient(135deg, rgba(255,253,248,0.98), rgba(246,239,227,0.76));
+    .portal-copy h3 {
+      margin: 12px 0 8px;
+      font-size: 34px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.42);
     }
 
-    .concept.lph .concept-hero {
-      background:
-        radial-gradient(circle at 80% 20%, rgba(217,165,163,0.32), transparent 28%),
-        linear-gradient(135deg, rgba(251,243,230,0.98), rgba(182,211,223,0.34));
-    }
-
-    .concept-hero h3 {
-      max-width: 470px;
-      font-family: var(--serif);
-      font-size: 36px;
-    }
-
-    .concept-hero p {
-      color: rgba(39, 36, 33, 0.70);
+    .portal-copy p {
+      max-width: 420px;
+      margin-bottom: 18px;
+      color: rgba(255, 248, 231, 0.88);
       font-size: 15px;
     }
 
-    .concept-body {
-      display: grid;
-      gap: 14px;
-      padding: 16px;
-      flex: 1;
-    }
-
-    .concept-visual {
-      min-height: 190px;
-      padding: 14px;
-      background:
-        linear-gradient(90deg, rgba(39,36,33,0.05) 1px, transparent 1px),
-        linear-gradient(rgba(39,36,33,0.05) 1px, transparent 1px),
-        rgba(255,253,248,0.78);
-      background-size: 24px 24px;
-    }
-
-    .company-map {
-      height: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      align-items: stretch;
-    }
-
-    .node {
-      min-height: 62px;
-      padding: 10px;
-      border: 1px solid rgba(39,36,33,0.14);
-      border-left: 5px solid var(--accent);
-      border-radius: 7px;
-      background: rgba(255,253,248,0.88);
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    .node.gold { border-left-color: var(--gold); }
-    .node.green { border-left-color: var(--green); }
-    .node.rose { border-left-color: var(--rose); }
-    .node.terracotta { border-left-color: var(--terracotta); }
-
-    .stage-line {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
-      height: 100%;
+    .portal-enter {
+      display: inline-flex;
       align-items: center;
-    }
-
-    .stage {
-      min-height: 128px;
-      padding: 10px;
-      display: grid;
-      align-content: space-between;
-      border: 1px solid rgba(39,36,33,0.13);
-      border-radius: 8px;
-      background: rgba(255,253,248,0.84);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .stage::before {
-      content: "";
-      width: 30px;
-      height: 6px;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 12px;
       border-radius: 999px;
-      background: var(--accent);
-    }
-
-    .sample-card {
-      padding: 14px;
-    }
-
-    .sample-card ul {
-      margin: 10px 0 0;
-      padding-left: 18px;
-      color: rgba(39, 36, 33, 0.66);
+      background: rgba(255,248,231,0.86);
+      color: var(--walnut);
       font-size: 13px;
+      font-weight: 850;
     }
 
-    .sample-card li { margin: 5px 0; }
-
-    .screen-note {
-      margin-top: auto;
-      padding: 12px 16px 16px;
-      color: rgba(39, 36, 33, 0.66);
-      font-size: 13px;
-      border-top: 1px solid rgba(39, 36, 33, 0.10);
+    .image-stage {
+      position: relative;
+      min-height: 980px;
+      overflow: hidden;
+      border-top: 1px solid rgba(73, 52, 36, 0.18);
+      background: #f7ead2;
     }
 
-    .logo-grid,
-    .icon-grid,
-    .token-grid,
-    .notes-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+    .stage-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .logo-tile,
-    .icon-tile,
-    .token,
-    .note-card {
-      padding: 16px;
+    .stage-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255,248,231,0.95), rgba(255,248,231,0.22) 44%, rgba(255,248,231,0.08));
     }
 
-    .logo-tile svg,
-    .icon-tile svg,
-    .brand-mark svg {
+    .stage-shade.right {
+      background: linear-gradient(270deg, rgba(255,248,231,0.94), rgba(255,248,231,0.18) 48%, rgba(255,248,231,0.04));
+    }
+
+    .stage-copy {
+      position: relative;
+      z-index: 2;
+      width: min(560px, calc(100% - 48px));
+      padding: 82px 0 70px 64px;
+    }
+
+    .stage-copy.right {
+      margin-left: auto;
+      padding: 82px 64px 70px 0;
+    }
+
+    .paper-card {
+      position: relative;
+      z-index: 3;
+      max-width: 410px;
+      padding: 24px;
+      border: 1px solid rgba(73, 52, 36, 0.20);
+      border-radius: 12px;
+      background:
+        linear-gradient(rgba(255,255,255,0.26), transparent),
+        rgba(255, 248, 231, 0.86);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .paper-card h3 { font-size: 31px; }
+
+    .paper-card p {
+      color: rgba(36, 31, 26, 0.78);
+      font-size: 16px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .chip {
+      padding: 7px 10px;
+      border: 1px solid rgba(73, 52, 36, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 248, 231, 0.72);
+      color: rgba(36, 31, 26, 0.76);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .floating-note {
+      position: absolute;
+      z-index: 3;
+      width: 230px;
+      padding: 17px;
+      border: 1px solid rgba(73, 52, 36, 0.18);
+      border-radius: 7px;
+      background: rgba(255, 248, 231, 0.88);
+      box-shadow: var(--soft-shadow);
+      transform: rotate(var(--r));
+    }
+
+    .floating-note strong {
       display: block;
-      width: 52px;
-      height: 52px;
-      stroke: currentColor;
-      stroke-width: 1.7;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      margin-bottom: 7px;
+      font-family: var(--script);
+      color: var(--clay);
+      font-size: 23px;
+      font-weight: 500;
     }
 
-    .logo-tile h3,
-    .note-card h3 {
-      margin-top: 12px;
+    .floating-note p {
+      margin-bottom: 0;
+      color: rgba(36, 31, 26, 0.74);
+      font-size: 14px;
+    }
+
+    .note-a { right: 8%; top: 10%; --r: 2deg; }
+    .note-b { right: 7%; top: 42%; --r: -2deg; }
+
+    .lph-panel {
+      position: absolute;
+      left: 38px;
+      top: 250px;
+      z-index: 4;
+      width: 305px;
+      padding: 24px 22px;
+      border: 1px solid rgba(73, 52, 36, 0.22);
+      border-radius: 18px;
+      background: rgba(255, 248, 231, 0.88);
+      box-shadow: var(--soft-shadow);
+      text-align: center;
+    }
+
+    .upload-box {
+      display: grid;
+      place-items: center;
+      min-height: 132px;
+      margin: 18px 10px;
+      border: 1px dashed rgba(73, 52, 36, 0.34);
+      border-radius: 10px;
+      color: var(--forest);
+      font-weight: 850;
+    }
+
+    .paperclip-preview {
+      position: absolute;
+      left: 48px;
+      right: 48px;
+      bottom: 32px;
+      z-index: 4;
+      display: grid;
+      grid-template-columns: 260px repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid rgba(73, 52, 36, 0.22);
+      border-radius: 14px;
+      background: rgba(255, 248, 231, 0.90);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .preview-card {
+      min-height: 134px;
+      padding: 14px;
+      border: 1px solid rgba(73, 52, 36, 0.16);
+      border-radius: 10px;
+      background: rgba(255, 253, 241, 0.72);
+    }
+
+    .preview-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-family: var(--serif);
       font-size: 17px;
     }
 
-    .logo-tile p,
-    .icon-tile p,
-    .token p,
-    .note-card p {
-      margin: 0;
-      color: rgba(39, 36, 33, 0.66);
+    .preview-card p {
+      color: rgba(36, 31, 26, 0.70);
       font-size: 13px;
     }
 
-    .icon-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-
-    .icon-tile {
-      min-height: 126px;
-      display: grid;
-      justify-items: start;
-      align-content: space-between;
+    .progress {
+      height: 6px;
+      margin-top: 12px;
+      border-radius: 999px;
+      background: rgba(73, 52, 36, 0.12);
+      overflow: hidden;
     }
 
-    .icon-tile svg {
-      width: 34px;
-      height: 34px;
-    }
-
-    .token-swatch {
-      width: 100%;
-      height: 54px;
-      border-radius: 7px;
-      margin-bottom: 12px;
-      border: 1px solid rgba(39, 36, 33, 0.12);
-    }
-
-    .token strong {
+    .progress span {
       display: block;
-      margin-bottom: 2px;
+      height: 100%;
+      width: var(--w);
+      border-radius: inherit;
+      background: var(--moss);
+    }
+
+    .logo-lab {
+      padding: 82px 54px;
+      background:
+        linear-gradient(90deg, rgba(255,248,231,0.96), rgba(255,248,231,0.72)),
+        url("assets/foreman-template-desk.png") center / cover fixed;
+    }
+
+    .mark-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .mark-tile {
+      min-height: 214px;
+      padding: 22px;
+      border: 1px solid rgba(73, 52, 36, 0.20);
+      border-radius: 12px;
+      background: rgba(255, 248, 231, 0.86);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .mark-tile svg {
+      width: 62px;
+      height: 62px;
+      color: var(--forest);
+    }
+
+    .mark-tile h3 {
+      margin-top: 16px;
+      font-size: 22px;
+    }
+
+    .mark-tile p {
+      color: rgba(36, 31, 26, 0.72);
       font-size: 14px;
     }
 
     .recommendation {
+      padding: 82px 54px 70px;
+      color: #fff8ec;
+      background:
+        linear-gradient(135deg, rgba(32, 38, 24, 0.96), rgba(75, 51, 38, 0.94)),
+        #263320;
+    }
+
+    .recommendation h2 { color: #fff8ec; }
+
+    .recommendation .section-head p {
+      color: rgba(255, 248, 231, 0.76);
+    }
+
+    .score-grid {
       display: grid;
-      grid-template-columns: minmax(0, 0.8fr) minmax(340px, 1fr);
-      gap: 28px;
-      align-items: start;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
     }
 
-    .scoreboard {
-      display: grid;
-      gap: 10px;
+    .score-card {
+      min-height: 210px;
+      padding: 24px;
+      border: 1px solid rgba(255, 248, 231, 0.18);
+      border-radius: 12px;
+      background: rgba(255, 248, 231, 0.09);
+      box-shadow: 0 22px 70px rgba(0,0,0,0.22);
     }
 
-    .score {
-      display: grid;
-      grid-template-columns: 180px 1fr 54px;
-      gap: 12px;
-      align-items: center;
-      padding: 12px;
-      border: 1px solid rgba(39, 36, 33, 0.12);
-      border-radius: 8px;
-      background: rgba(255, 253, 248, 0.76);
-    }
-
-    .bar {
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(39, 36, 33, 0.10);
-      overflow: hidden;
-    }
-
-    .bar span {
+    .score-card strong {
       display: block;
-      height: 100%;
-      width: var(--w);
-      background: linear-gradient(90deg, var(--blue), var(--green), var(--gold));
+      margin-bottom: 10px;
+      font-family: var(--serif);
+      font-size: 27px;
     }
 
-    .footer {
-      padding: 48px 0 64px;
-      color: rgba(39, 36, 33, 0.64);
-      font-size: 13px;
+    .score-card p {
+      color: rgba(255, 248, 231, 0.74);
     }
 
-    .reveal {
-      animation: enter 800ms var(--ease) both;
+    .legal {
+      padding: 18px 54px 28px;
+      color: rgba(255, 248, 231, 0.56);
+      background: #201711;
+      font-size: 11px;
+      line-height: 1.45;
     }
 
-    @keyframes enter {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @media (max-width: 1180px) {
+      .hero {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        background:
+          linear-gradient(rgba(255, 248, 231, 0.78), rgba(255, 248, 231, 0.86)),
+          url("assets/foreman-floorplan.png") center top / cover no-repeat,
+          #fbf2df;
+      }
 
-    @media (max-width: 1080px) {
-      .hero-board,
-      .section-head,
-      .recommendation {
+      .hero-copy {
+        padding: 66px 34px 36px;
+      }
+
+      .book-spine { display: none; }
+
+      .floorplan-overlays {
+        min-height: 620px;
+      }
+
+      .tool-dock {
+        left: 24px;
+        right: 24px;
+        bottom: 156px;
+      }
+
+      .benefit-ribbon {
+        position: relative;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .portal-grid,
+      .mark-grid,
+      .score-grid,
+      .section-head {
         grid-template-columns: 1fr;
       }
 
-      .concept-grid,
-      .logo-grid,
-      .token-grid,
-      .notes-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .paperclip-preview {
+        grid-template-columns: 1fr 1fr;
       }
-
-      .icon-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
 
-    @media (max-width: 720px) {
-      .page { width: min(100% - 24px, 1480px); }
-      .topbar { position: static; border-radius: 8px; align-items: flex-start; }
-      .nav { display: none; }
-      .hero-board { padding-top: 42px; }
+    @media (max-width: 760px) {
+      .shell {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .nav {
+        position: relative;
+        height: auto;
+        padding: 18px;
+      }
+
+      .brand { min-width: 0; }
+      .brand-title { font-size: 26px; }
+      .nav-links,
+      .nav .button { display: none; }
+
       h1 { font-size: 50px; }
-      h2 { font-size: 38px; }
+      h2 { font-size: 40px; }
+      h3 { font-size: 25px; }
       .lead { font-size: 18px; }
-      .workflow-strip,
-      .status-grid,
-      .concept-grid,
-      .logo-grid,
-      .icon-grid,
-      .token-grid,
-      .notes-grid,
-      .stage-line,
-      .company-map {
+
+      .hero-copy,
+      .stage-copy,
+      .stage-copy.right,
+      .showroom,
+      .logo-lab,
+      .recommendation {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .floorplan-overlays {
+        min-height: 720px;
+      }
+
+      .hotspot {
+        position: relative;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        display: inline-block;
+        margin: 8px;
+        vertical-align: top;
+      }
+
+      .tool-dock {
+        position: relative;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        margin: 20px 18px;
+      }
+
+      .tool-list,
+      .benefit-ribbon,
+      .paperclip-preview {
         grid-template-columns: 1fr;
       }
-      .concept { min-height: auto; }
-      .score { grid-template-columns: 1fr; }
-      section { padding: 56px 0; }
+
+      .benefit-ribbon {
+        padding: 18px;
+      }
+
+      .benefit {
+        border-right: 0;
+        border-bottom: 1px solid rgba(73,52,36,0.16);
+        padding: 14px 0;
+      }
+
+      .portal {
+        min-height: 420px;
+      }
+
+      .image-stage {
+        min-height: 1040px;
+      }
+
+      .stage-image {
+        opacity: 0.72;
+      }
+
+      .floating-note,
+      .lph-panel,
+      .paperclip-preview {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        width: calc(100% - 36px);
+        margin: 18px;
+        transform: none;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 40 40"><path d="M11 11h18v18H11z"></path><path d="M15 21l4 4 8-10"></path></svg>
-      </span>
-      <span>Foreman + Little Publishing House</span>
-    </div>
-    <nav class="nav" aria-label="Board sections">
-      <a href="#foreman">Foreman</a>
-      <a href="#lph">Little Publishing House</a>
-      <a href="#logos">Marks</a>
-      <a href="#tokens">Tokens</a>
-      <a href="#recommendation">Recommendation</a>
-    </nav>
-  </header>
+  <div class="shell">
+    <header class="nav">
+      <a class="brand" href="#top" aria-label="Foreman showroom home">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48"><path d="M9 34c8-1 16-7 22-19"></path><path d="M17 34c7 3 18-3 21-20-16 1-27 10-29 20"></path><path d="M24 8c1 10-2 20-12 30"></path></svg>
+        </span>
+        <span class="brand-title">Foreman <small>Author-friendly orchestration</small></span>
+      </a>
 
-  <main class="page">
-    <section class="hero-board reveal">
-      <div>
-        <p class="eyebrow">Marketing / brand / mockup board</p>
-        <h1>Foreman is the machinery. Little Publishing House is the proof.</h1>
-        <p class="lead">Six focused website directions, logo and icon explorations, design tokens, and a YouTube-first recommendation built around the clean triangle: platform, flagship product, optional education layer.</p>
-        <div class="cta-row">
-          <a class="button" href="#foreman">Review page concepts <span class="dot">↓</span></a>
-          <a class="button secondary" href="#recommendation">See strongest direction</a>
-        </div>
-      </div>
+      <nav class="nav-links" aria-label="Showroom sections">
+        <a href="#showroom">Concepts</a>
+        <a href="#floorplan">Floorplan</a>
+        <a href="#templates">Templates</a>
+        <a href="#lph">Little Publishing House</a>
+        <a href="#marks">Marks</a>
+      </nav>
 
-      <div class="system-board" aria-label="Foreman and Little Publishing House strategy preview">
-        <div class="workflow-strip">
-          <div class="workflow-step"><span class="small-label">Foreman</span><strong>Build AI companies that know what they're doing.</strong></div>
-          <div class="workflow-step"><span class="small-label">Company</span><strong>A specialized package with roles, tools, checks, status.</strong></div>
-          <div class="workflow-step"><span class="small-label">Flagship</span><strong>Little Publishing House for authors.</strong></div>
-          <div class="workflow-step"><span class="small-label">Rule</span><strong>Discover state, confirm stage, start there.</strong></div>
-          <div class="workflow-step"><span class="small-label">Lesson</span><strong>Teach the deeper operating system later.</strong></div>
+      <a class="button" href="#recommendation">Pick direction</a>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="book-spine" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <div class="script">Foreman + Little Publishing House</div>
+          <h1 id="hero-title">Your book deserves more than a folder full of drafts.</h1>
+          <div class="hero-line" aria-hidden="true"></div>
+          <p class="lead">Foreman organizes a real company around the work: agents, stages, approvals, daily heartbeat, and the publishing process that lets the author stay in control.</p>
+          <div class="cta-row">
+            <a class="button" href="#floorplan">Enter the floorplan →</a>
+            <a class="button secondary" href="#lph">See Little Publishing House</a>
+          </div>
+          <div class="note-line">
+            <span>☙</span>
+            <span>Author-first. Whimsical enough to want. Serious enough to trust.</span>
+          </div>
         </div>
-        <div class="status-grid">
-          <article class="status-card big">
-            <span class="small-label">Daily check-in preview</span>
-            <h3>Your company is alive. Here is what needs you today.</h3>
-            <p>Foreman inspects the company, surfaces blockers, and keeps the author from being swallowed by publishing chores.</p>
-            <div class="pill-row">
-              <span class="pill ready">Ready: metadata draft</span>
-              <span class="pill blocked">Blocked: cover direction</span>
-              <span class="pill waiting">Waiting: author approval</span>
+
+        <div class="floorplan-overlays" aria-label="Layered Foreman room labels">
+          <a class="hotspot intake" href="#templates"><strong>Intake</strong><span>Capture the raw material.</span></a>
+          <a class="hotspot edit" href="#lph"><strong>Edit</strong><span>Shape the work around the book.</span></a>
+          <a class="hotspot metadata" href="#templates"><strong>Metadata</strong><span>Make the book findable.</span></a>
+          <a class="hotspot launch" href="#lph"><strong>Launch</strong><span>Prepare, publish, share.</span></a>
+          <a class="hotspot heartbeat" href="#recommendation"><strong>Heartbeat</strong><span>Clear next steps every day.</span></a>
+
+          <aside class="tool-dock">
+            <small>Foreman works with the tools you use</small>
+            <div class="tool-list">
+              <div class="tool">⌁ Paperclip</div>
+              <div class="tool">✒ Hermes</div>
+              <div class="tool">⌘ OpenClaw</div>
+              <div class="tool">⚒ Printing Press</div>
             </div>
+          </aside>
+        </div>
+
+        <div class="benefit-ribbon">
+          <div class="benefit">
+            <span class="badge"><svg viewBox="0 0 48 48"><path d="M12 12h12v25H12z"></path><path d="M24 12h12v25H24z"></path><path d="M16 18h4"></path><path d="M28 18h4"></path></svg></span>
+            <span><strong>Built for authors</strong><span>Designed around how publishing actually feels.</span></span>
+          </div>
+          <div class="benefit">
+            <span class="badge"><svg viewBox="0 0 48 48"><path d="M16 32c0-5 4-9 8-9s8 4 8 9"></path><path d="M18 16a6 6 0 1 0 12 0 6 6 0 0 0-12 0"></path><path d="M8 36h32"></path></svg></span>
+            <span><strong>Company, not tasks</strong><span>Roles, handoffs, stages, and standards.</span></span>
+          </div>
+          <div class="benefit">
+            <span class="badge"><svg viewBox="0 0 48 48"><path d="M14 13h20v22H14z"></path><path d="M18 24l4 4 8-11"></path><path d="M20 39h8"></path></svg></span>
+            <span><strong>You stay in control</strong><span>Approvals and checkpoints protect judgment.</span></span>
+          </div>
+          <div class="benefit">
+            <span class="badge"><svg viewBox="0 0 48 48"><path d="M24 38c8-6 13-11 13-18a7 7 0 0 0-12-5l-1 1-1-1a7 7 0 0 0-12 5c0 7 5 12 13 18z"></path><path d="M17 25h5l2-5 3 8 2-4h4"></path></svg></span>
+            <span><strong>Work with purpose</strong><span>Your story, your voice, company support.</span></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="showroom" class="showroom">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Three ways in</span>
+            <h2>Make the mockups feel like rooms, not wireframes.</h2>
+          </div>
+          <p>These directions use the generated art as the hero world, then layer live HTML controls, callouts, and conversion paths over the picture. The page can feel nearly painted while still being a real website.</p>
+        </div>
+
+        <div class="portal-grid">
+          <a class="portal" href="#floorplan">
+            <img src="assets/foreman-floorplan.png" alt="Foreman illustrated floorplan concept">
+            <span class="portal-copy">
+              <small>Foreman Homepage A</small>
+              <h3>Company Floorplan</h3>
+              <p>The broad platform lands as a magical operations room: every agent, stage, tool, and heartbeat has a visible place.</p>
+              <span class="portal-enter">Enter floorplan →</span>
+            </span>
+          </a>
+
+          <a class="portal" href="#templates">
+            <img src="assets/foreman-template-desk.png" alt="Foreman template gallery concept">
+            <span class="portal-copy">
+              <small>Foreman Homepage B</small>
+              <h3>Template Desk</h3>
+              <p>Foreman becomes a creator-company chooser: folders, cards, notes, and a clear publishing company recommendation.</p>
+              <span class="portal-enter">Open template desk →</span>
+            </span>
+          </a>
+
+          <a class="portal" href="#lph">
+            <img src="assets/lph-garden-workflow.png" alt="Little Publishing House garden workflow concept">
+            <span class="portal-copy">
+              <small>LPH Subpage A</small>
+              <h3>Publishing Garden</h3>
+              <p>Little Publishing House becomes a storybook production path from manuscript to reader care, with Paperclip visible below.</p>
+              <span class="portal-enter">Walk the path →</span>
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <section id="floorplan" class="image-stage">
+        <img class="stage-image" src="assets/foreman-floorplan.png" alt="Foreman floorplan artwork">
+        <div class="stage-shade"></div>
+        <div class="stage-copy">
+          <span class="section-kicker">Foreman homepage concept A</span>
+          <h2>Build AI companies people can see.</h2>
+          <p class="lead">This is the best top-level Foreman metaphor: not a dashboard, not a bot list, but a visible company building with rooms for intake, edit, metadata, launch, and heartbeat.</p>
+          <div class="paper-card">
+            <h3>HTML overlay idea</h3>
+            <p>Keep the room art as a full-bleed hero. Use animated labels, hover states, and live CTA buttons over the rooms so the image becomes navigable product explanation.</p>
+            <div class="chips">
+              <span class="chip">Blueprint room labels</span>
+              <span class="chip">Daily heartbeat dock</span>
+              <span class="chip">Tool strip</span>
+              <span class="chip">Founder trust quote</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="templates" class="image-stage">
+        <img class="stage-image" src="assets/foreman-template-desk.png" alt="Foreman template chooser artwork">
+        <div class="stage-shade right"></div>
+        <div class="stage-copy right">
+          <span class="section-kicker">Foreman homepage concept B</span>
+          <h2>Choose the company Foreman should run.</h2>
+          <p class="lead">This is the clean marketplace/gallery direction, but the folder tabs and desk notes keep it from becoming generic SaaS. The publishing company card should stay recommended and emotionally first.</p>
+          <div class="paper-card">
+            <h3>What Foreman defines</h3>
+            <p>Stages, gates, agents, handoffs, task definitions, daily heartbeat expectations, approvals, quality checklists, reports, and tool readiness.</p>
+            <div class="chips">
+              <span class="chip">Publishing Company</span>
+              <span class="chip">Newsletter Company</span>
+              <span class="chip">Software Company</span>
+              <span class="chip">Research Company</span>
+            </div>
+          </div>
+        </div>
+        <div class="floating-note note-a">
+          <strong>The company follows a system.</strong>
+          <p>The system follows you. That line should stay.</p>
+        </div>
+        <div class="floating-note note-b">
+          <strong>Today’s focus</strong>
+          <p>Edit Chapter 4. Cover concepts. Metadata draft. Launch plan.</p>
+        </div>
+      </section>
+
+      <section id="lph" class="image-stage">
+        <img class="stage-image" src="assets/lph-garden-workflow.png" alt="Little Publishing House garden workflow artwork">
+        <div class="stage-shade"></div>
+        <div class="stage-copy">
+          <span class="section-kicker">Little Publishing House subpage</span>
+          <h2>The Publishing Company template.</h2>
+          <p class="lead">This is the strongest emotional proof. It turns publishing into a path with rooms, staff, checkpoints, and a visible Paperclip preview without saying “multi-agent orchestration.”</p>
+        </div>
+
+        <aside class="lph-panel">
+          <div class="script">Start where you are</div>
+          <h3>Start with your manuscript.</h3>
+          <p>Drop a file, paste text, or connect a folder. Foreman infers the stage and confirms with you.</p>
+          <div class="upload-box">Choose file ↑</div>
+          <span class="chip">Private by default</span>
+        </aside>
+
+        <div class="paperclip-preview">
+          <div class="preview-card">
+            <strong>Paperclip preview</strong>
+            <p>This is where the author and the team see the company come to life.</p>
+            <a class="button" href="#recommendation" style="min-height:42px;margin-top:10px;">Open in Paperclip →</a>
+          </div>
+          <div class="preview-card">
+            <strong>Company home</strong>
+            <p>Publishing company overview and health at a glance.</p>
+          </div>
+          <div class="preview-card">
+            <strong>Today’s heartbeat</strong>
+            <p>All systems moving forward.</p>
+            <div class="progress"><span style="--w:82%"></span></div>
+          </div>
+          <div class="preview-card">
+            <strong>Projects</strong>
+            <p>Novel, short collection, author website refresh.</p>
+            <div class="progress"><span style="--w:64%"></span></div>
+          </div>
+          <div class="preview-card">
+            <strong>Tasks</strong>
+            <p>Proof chapter, prep cover copy, schedule launch email.</p>
+          </div>
+          <div class="preview-card">
+            <strong>Agents</strong>
+            <p>Editor, cover curator, launch manager, community builder.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="marks" class="logo-lab">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Logo / icon exploration</span>
+            <h2>Marks should feel like seals from the world.</h2>
+          </div>
+          <p>The whimsical direction wants marks that feel drawn from the desk: quills, book houses, seals, rooflines, and checked ledgers. Not startup icons. Not construction cosplay.</p>
+        </div>
+
+        <div class="mark-grid">
+          <article class="mark-tile">
+            <svg viewBox="0 0 64 64"><path d="M14 48c12-2 24-12 34-35"></path><path d="M24 49c13 4 28-8 31-35-25 1-40 17-41 34"></path><path d="M33 9c2 17-5 31-21 46"></path></svg>
+            <h3>Foreman quill compass</h3>
+            <p>Best for author-friendly orchestration. It says direction, taste, and writing without promising writing replacement.</p>
           </article>
-          <article class="status-card">
-            <span class="small-label">Foreman visual</span>
-            <h3>Operations room</h3>
-            <p>Blueprints, ledgers, inspection stamps, routing boards, status lights.</p>
+          <article class="mark-tile">
+            <svg viewBox="0 0 64 64"><path d="M16 14h32v36H16z"></path><path d="M23 32l6 6 13-17"></path><path d="M23 14v-4h18v4"></path></svg>
+            <h3>Checked ledger</h3>
+            <p>The clearest Foreman trust mark. Use in UI states, verification badges, and “checked by Foreman.”</p>
           </article>
-          <article class="status-card">
-            <span class="small-label">LPH visual</span>
-            <h3>Literary desk</h3>
-            <p>Manuscript cards, margin notes, small house marks, warm check-ins.</p>
+          <article class="mark-tile">
+            <svg viewBox="0 0 64 64"><path d="M14 44h36"></path><path d="M20 44V26l12-11 12 11v18"></path><path d="M25 44V32h14v12"></path><path d="M20 26h24"></path></svg>
+            <h3>Book house</h3>
+            <p>The strongest Little Publishing House favicon direction. Simple, warm, instantly legible.</p>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="foreman">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Page 1</p>
-          <h2>Foreman Homepage Concepts</h2>
-        </div>
-        <p>Foreman should explain the system without stealing Little Publishing House's author emotion. Each direction keeps the above-the-fold meaning visible in five seconds.</p>
-      </div>
-
-      <div class="concept-grid">
-        <article class="concept foreman">
-          <div class="mini-nav"><span>FOREMAN</span><span>Explore LPH</span></div>
-          <div class="concept-hero">
-            <p class="small-label">Concept A · Company Builder</p>
-            <h3>Build AI companies that know what they're doing.</h3>
-            <p>Foreman turns agents, tools, files, and web context into accountable companies.</p>
-          </div>
-          <div class="concept-body">
-            <div class="concept-visual">
-              <div class="company-map">
-                <div class="node">Context intake</div>
-                <div class="node gold">Company package</div>
-                <div class="node green">Role assignment</div>
-                <div class="node">Tool readiness</div>
-                <div class="node gold">Inspection loop</div>
-                <div class="node green">Daily report</div>
-              </div>
-            </div>
-            <div class="sample-card">
-              <strong>Section order</strong>
-              <ul>
-                <li>Hero as company-builder</li>
-                <li>What is a Foreman Company?</li>
-                <li>Core loop diagram</li>
-                <li>Featured Company: Little Publishing House</li>
-                <li>Under the hood: Paperclip, Hermes, Foreman, Printing Press</li>
-              </ul>
-            </div>
-            <div class="sample-card">
-              <strong>Visual system</strong>
-              <ul>
-                <li>Editorial blueprint grid on warm paper</li>
-                <li>Modular company blocks with inspection states</li>
-                <li>Sturdy sans plus serious serif accent</li>
-              </ul>
-            </div>
-          </div>
-          <p class="screen-note">YouTube 5-second read: "This makes AI agents into a working company, not a pile of bots."</p>
-        </article>
-
-        <article class="concept foreman">
-          <div class="mini-nav"><span>FOREMAN</span><span>How it works</span></div>
-          <div class="concept-hero">
-            <p class="small-label">Concept B · Operating Discipline</p>
-            <h3>Agents are powerful. Companies need accountability.</h3>
-            <p>Foreman discovers the work, assigns the crew, inspects results, and escalates when needed.</p>
-          </div>
-          <div class="concept-body">
-            <div class="concept-visual">
-              <div class="stage-line">
-                <div class="stage">Discover state</div>
-                <div class="stage">Assign work</div>
-                <div class="stage">Inspect</div>
-                <div class="stage">Escalate</div>
-              </div>
-            </div>
-            <div class="sample-card">
-              <strong>Section order</strong>
-              <ul>
-                <li>Problem: agent chaos</li>
-                <li>The Foreman loop</li>
-                <li>3-strike escalation rule</li>
-                <li>Status states: ready, blocked, waiting, needs human</li>
-                <li>Flagship proof: Little Publishing House</li>
-              </ul>
-            </div>
-            <div class="sample-card">
-              <strong>Best components</strong>
-              <ul>
-                <li>Inspection stamp cards</li>
-                <li>Escalation timeline</li>
-                <li>Daily check-in panel</li>
-              </ul>
-            </div>
-          </div>
-          <p class="screen-note">YouTube 5-second read: "This is the missing trust layer for agent work."</p>
-        </article>
-
-        <article class="concept foreman">
-          <div class="mini-nav"><span>FOREMAN</span><span>Companies</span></div>
-          <div class="concept-hero">
-            <p class="small-label">Concept C · Featured Company / Marketplace</p>
-            <h3>Start with a company built for the work in front of you.</h3>
-            <p>Foreman Companies package roles, tools, workflows, checks, and company state for a domain.</p>
-          </div>
-          <div class="concept-body">
-            <div class="concept-visual">
-              <div class="company-map">
-                <div class="node terracotta">Little Publishing House</div>
-                <div class="node">Newsletter Studio</div>
-                <div class="node green">Research Office</div>
-                <div class="node gold">Course House</div>
-                <div class="node">Software Workshop</div>
-                <div class="node rose">Custom Company</div>
-              </div>
-            </div>
-            <div class="sample-card">
-              <strong>Section order</strong>
-              <ul>
-                <li>Hero: choose a company</li>
-                <li>Featured LPH card</li>
-                <li>Loose future gallery</li>
-                <li>How packages work</li>
-                <li>CTA: Build or explore a company</li>
-              </ul>
-            </div>
-            <div class="sample-card">
-              <strong>Use carefully</strong>
-              <ul>
-                <li>Good for expansion story</li>
-                <li>Risk: can feel abstract too early</li>
-                <li>Keep LPH visibly first</li>
-              </ul>
-            </div>
-          </div>
-          <p class="screen-note">YouTube 5-second read: "Foreman is a company gallery, and the author company is the first one."</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="lph">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Page 2</p>
-          <h2>Little Publishing House Concepts</h2>
-        </div>
-        <p>This page should make authors want one. It leads with where the book is, what happens next, and what the author needs to decide today.</p>
-      </div>
-
-      <div class="concept-grid">
-        <article class="concept lph">
-          <div class="mini-nav"><span>LPH · A Foreman Company</span><span>Start workflow</span></div>
-          <div class="concept-hero">
-            <p class="small-label">Concept A · Warm Literary Workspace</p>
-            <h3>Start where you are.</h3>
-            <p>Little Publishing House meets your book wherever it is and builds a visible publishing workflow around what should happen next.</p>
-          </div>
-          <div class="concept-body">
-            <div class="concept-visual">
-              <div class="company-map">
-                <div class="node terracotta">Book workspace</div>
-                <div class="node rose">Living wiki</div>
-                <div class="node green">Editorial workflow</div>
-                <div class="node gold">Launch choices</div>
-              </div>
-            </div>
-            <div class="sample-card">
-              <strong>Section order</strong>
-              <ul>
-                <li>Hero: start where you are</li>
-                <li>What the company does</li>
-                <li>What needs you today</li>
-                <li>Workspace and living wiki</li>
-                <li>Daily check-in, then under the hood</li>
-              </ul>
-            </div>
-            <div class="sample-card">
-              <strong>Mood</strong>
-              <ul>
-                <li>Warm paper, ink brown, sage, terracotta, dusty blue</li>
-                <li>Elegant serif headlines</li>
-                <li>Margin-note components and manuscript tabs</li>
-              </ul>
-            </div>
-          </div>
-          <p class="screen-note">YouTube 5-second read: "My book has a calm workspace and a publishing team now."</p>
-        </article>
-
-        <article class="concept lph">
-          <div class="mini-nav"><span>LPH · Stage Finder</span><span>Find my stage</span></div>
-          <div class="concept-hero">
-            <p class="small-label">Concept B · Book Stage Finder</p>
-            <h3>Bring your book where it is.</h3>
-            <p>Idea, outline, draft, edit, metadata, launch, follow-up, or relaunch. The workflow starts from your real state.</p>
-          </div>
-          <div class="concept-body">
-            <div class="concept-visual">
-              <div class="stage-line">
-                <div class="stage">Idea</div>
-                <div class="stage">Draft</div>
-                <div class="stage">Launch</div>
-                <div class="stage">Relaunch</div>
-              </div>
-            </div>
-            <div class="sample-card">
-              <strong>Section order</strong>
-              <ul>
-                <li>Hero with stage selector</li>
-                <li>Universal rule: discover, infer, confirm, preserve</li>
-                <li>Stage-specific next-work examples</li>
-                <li>Author decisions panel</li>
-                <li>FAQ: no draft, no Second Brain, not a publisher</li>
-              </ul>
-            </div>
-            <div class="sample-card">
-              <strong>Best demo move</strong>
-              <ul>
-                <li>Drop in a messy book folder</li>
-                <li>System says, "Looks like revision + metadata"</li>
-                <li>Author confirms and gets today's workflow</li>
-              </ul>
-            </div>
-          </div>
-          <p class="screen-note">YouTube 5-second read: "I do not need to be ready. It figures out where I am."</p>
-        </article>
-
-        <article class="concept lph">
-          <div class="mini-nav"><span>LPH · Command Desk</span><span>Today</span></div>
-          <div class="concept-hero">
-            <p class="small-label">Concept C · Editorial Command Desk</p>
-            <h3>Your book does not need another blank page. It needs a process.</h3>
-            <p>A daily publishing desk for blockers, approvals, editing state, launch choices, and reader follow-up.</p>
-          </div>
-          <div class="concept-body">
-            <div class="concept-visual">
-              <div class="company-map">
-                <div class="node terracotta">Needs approval</div>
-                <div class="node gold">Ready today</div>
-                <div class="node green">Company can do</div>
-                <div class="node rose">Blocked</div>
-                <div class="node">Reader follow-up</div>
-                <div class="node">Analytics</div>
-              </div>
-            </div>
-            <div class="sample-card">
-              <strong>Section order</strong>
-              <ul>
-                <li>Hero as daily command desk</li>
-                <li>What needs you today</li>
-                <li>Company work queue</li>
-                <li>Paperclip preview</li>
-                <li>Daily check-in and FAQ</li>
-              </ul>
-            </div>
-            <div class="sample-card">
-              <strong>Best for product UI</strong>
-              <ul>
-                <li>Most immediately demonstrable</li>
-                <li>Great retention/pacing for video</li>
-                <li>Feels useful before infrastructure is explained</li>
-              </ul>
-            </div>
-          </div>
-          <p class="screen-note">YouTube 5-second read: "This tells me what matters today and what the company is handling."</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="logos">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Logo / icon exploration</p>
-          <h2>Marks That Can Become Favicons</h2>
-        </div>
-        <p>Simple line marks that can live in app chrome, GitHub org icons, YouTube lower thirds, and slide decks without becoming cute mascots.</p>
-      </div>
-
-      <div class="logo-grid">
-        <article class="logo-tile">
-          <svg viewBox="0 0 64 64"><path d="M16 14h32v36H16z"></path><path d="M24 32l6 6 12-16"></path><path d="M22 14v-4h20v4"></path></svg>
-          <h3>Foreman: checked ledger</h3>
-          <p>Clipboard plus inspection tick. Strong, direct, maybe safest for v1.</p>
-        </article>
-        <article class="logo-tile">
-          <svg viewBox="0 0 64 64"><path d="M14 18h36v30H14z"></path><path d="M22 28h10v10H22z"></path><path d="M42 28h8"></path><path d="M32 33h10"></path><path d="M27 38v8"></path></svg>
-          <h3>Foreman: dispatcher board</h3>
-          <p>Cards and routing lines. Best for company-builder logic.</p>
-        </article>
-        <article class="logo-tile">
-          <svg viewBox="0 0 64 64"><path d="M18 48V16h26"></path><path d="M18 30h20"></path><path d="M18 48h28"></path><path d="M35 37l5 5 10-14"></path></svg>
-          <h3>Foreman: F inspection</h3>
-          <p>Monogram that stays serious and avoids construction cliche.</p>
-        </article>
-        <article class="logo-tile">
-          <svg viewBox="0 0 64 64"><path d="M14 42h36"></path><path d="M20 42V26l12-10 12 10v16"></path><path d="M26 42V31h12v11"></path><path d="M24 24h16"></path></svg>
-          <h3>LPH: open-book house</h3>
-          <p>Warm, literal, and easy to understand in a thumbnail.</p>
-        </article>
-        <article class="logo-tile">
-          <svg viewBox="0 0 64 64"><path d="M18 50V20h28v30"></path><path d="M18 20l14-10 14 10"></path><path d="M28 50V36h8v14"></path><path d="M24 28h16"></path></svg>
-          <h3>LPH: manuscript roof</h3>
-          <p>Useful as app icon; house over page without fake publisher vibes.</p>
-        </article>
-        <article class="logo-tile">
-          <svg viewBox="0 0 64 64"><path d="M18 48h28"></path><path d="M22 48V18h6v30"></path><path d="M30 48V14h7v34"></path><path d="M39 48V22h7v26"></path><path d="M20 18l12-10 14 14"></path></svg>
-          <h3>LPH: book-spine house</h3>
-          <p>Most ownable literary mark; scales to a tasteful seal.</p>
-        </article>
-        <article class="logo-tile">
-          <svg viewBox="0 0 64 64"><path d="M16 48h32"></path><path d="M20 48V24l12-10 12 10v24"></path><path d="M28 36h8v12h-8z"></path><path d="M30 26h4"></path></svg>
-          <h3>LPH: lit doorway</h3>
-          <p>Small house, human warmth, strong enough for serious authors.</p>
-        </article>
-        <article class="logo-tile">
-          <svg viewBox="0 0 64 64"><path d="M18 44h28"></path><path d="M22 44V18h18l6 6v20"></path><path d="M40 18v8h8"></path><path d="M24 18l16-8 16 8"></path></svg>
-          <h3>LPH: page-roof seal</h3>
-          <p>Editorial stamp direction for invoices, PDFs, and video overlays.</p>
-        </article>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Shared icon set</p>
-          <h2>Workflow Icons</h2>
-        </div>
-        <p>Thin, practical icons for stages and states. They should feel like editorial operating controls, not decoration.</p>
-      </div>
-
-      <div class="icon-grid">
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M24 8v5"></path><path d="M15 12l3 4"></path><path d="M33 12l-3 4"></path><path d="M17 28a9 9 0 1 1 14 0l-2 4H19z"></path><path d="M20 38h8"></path></svg><p>Idea</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M12 12h24"></path><path d="M12 22h16"></path><path d="M12 32h22"></path><path d="M36 12v24"></path></svg><p>Outline</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M14 8h16l6 6v26H14z"></path><path d="M30 8v8h8"></path><path d="M19 24h14"></path><path d="M19 31h10"></path></svg><p>Draft</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M13 35l4-1 18-18-3-3-18 18z"></path><path d="M29 16l3 3"></path><path d="M12 40h24"></path></svg><p>Edit</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M13 24l8 8 15-17"></path><path d="M12 40h24"></path></svg><p>Proof</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M14 14h20v20H14z"></path><path d="M18 20h12"></path><path d="M18 26h7"></path><path d="M34 14l4-4"></path></svg><p>Metadata</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M14 10h20v28H14z"></path><path d="M18 16h12v10H18z"></path><path d="M18 32h9"></path></svg><p>Cover</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M24 38V12"></path><path d="M14 22l10-10 10 10"></path><path d="M12 40h24"></path></svg><p>Launch</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M14 14h20v14H20l-6 6z"></path><path d="M20 20h8"></path></svg><p>Reader follow-up</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M12 38h24"></path><path d="M16 34V22"></path><path d="M24 34V14"></path><path d="M32 34V28"></path></svg><p>Analytics</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M24 10v16"></path><path d="M24 34v4"></path><path d="M12 40h24"></path></svg><p>Needs approval</p></article>
-        <article class="icon-tile"><svg viewBox="0 0 48 48"><path d="M16 12h16l4 8-12 18L12 20z"></path><path d="M18 20h12"></path></svg><p>Foreman discipline</p></article>
-      </div>
-    </section>
-
-    <section id="tokens">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Design tokens</p>
-          <h2>Shared Token Proposal</h2>
-        </div>
-        <p>One family with two moods: Foreman gets structure and operational trust; Little Publishing House gets warmth and literary momentum.</p>
-      </div>
-
-      <div class="token-grid">
-        <article class="token"><div class="token-swatch" style="background:#272421"></div><strong>Charcoal Ink</strong><p>#272421 · primary text, Foreman mark</p></article>
-        <article class="token"><div class="token-swatch" style="background:#2f5f7c"></div><strong>Blueprint Blue</strong><p>#2F5F7C · Foreman routing, links</p></article>
-        <article class="token"><div class="token-swatch" style="background:#5f7f63"></div><strong>Inspection Green</strong><p>#5F7F63 · ready, verified</p></article>
-        <article class="token"><div class="token-swatch" style="background:#d0a14a"></div><strong>Signal Gold</strong><p>#D0A14A · attention, check-in</p></article>
-        <article class="token"><div class="token-swatch" style="background:#fbf3e6"></div><strong>Warm Paper</strong><p>#FBF3E6 · LPH background</p></article>
-        <article class="token"><div class="token-swatch" style="background:#bf765d"></div><strong>Terracotta</strong><p>#BF765D · author action, stage active</p></article>
-        <article class="token"><div class="token-swatch" style="background:#b6d3df"></div><strong>Dusty Blue</strong><p>#B6D3DF · calm panels, wiki surfaces</p></article>
-        <article class="token"><div class="token-swatch" style="background:#d9a5a3"></div><strong>Dusty Rose</strong><p>#D9A5A3 · literary warmth, human notes</p></article>
-      </div>
-    </section>
-
-    <section id="recommendation">
-      <div class="recommendation">
-        <div>
-          <p class="eyebrow">YouTube-first read</p>
-          <h2>Most Ownable Direction</h2>
-          <p class="lead">Pair Foreman Concept B with Little Publishing House Concept B, then borrow the daily desk component from LPH Concept C.</p>
-        </div>
-        <div class="notes-grid">
-          <article class="note-card">
-            <h3>Foreman direction</h3>
-            <p><strong>Operating Discipline</strong> is the clearest parent-platform story. It makes Foreman feel necessary without asking viewers to understand every company template first.</p>
-          </article>
-          <article class="note-card">
-            <h3>LPH direction</h3>
-            <p><strong>Book Stage Finder</strong> is the emotional unlock. Authors instantly understand they can arrive with whatever they have, including a messy middle.</p>
-          </article>
-          <article class="note-card">
-            <h3>Demo hook</h3>
-            <p>Open with one manuscript folder, show the stage inference, then land on "what needs you today." That is legible in a thumbnail and a 10-second clip.</p>
-          </article>
-          <article class="note-card">
-            <h3>Brand mark</h3>
-            <p>Use Foreman's checked ledger as the parent mark and LPH's book-spine house as the flagship mark. They are simple, distinct, and connected.</p>
+          <article class="mark-tile">
+            <svg viewBox="0 0 64 64"><path d="M18 48h28"></path><path d="M22 48V18h6v30"></path><path d="M30 48V14h7v34"></path><path d="M39 48V22h7v26"></path><path d="M20 19l12-10 14 14"></path></svg>
+            <h3>Book-spine house</h3>
+            <p>Most ownable literary mark. It feels like a publishing house without becoming fake-traditional.</p>
           </article>
         </div>
-      </div>
+      </section>
 
-      <div class="scoreboard" style="margin-top:28px">
-        <div class="score"><strong>5-second comprehension</strong><div class="bar"><span style="--w:94%"></span></div><span>94</span></div>
-        <div class="score"><strong>Author emotional pull</strong><div class="bar"><span style="--w:91%"></span></div><span>91</span></div>
-        <div class="score"><strong>Foreman scalability</strong><div class="bar"><span style="--w:88%"></span></div><span>88</span></div>
-        <div class="score"><strong>Avoids scammy publisher vibe</strong><div class="bar"><span style="--w:96%"></span></div><span>96</span></div>
-      </div>
-    </section>
+      <section id="recommendation" class="recommendation">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Recommended direction</span>
+            <h2>Go full storybook operations room.</h2>
+          </div>
+          <p>Use the floorplan for Foreman’s homepage and the garden workflow for Little Publishing House. Keep the template desk as the `/companies` gallery later.</p>
+        </div>
 
-    <footer class="footer">
-      <p>Created from the Foreman + Little Publishing House marketing/design brief. Guardrail preserved: Foreman explains the system, Little Publishing House proves it, lessons remain optional.</p>
+        <div class="score-grid">
+          <article class="score-card">
+            <strong>Foreman homepage</strong>
+            <p>Lead with the illustrated company floorplan. The viewer understands immediately: Foreman creates the rooms, routes, tools, and heartbeat that keep agent companies honest.</p>
+          </article>
+          <article class="score-card">
+            <strong>Little Publishing House</strong>
+            <p>Use the garden workflow because it makes the author feel movement, companionship, and possibility. It sells the product before it explains the plumbing.</p>
+          </article>
+          <article class="score-card">
+            <strong>Brand posture</strong>
+            <p>Whimsy is allowed. The guardrail is competence: warm illustrated worlds, real status panels, clear approvals, no fake publisher claims, no “AI writes your book” slop.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="legal">
+      Prepared by FF Factory Media LLC as internal concept exploration for Foreman and Little Publishing House. These website concepts, visual treatments, copy, layouts, interaction patterns, and presentation materials are proprietary proposal materials. No ownership, license, reproduction right, derivative-use right, or commercial-use right is granted unless and until a final written agreement is executed and all agreed compensation terms are satisfied.
     </footer>
-  </main>
+  </div>
 </body>
 </html>
