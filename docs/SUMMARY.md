@@ -2,10 +2,11 @@
 
 ## Core Concepts
 
+- [Foreman + Little Publishing House Marketing / Design Brief](marketing-design-brief.md)
 - [Foreman Company Principles](foreman-company-principles.md)
-- [Personal Publishing House Product Brief](personal-publishing-house-product-brief.md)
-- [Personal Publishing House Website Brief](personal-publishing-house-website-brief.md)
-- [Product Architecture — Personal Publishing House](product-architecture-personal-publishing-house.md)
+- [Little Publishing House Product Brief](personal-publishing-house-product-brief.md)
+- [Little Publishing House Website Brief](personal-publishing-house-website-brief.md)
+- [Product Architecture — Little Publishing House](product-architecture-personal-publishing-house.md)
 - [What is Foreman?](what-is-foreman.md)
 - [The Feedback Loop](feedback-loop.md)
 - [Provider Auto-Discovery](provider-discovery.md)
