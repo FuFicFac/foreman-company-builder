@@ -2,9 +2,10 @@
 
 ## Core Concepts
 
-- [Author Company Product Brief](author-company-product-brief.md)
-- [Author Company Website Brief](author-company-website-brief.md)
-- [Product Architecture — Author Company](product-architecture-author-company.md)
+- [Foreman Company Principles](foreman-company-principles.md)
+- [Personal Publishing House Product Brief](personal-publishing-house-product-brief.md)
+- [Personal Publishing House Website Brief](personal-publishing-house-website-brief.md)
+- [Product Architecture — Personal Publishing House](product-architecture-personal-publishing-house.md)
 - [What is Foreman?](what-is-foreman.md)
 - [The Feedback Loop](feedback-loop.md)
 - [Provider Auto-Discovery](provider-discovery.md)

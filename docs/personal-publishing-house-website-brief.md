@@ -1,16 +1,20 @@
-# Author Company Website Brief
+# Personal Publishing House Website Brief
 
 This is the handoff brief for a web/design agent. It intentionally hides most of the infrastructure until after the audience, promise, and product shape are clear.
 
 ## Designer prompt
 
-Design a warm, author-friendly landing site for **Author Company**, a product that gives a manuscript a visible AI-powered publishing workflow.
+Design a warm, author-friendly landing section/site for **Personal Publishing House**, the flagship **Foreman Company** for writers.
+
+Foreman is the parent product. A Foreman Company is the branded package/category. Personal Publishing House is the first launch example.
 
 Audience: introverted writers, authors, solo creators, and newsletter/book people who want to write but need help with editing coordination, metadata, launch planning, reader follow-up, and operational tasks.
 
 Primary promise:
 
-> **Put in your manuscript. Get a publishing workflow around it.**
+> **Start where you are. Get a publishing workflow around it.**
+
+The page must not imply the author has to start by dropping in a draft. The user can enter at any stage: idea, outline, partial draft, finished manuscript, editing, metadata, launch, reader follow-up, analytics, or relaunch.
 
 Tone: gentle, literary, practical, empowering. Not technical-first. Not corporate SaaS. Not cyberpunk.
 
@@ -22,11 +26,11 @@ Visual style: soft pastels + earth tones, warm ivory/paper backgrounds, sage, du
 
 Headline:
 
-> **Give your manuscript a company.**
+> **Start where you are.**
 
 Subhead:
 
-> Author Company helps writers move a book from draft to publishing workflow with a visible AI team for editing, metadata, launch planning, reader follow-up, and daily status.
+> Personal Publishing House is a Foreman Company for writers. Whether you have an idea, a rough draft, a finished manuscript, or a launch already in motion, it finds your stage and builds the next publishing workflow around it.
 
 Primary CTA:
 
@@ -44,7 +48,7 @@ Make the user feel seen:
 
 ### 3. Product promise
 
-> Author Company gives your manuscript a small, visible publishing team. It organizes the pipeline, checks its tools, surfaces blockers, and tells you what needs your attention.
+> Personal Publishing House gives your manuscript a small, visible publishing team. It organizes the pipeline, checks its tools, surfaces blockers, and tells you what needs your attention.
 
 ### 4. Manuscript workflow visual
 
@@ -86,7 +90,7 @@ Primary card:
 
 **Install with Hermes**
 
-> Recommended. Hermes runs the agents, tools, skills, scheduled checks, and follow-up that make Author Company feel alive.
+> Recommended. Hermes runs the agents, tools, skills, scheduled checks, and follow-up that make Personal Publishing House feel alive.
 
 Secondary card:
 
@@ -124,7 +128,7 @@ Do not lead with this section.
 - Will this write my book for me?
 - What is Hermes?
 - What is Paperclip?
-- What is an Author Company?
+- What is an Personal Publishing House?
 - What happens to my manuscript?
 - Can I use my existing notes and research?
 - Do I need a Second Brain?

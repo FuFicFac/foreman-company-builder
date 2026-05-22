@@ -1,17 +1,19 @@
-# Product Architecture — Author Company
+# Product Architecture — Personal Publishing House
 
 This document separates the public product from the underlying stack.
 
 The public product should feel simple:
 
-> **Give your manuscript a company.**
+> **Give your manuscript a publishing house.**
 
 The implementation may involve Paperclip, Hermes, Foreman, Printing Press, Agent Companies, and a local workspace. Those pieces matter, but they should not be presented as a hodgepodge of coequal brands.
 
 ## Layer model
 
 ```text
-Author Company = user-facing product for writers
+Foreman = parent product / operating discipline layer
+A Foreman Company = branded specialized company package/category
+Personal Publishing House = flagship Foreman Company for writers
   ↓
 Paperclip = company-internal interface / visibility layer
   ↓
@@ -39,7 +41,7 @@ Second Brain = not required for users
 
 ## User-facing product
 
-The product is **Author Company**: a calm AI publishing company for a manuscript.
+The product is **Personal Publishing House**: a calm AI publishing company for a manuscript.
 
 It helps the author move from:
 
@@ -70,7 +72,7 @@ Paperclip should track company-internal state:
 - tool readiness
 - “what needs the author”
 
-Paperclip is not the brand headline for authors; it is the window into the Author Company.
+Paperclip is not the brand headline for authors; it is the window into the Personal Publishing House.
 
 ## Hermes' role
 
@@ -92,7 +94,9 @@ Hermes may have its own native dashboard/Kanban for higher-level runtime or boar
 
 Foreman provides the domain operating discipline.
 
-For Author Company, Foreman defines what a publishing workflow means:
+A Foreman Company should not assume the user starts at step one. Foreman should discover current state, infer the stage, confirm with the human, start from there, and preserve prior work.
+
+For Personal Publishing House, Foreman defines what a publishing workflow means:
 
 - manuscript intake
 - editing stages
@@ -110,7 +114,7 @@ Printing Press gives agents hands.
 
 It should check, install, and smoke-test external tools needed by a company workflow.
 
-For Author Company, that may eventually include tools for:
+For Personal Publishing House, that may eventually include tools for:
 
 - document conversion
 - metadata generation
@@ -170,7 +174,7 @@ Start with the manuscript.
 Correct order:
 
 1. manuscript problem
-2. Author Company promise
+2. Personal Publishing House promise
 3. publishing workflow
 4. Paperclip visibility
 5. daily check-in

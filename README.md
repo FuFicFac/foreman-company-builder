@@ -1,5 +1,7 @@
 # Foreman
 
+> Repository rename note: the current repo is `foreman-company-runner`, but the product direction now points toward `foreman-company-builder` as the clearer name.
+
 The dispatch, verification, and operating-discipline layer for AI agent companies.
 
 **Foreman keeps agent companies honest. Paperclip shows the work. Hermes runs the crew.**
@@ -8,11 +10,15 @@ Foreman began as a standalone feedback loop that dispatches builders, inspects t
 
 That loop still matters. But the current product direction is broader: Foreman is growing into the shared discipline layer for specialized agent companies and Paperclip holding companies. Paperclip tracks companies, Hermes runs agents and scheduled work, each company gets a spawnable CEO/worker/inspector roster, and Foreman enforces builder → inspector → arbitration → escalation loops.
 
-The first front-facing company suite is **Author Company**:
+The first front-facing company suite is **Personal Publishing House**, a **Foreman Company** for writers:
 
-> **Put in your manuscript. Get a visible publishing workflow around it.**
+> **Start where you are. Get a visible publishing workflow around it.**
 
-Author Company is for writers who want help with the publishing operation around a book — editing coordination, metadata, launch planning, reader follow-up, blockers, approvals, and daily status — without turning themselves into project managers.
+Personal Publishing House is for writers who want help with the publishing operation around a book — editing coordination, metadata, launch planning, reader follow-up, blockers, approvals, and daily status — without turning themselves into project managers. It should support authors who have only an idea, a partial draft, a finished manuscript, an already-edited book, or a launch already in motion.
+
+Core Foreman Company rule:
+
+> **Discover current state → infer stage → confirm with human → start from there → preserve prior work.**
 
 For this direction:
 

@@ -1,14 +1,14 @@
-# Author Company Product Brief
+# Personal Publishing House Product Brief
 
-Author Company is the front-facing product direction for Foreman’s first creator-oriented company suite.
+Personal Publishing House is the flagship **Foreman Company** and the first creator-oriented company suite.
 
 It is **not** a page about every internal component in the stack. It is a focused promise for writers:
 
-> **Put in your manuscript. Get a visible publishing workflow around it.**
+> **Start where you are. Get a visible publishing workflow around it.**
 
 ## What this is
 
-Author Company is an author-friendly agent company that helps writers move a manuscript through the publishing workflow without becoming project managers.
+Personal Publishing House is an author-friendly agent company that helps writers move a manuscript through the publishing workflow without becoming project managers.
 
 It gives a manuscript a visible AI-assisted publishing operation for:
 
@@ -28,7 +28,7 @@ The product is best summarized as:
 
 ## Primary audience
 
-Author Company is for:
+Personal Publishing House is for:
 
 - authors
 - introverted writers
@@ -49,18 +49,18 @@ The user is trying to solve:
 
 Use this as the north star:
 
-> **Give your manuscript a company.**
+> **Give your manuscript a publishing house.**
 
 Expanded:
 
-> Author Company gives your manuscript a small AI-powered publishing team. It helps organize editing, metadata, launch planning, reader follow-up, and daily status so you can stay focused on the writing.
+> Personal Publishing House gives your manuscript a small AI-powered publishing team. It helps organize editing, metadata, launch planning, reader follow-up, and daily status so you can stay focused on the writing.
 
 ## Product hierarchy
 
 The public website and onboarding should introduce the product in this order:
 
 1. **The writer’s problem** — I wrote something; now there are a hundred publishing tasks.
-2. **The product promise** — Give the manuscript an Author Company.
+2. **The product promise** — Give the manuscript a Personal Publishing House.
 3. **The visible workflow** — draft, intake, edit, proof, metadata, launch, follow-up.
 4. **The daily check-in** — every morning the company says what is ready, blocked, or waiting for the author.
 5. **The interface** — Paperclip shows the company working.
@@ -71,11 +71,40 @@ The stack supports the brand; it is not the brand.
 
 ## Workflow model
 
-The core manuscript path should be easy to understand visually:
+The public workflow should be easy to understand visually:
 
 ```text
 Draft → Intake → Edit → Proof → Metadata → Launch → Reader follow-up
 ```
+
+But this is not a mandatory linear intake path. A writer does **not** have to start by dropping in a draft.
+
+## Drop-in-anywhere rule
+
+Personal Publishing House must meet the author wherever they already are.
+
+The user might arrive with:
+
+- only an idea or premise,
+- an outline,
+- a partial draft,
+- a finished manuscript,
+- a manuscript that has already been developmentally edited,
+- copyedits or proofing already complete,
+- metadata already drafted,
+- a cover direction already chosen,
+- a launch already in motion,
+- a published book that needs reader follow-up, analytics, or relaunch work.
+
+Hermes should be intelligent enough to talk with the user, inspect the available documents, infer the current stage, confirm that stage with the human, and then start the Foreman Company from the appropriate point in the workflow.
+
+Universal Foreman Company rule:
+
+```text
+Discover current state → infer stage → confirm with human → start from there → preserve prior work
+```
+
+This rule should apply to every Foreman Company, not just Personal Publishing House.
 
 A more detailed publishing template can expand this into:
 
@@ -122,7 +151,7 @@ It should show:
 
 Suggested copy:
 
-> Paperclip is the window into your Author Company. It shows agents, queues, approvals, blockers, and where your manuscript is in the process.
+> Paperclip is the window into your Personal Publishing House. It shows agents, queues, approvals, blockers, and where your manuscript is in the process.
 
 ## What Hermes does
 
@@ -168,7 +197,7 @@ For the product, use a simpler model:
 Example project structure:
 
 ```text
-AuthorCompany/<book-slug>/
+PersonalPublishingHouse/<book-slug>/
   Manuscript/
   Notes/
   Research/
@@ -270,7 +299,7 @@ Avoid:
 
 ## Website must include
 
-- Hero: “Give your manuscript a company.”
+- Hero: “Give your manuscript a publishing house.”
 - Subhead focused on manuscript → publishing workflow.
 - Manuscript workflow visual.
 - “What needs you today?” status card.
