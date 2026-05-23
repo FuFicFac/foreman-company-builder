@@ -104,6 +104,31 @@ Printing Press can supply agent-native CLIs for those capabilities:
 ./scripts/foreman-tools.sh manifest publishing
 ```
 
+### Foreman Press V0 demo
+
+Foreman Press V0 can now draft and locally register safe JSON CLI manifests:
+
+```bash
+./scripts/foreman press propose \
+  --id com.printingpress.demo-json-tool \
+  --name "Demo JSON Tool" \
+  --description "Safe read-only demo CLI that emits JSON." \
+  --binary "$PWD/examples/press/demo-json-tool" \
+  --command-name lookup \
+  --smoke-args "lookup --city Austin" \
+  --expected-output-path '$.city' \
+  --tag demo \
+  --tag read-only \
+  > /tmp/demo.manifest.json
+
+./scripts/foreman press validate /tmp/demo.manifest.json
+./scripts/foreman press register /tmp/demo.manifest.json
+./scripts/foreman press list
+./scripts/foreman press inspect com.printingpress.demo-json-tool
+```
+
+See [`docs/foreman-press-demo.md`](docs/foreman-press-demo.md) for copy/paste-safe demo commands using a temporary `FOREMAN_CONFIG_DIR`.
+
 ## Paperclip Supercharger (Optional)
 
 Running headless is fine. But if you want the full visual stack — Kanban boards, org charts, agent management, worktree coordination — plug Foreman into Paperclip.

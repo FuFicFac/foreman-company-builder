@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+COMMAND="${1:-help}"
+shift || true
+
+case "$COMMAND" in
+  press)
+    exec python3 "$ROOT/scripts/foreman-press.py" "$@"
+    ;;
+  tools)
+    exec "$ROOT/scripts/foreman-tools.sh" "$@"
+    ;;
+  init)
+    exec "$ROOT/scripts/foreman-init.sh" "$@"
+    ;;
+  module|modules)
+    exec "$ROOT/scripts/foreman-module.sh" "$@"
+    ;;
+  issues)
+    exec "$ROOT/scripts/foreman-issues.sh" "$@"
+    ;;
+  chat)
+    exec "$ROOT/scripts/foreman-chat.sh" "$@"
+    ;;
+  help|-h|--help)
+    cat <<'EOF'
+Foreman CLI
+
+Usage:
+  foreman press propose --id <tool-id> --name <name> --description <text> --binary <abs-path> --command-name <name>
+  foreman press validate <manifest.json>
+  foreman press register <manifest.json>
+  foreman press list
+  foreman press inspect <tool-id>
+  foreman tools [doctor|list|search|install|manifest]
+EOF
+    ;;
+  *)
+    echo "Unknown command: $COMMAND" >&2
+    echo "Run: foreman --help" >&2
+    exit 1
+    ;;
+esac
