@@ -2,9 +2,9 @@
 
 > **For Hermes:** Use subagent-driven-development skill to implement this plan task-by-task.
 
-**Goal:** Turn Foreman into the shared discipline layer for Paperclip-managed companies: each company is a context with capabilities, tool manifests, CEO/worker/inspector agents, and Foreman verification loops.
+**Goal:** Turn Foreman into the shared discipline layer for Paperclip-compatible companies: each company is a context with capabilities, tool manifests, one responsible operator, worker/inspector agents, Paperclip import compatibility, and Foreman verification/closeout loops.
 
-**Architecture:** Paperclip acts as the multi-company registry/control plane. Hermes provides the runtime and spawnable agents. Foreman provides company onboarding, role assignment, inspection loops, 3-strike escalation, and tool-manifest verification. Printing Press supplies agent-native CLI tools matched to company capabilities.
+**Architecture:** Paperclip acts as the proven multi-company registry/control-plane model. Hermes provides the runtime and spawnable agents. Foreman provides company onboarding, Paperclip import/upgrade, role assignment, inspection loops, closeout mode, zombie-run cleanup, 3-strike escalation, and tool-manifest verification. Printing Press supplies agent-native CLI tools matched to company capabilities.
 
 **Tech Stack:** zsh CLI scripts today, JSON module manifests, Hermes profiles/skills, Paperclip API adapter, Printing Press via `npx -y @mvanhorn/printing-press`.
 
@@ -81,15 +81,34 @@ A company’s tool manifest maps capabilities to tools:
 
 Foreman should compare this manifest to installed tools and use Printing Press where possible.
 
-### CEO Agent
+### CEO / Responsible Operator
 
-A CEO agent is a spawnable role tied to a company context:
+A company should present one accountable operator to the human even if many agents work behind the scenes. Depending on domain, this may be called CEO, managing editor, producer, foreman, or lead.
+
+This operator:
 
 - reads company mission and current priorities
 - can create/triage tasks
-- can invoke Foreman loops
+- can invoke Foreman loops and closeout mode
 - can request tool installs
-- reports exceptions/escalations to Hank/chairman
+- classifies what needs human attention vs. what can continue silently
+- reports exceptions/escalations to Hank/chairman or the company owner
+
+### Paperclip Import / Upgrade
+
+Foreman should support importing an existing Paperclip company before resuming work. Import should preserve company metadata, org charts, agents, goals, tasks/issues, comments/evidence, budgets, routines/heartbeats, skills, workspace references, and audit context where possible.
+
+Before execution, Foreman classifies imported state:
+
+- live valid work
+- in review
+- blocked
+- stale
+- zombie
+- invalid run state
+- needs human
+
+Migration should produce a report and offer closeout as the first safe action.
 
 ### Foreman Run
 

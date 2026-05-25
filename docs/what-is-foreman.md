@@ -54,12 +54,26 @@ roles to the best available provider:
 
 The feedback loop works regardless.
 
-## Standalone or Composed
+## Standalone, Imported, or Composed
 
 Foreman works standalone — you can dispatch tasks directly from the CLI.
 
-It also composes with Paperclip through the API (not a plugin). Read issues,
-dispatch work, write status back. If Paperclip updates, you update one thin
-adapter layer, not the whole Foreman.
+It also composes with Paperclip through the API: read issues, dispatch work, write status back, and keep a Paperclip dashboard useful without letting the dashboard become the job.
+
+Foreman should also import existing Paperclip companies. The user should not rebuild a company just because they want better discipline. Import should preserve the company structure, agents, goals, issues, comments/evidence, budgets, routines, skills, and workspace references, then classify active state before anything resumes.
+
+The import promise:
+
+```text
+Bring your Paperclip company.
+Foreman keeps the company.
+Foreman adds closeout, verification, zombie-run cleanup, and one clear report to the human.
+```
 
 Paperclip is optional visibility, not a requirement. If you want the cockpit, use Paperclip. If you only want the work handled, Foreman should be enough.
+
+## One Responsible Operator
+
+Foreman should hide the swarm. A company can have many agents, but the human should experience one responsible operator reporting upward: a CEO, managing editor, producer, or foreman who summarizes state, asks for decisions, and keeps process noise out of the user's lap.
+
+For a publishing company, the desired experience is: drop in a manuscript, decide how far you want to take it, and let one accountable publishing operator run the editorial, proofing, metadata, launch, reader follow-up, and relaunch pipeline as far as policy allows.

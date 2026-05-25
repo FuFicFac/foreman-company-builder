@@ -13,6 +13,7 @@
 - [Paperclip Integration](paperclip-integration.md)
 - [Holding Company Architecture](holding-company-architecture.md)
 - [Paperclip Holding-Company Adapter](paperclip-holding-company-adapter.md)
+- [Paperclip Import and Upgrade](paperclip-import-and-upgrade.md)
 - [Resolution Heartbeat and Office Hours](resolution-heartbeat-office-hours.md)
 
 ## Guides

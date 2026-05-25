@@ -22,12 +22,14 @@ Core Foreman Company rule:
 
 For this direction:
 
-- **Paperclip** is the preferred interface for seeing inside each company.
+- **Paperclip** is the proven company/control-plane model and preferred interface for seeing inside each company.
 - **Hermes** is the recommended runtime that runs agents, tools, skills, scheduled checks, and follow-up.
-- **Foreman** provides the publishing discipline, verification loop, and daily trust checks.
+- **Foreman** provides the publishing discipline, verification loop, daily trust checks, closeout mode, and zombie-run cleanup.
 - **Printing Press** gives agents the external tools they need.
 - Each book gets a simple local workspace and living wiki. A full Second Brain is optional, not required.
 - **OpenClaw** can be an advanced alternate runtime path, but Hermes is the recommended default.
+
+Foreman should also be Paperclip-compatible: people who already built Paperclip companies should be able to import them, preserve the useful company structure, and let Foreman upgrade the operating discipline instead of starting over.
 
 ## Resolution Heartbeat
 
@@ -150,7 +152,25 @@ Foreman Press V0 can now draft and locally register safe JSON CLI manifests:
 
 See [`docs/foreman-press-demo.md`](docs/foreman-press-demo.md) for copy/paste-safe demo commands using a temporary `FOREMAN_CONFIG_DIR`.
 
-## Paperclip Supercharger (Optional)
+## Paperclip Import and Upgrade
+
+Paperclip proved the agent-company model: org charts, agents, goals, tasks, routines, and a dashboard people can understand. Foreman should not strand that work.
+
+Existing Paperclip users should be able to import a company into Foreman, preserve agents, roles, goals, issues, comments, evidence, budgets, routines, skills, and workspace references, then let Foreman classify the current state before it resumes anything.
+
+The migration rule is:
+
+```text
+Import first.
+Classify before executing.
+Close out before declaring quiet.
+```
+
+Foreman should map imported work into stricter lifecycle states: ready, active, in review, done, blocked, stale, zombie, invalid run state, or needs human. A done or cancelled issue should not be resurrected by an old heartbeat. Newly discovered defects should become follow-up issues instead of muddying completed work.
+
+See [`docs/paperclip-import-and-upgrade.md`](docs/paperclip-import-and-upgrade.md) for the import model.
+
+## Paperclip Supercharger / Compatibility Layer (Optional)
 
 Running headless is fine. But if you want the full visual stack — Kanban boards, org charts, agent management, worktree coordination — plug Foreman into Paperclip.
 
@@ -165,7 +185,15 @@ Foreman reads issues from Paperclip, dispatches and verifies the work, then writ
 
 **With Paperclip:** Same Foreman, plus the visual dashboard and company model.
 
+**With an existing Paperclip company:** Foreman imports it, classifies stale/zombie/live work, produces a migration report, and offers a closeout pass before resuming operations.
+
 Paperclip should never be mandatory just to keep work moving. If a user wants to watch execution, they open Paperclip. If they do not, Foreman still runs the company discipline loop and delivers only the decisions or emergencies that matter.
+
+## One Responsible Operator
+
+The customer should not feel like they are managing a swarm. Foreman companies should present one responsible operator — a CEO, managing editor, producer, or foreman — who reports to the human, asks for decisions, and shields them from process noise while many agents work behind the curtain.
+
+For Personal Publishing House, that means: drop in a manuscript, choose how far you want the company to take it, and let one accountable publishing operator report back while the system handles editorial review, proofing, metadata, launch planning, reader follow-up, and relaunch work.
 
 ## Why Foreman Exists
 
