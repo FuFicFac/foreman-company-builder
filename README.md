@@ -29,6 +29,27 @@ For this direction:
 - Each book gets a simple local workspace and living wiki. A full Second Brain is optional, not required.
 - **OpenClaw** can be an advanced alternate runtime path, but Hermes is the recommended default.
 
+## Resolution Heartbeat
+
+Foreman should not just show that work is stuck. Foreman should drain the review queue.
+
+Paperclip is optional visibility: the cockpit, dashboard, and manual override surface. Foreman is the accountability layer that keeps checking review, approval, blocked, failed, stale, and waiting-on-human queues until each item is resolved, retried, escalated, or deliberately deferred.
+
+```text
+Paperclip shows the queue.
+Foreman drains the queue.
+Office hours protect the person.
+```
+
+With Hermes cron, Foreman can run a resolution heartbeat without requiring Paperclip at all:
+
+- during office hours, inspect queues frequently and resolve safe blockers;
+- after hours, suppress noncritical interruptions and batch reports;
+- wake the human only for critical events such as paid customer access failures, public launch breakage, data exposure, runaway spend, or security incidents;
+- support optional escalation channels such as Telegram, SMS, webhooks, or smart-home signals.
+
+See [`docs/resolution-heartbeat-office-hours.md`](docs/resolution-heartbeat-office-hours.md) for the full policy model.
+
 ## How Foreman Works (Headless / Standalone)
 
 This is the default mode. No dashboard. No org chart. Just the feedback loop.
@@ -143,6 +164,8 @@ Foreman reads issues from Paperclip, dispatches and verifies the work, then writ
 **Without Paperclip:** Foreman is headless. You give it tasks, it gets them done, verified.
 
 **With Paperclip:** Same Foreman, plus the visual dashboard and company model.
+
+Paperclip should never be mandatory just to keep work moving. If a user wants to watch execution, they open Paperclip. If they do not, Foreman still runs the company discipline loop and delivers only the decisions or emergencies that matter.
 
 ## Why Foreman Exists
 

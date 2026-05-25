@@ -45,6 +45,7 @@ A company is a durable context with its own:
 - tasks / issues
 - recurring jobs
 - escalation policy
+- heartbeat policy / office hours
 - audit/event log
 
 ### Capability
@@ -105,6 +106,56 @@ A Foreman run records:
 - blockers
 - artifacts
 - escalation state
+
+### Resolution Heartbeat
+
+A resolution heartbeat is Foreman's recurring company-health and queue-drain loop. It is not only a status check. It inspects review, approval, blocked, failed, stale, waiting-on-human, waiting-on-agent, waiting-on-tool, and support queues, then acts according to company policy.
+
+Foreman should classify each queue item as one of:
+
+- auto-resolve
+- safe retry
+- needs context
+- needs tool repair
+- needs agent review
+- needs human judgment
+- critical escalation
+- hold until office hours
+
+Paperclip can display the queues, but Foreman must be able to run the heartbeat headlessly through Hermes cron or another scheduler. If Paperclip is not installed, Foreman should still inspect local company state and deliver digests/escalations.
+
+### Office Hours Policy
+
+Every company should define office hours and off-hours behavior. This is a quality-of-life feature, not merely scheduling.
+
+```json
+{
+  "heartbeat_policy": {
+    "office_hours": {
+      "timezone": "America/Los_Angeles",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+      "start": "09:30",
+      "end": "16:30"
+    },
+    "frequency": {
+      "office_hours": "every 20m",
+      "off_hours": "every 4h"
+    },
+    "interruptions": {
+      "office_hours": ["normal", "urgent", "critical"],
+      "off_hours": ["critical"]
+    },
+    "digests": {
+      "morning": true,
+      "overnight": true
+    }
+  }
+}
+```
+
+Some companies are always open. Others should be quiet by default. A publishing company may let agents work overnight but should hold routine creative updates until morning. A customer support or launch company may escalate urgent failures after hours.
+
+Critical events can route through multiple escalation channels: Telegram, SMS, email, webhooks, Paperclip alerts, or smart-home signals such as Home Assistant/HomeKit lights.
 
 ## Printing Press Integration
 
@@ -198,6 +249,19 @@ wikipedia-pp-cli page get-summary 'Artificial intelligence' --agent --select tit
 - Create: `docs/paperclip-holding-company-adapter.md`
 
 **Acceptance:** Spec includes company context, CEO agent, tool manifest, Foreman run, event/audit log, and escalation objects.
+
+### Task 5B: Add resolution heartbeat + office hours policy
+
+**Objective:** Define company-level heartbeat policies so Foreman can drain review/blocker queues without forcing humans to live in Paperclip.
+
+**Files:**
+
+- Create: `docs/resolution-heartbeat-office-hours.md`
+- Modify: `README.md`
+- Modify: `docs/what-is-foreman.md`
+- Modify: `docs/holding-company-architecture.md`
+
+**Acceptance:** Docs cover queue-draining heartbeat behavior, office-hours vs off-hours protocols, severity levels, critical escalation examples, and Paperclip-optional operation.
 
 ### Task 6: Add canary end-to-end test script
 

@@ -32,5 +32,35 @@
     "research": ["wikipedia", "company-goat"],
     "operations": ["linear", "notion", "slack"]
   },
+  "heartbeat_policy": {
+    "mode": "calm",
+    "office_hours": {
+      "timezone": "America/Los_Angeles",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+      "start": "09:30",
+      "end": "16:30"
+    },
+    "frequency": {
+      "office_hours": "every 20m",
+      "off_hours": "every 4h",
+      "weekends": "daily at 10:00"
+    },
+    "interruptions": {
+      "office_hours": ["normal", "urgent", "critical"],
+      "off_hours": ["critical"]
+    },
+    "critical_examples": [
+      "paid customer cannot access book file",
+      "refund or payment failure",
+      "public launch page down",
+      "email campaign sending broken links",
+      "private data exposure",
+      "runaway spend or security incident"
+    ],
+    "digests": {
+      "morning": true,
+      "overnight": true
+    }
+  },
   "source": "built-in"
 }

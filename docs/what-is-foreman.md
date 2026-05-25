@@ -1,6 +1,6 @@
 # What is Foreman?
 
-Foreman is the dispatch and verification runtime for AI agent companies.
+Foreman is the dispatch, verification, and follow-through runtime for AI agent companies.
 
 **Paperclip is the company. Foreman runs the crew.**
 
@@ -29,6 +29,20 @@ Foreman adds the feedback loop that Paperclip (and any issue source) is missing:
 This is the same pattern as a real construction crew. The builder frames the house.
 The inspector checks the framing. The foreman decides what to fix and what to accept.
 
+Foreman also owns the resolution heartbeat: the recurring loop that checks whether review, approval, blocked, failed, stale, or waiting-on-human work has actually been resolved. A dashboard can show that a task is stuck. A foreman keeps pushing until it is unstuck, safely retried, escalated, or deliberately held for office hours.
+
+The product promise is simple:
+
+> People do not want a dashboard. They want the dashboard emptied.
+
+## Office Hours and Human Attention
+
+Foreman companies need humane operating schedules. Some companies are 24/7. Others, like an author or publishing company, should work quietly overnight and only interrupt the human for true emergencies.
+
+During office hours, Foreman can run a frequent heartbeat — for example every 20 minutes — and ask normal questions. Off hours, Foreman should switch protocols: continue safe work if allowed, hold noncritical reports for the morning, and only escalate critical events such as paid customer access failures, broken public launches, refund/payment problems, data exposure, runaway spend, or security incidents.
+
+Foreman must separate work execution from human interruption. Agents can keep working without making the owner live inside the company.
+
 ## Provider-Agnostic
 
 Foreman doesn't care what CLIs you have. It auto-discovers your fleet and routes
@@ -47,3 +61,5 @@ Foreman works standalone — you can dispatch tasks directly from the CLI.
 It also composes with Paperclip through the API (not a plugin). Read issues,
 dispatch work, write status back. If Paperclip updates, you update one thin
 adapter layer, not the whole Foreman.
+
+Paperclip is optional visibility, not a requirement. If you want the cockpit, use Paperclip. If you only want the work handled, Foreman should be enough.
