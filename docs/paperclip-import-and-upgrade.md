@@ -97,9 +97,19 @@ For Personal Publishing House:
 
 ## Paperclip Compatibility Strategy
 
-Foreman can start as a Paperclip adapter, become a Paperclip-compatible importer, and eventually ship as a Paperclip-compatible Foreman app/fork if that is the best user experience.
+Default strategy: **do not hard-fork Paperclip unless there is a very strong reason.** Foreman should stay Foreman-native and Paperclip-compatible, not become permanently responsible for Paperclip's entire codebase, dependency churn, lifecycle bugs, and upstream merge treadmill.
 
-The user should not have to know whether the internals are original Paperclip, a fork, or a compatibility layer. The user-facing promise is:
+Foreman should cherry-pick the good concepts:
+
+- company/control-plane model;
+- org chart and reporting lines;
+- agents, goals, tasks, routines, and audit trails;
+- dashboard affordances that help users understand the company;
+- import/export shapes that let existing Paperclip companies move over cleanly.
+
+But Foreman should not automatically inherit Paperclip's current execution lifecycle, stale-run behavior, adapter problems, or babysitting-heavy operational model.
+
+The user should not have to know whether the internals are inspired by Paperclip, compatible with Paperclip, or selectively reimplemented. The user-facing promise is:
 
 ```text
 If you have a Paperclip company, Foreman can read it.

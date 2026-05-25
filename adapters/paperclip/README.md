@@ -4,7 +4,9 @@ This adapter lets Foreman read issues from and write status to a Paperclip compa
 
 The long-term product goal is broader than a thin adapter: Foreman should be able to import an existing Paperclip company, preserve what the user already built, classify stale/zombie/live work, and add closeout discipline without forcing a rebuild.
 
-Foreman may run as a separate process, a Paperclip-compatible importer, or eventually a Foreman app/fork that subsumes the Paperclip-compatible company model. The user-facing promise stays the same: bring your Paperclip company; Foreman upgrades how it runs.
+Default strategy: keep Foreman native and Paperclip-compatible rather than maintaining a hard fork. A hard fork should be a last resort, not the plan. Foreman should selectively reuse the good ideas and import shapes without inheriting Paperclip's whole lifecycle mess or upstream merge treadmill.
+
+Foreman may run as a separate process, a Paperclip-compatible importer, or a native app that understands Paperclip company packages. The user-facing promise stays the same: bring your Paperclip company; Foreman upgrades how it runs.
 
 ## Configuration
 
