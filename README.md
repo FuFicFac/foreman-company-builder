@@ -10,11 +10,13 @@ Foreman began as a standalone feedback loop that dispatches builders, inspects t
 
 That loop still matters. But the current product direction is broader: Foreman is growing into the shared discipline layer for specialized agent companies and Paperclip holding companies. Paperclip tracks companies, Hermes runs agents and scheduled work, each company gets a spawnable CEO/worker/inspector roster, and Foreman enforces builder → inspector → arbitration → escalation loops.
 
-The first front-facing company suite is **Personal Publishing House**, a **Foreman Company** for writers:
+The first front-facing company suite is **Little Publishing House**, a **Foreman Company** for writers and small publishers:
 
-> **Start where you are. Get a visible publishing workflow around it.**
+> **Start where you are. Build the publishing company around the book you already have.**
 
-Personal Publishing House is for writers who want help with the publishing operation around a book — editing coordination, metadata, launch planning, reader follow-up, blockers, approvals, and daily status — without turning themselves into project managers. It should support authors who have only an idea, a partial draft, a finished manuscript, an already-edited book, or a launch already in motion.
+Little Publishing House absorbs the publishing-specific parts of Foreman: manuscript intake, editorial coordination, proofing, metadata, product pages, direct sales, email/audience operations, launch planning, customer support, reader follow-up, relaunch work, blockers, approvals, and daily status. It is the branded company package that helps a writer build this specific kind of agent company without forcing them to understand Foreman internals first.
+
+The generic pattern is still a **Personal Publishing House**. The product/package name is **Little Publishing House**.
 
 Core Foreman Company rule:
 
@@ -22,14 +24,22 @@ Core Foreman Company rule:
 
 For this direction:
 
-- **Paperclip** is the proven company/control-plane model and preferred interface for seeing inside each company.
-- **Hermes** is the recommended runtime that runs agents, tools, skills, scheduled checks, and follow-up.
-- **Foreman** provides the publishing discipline, verification loop, daily trust checks, closeout mode, and zombie-run cleanup.
-- **Printing Press** gives agents the external tools they need.
+- **Paperclip** is the optional external company board: a strong README, visible Kanban/issues, org chart, routines, evidence trail, and manual override surface. Use it when the user wants to *see* the company and manage work outside the chat.
+- **Hermes** is the recommended all-in-one runtime path: agents, tools, skills, cron, messaging, memory, and follow-up can all live inside Hermes for users who do not want a separate Paperclip board.
+- **Foreman** is the discipline layer in either path: it enforces builder → inspector → arbitration → closeout, drains review queues, verifies evidence, and stops zombie work.
+- **Little Publishing House** is the publishing company package: it bundles the roles, workflows, workspace template, approval gates, and reporting style for writers/publishers.
+- **Printing Press** gives the company agent-native external tools when a workflow needs them.
 - Each book gets a simple local workspace and living wiki. A full Second Brain is optional, not required.
 - **OpenClaw** can be an advanced alternate runtime path, but Hermes is the recommended default.
 
-Foreman should also be Paperclip-compatible: people who already built Paperclip companies should be able to import them, preserve the useful company structure, and let Foreman upgrade the operating discipline instead of starting over.
+Foreman should therefore offer two clear operating modes:
+
+```text
+Hermes-only mode:     README/workspace + Hermes skills/cron/tools + Foreman closeout
+Paperclip-board mode: Strong README + Paperclip Kanban/org chart + Hermes runtime + Foreman closeout
+```
+
+People who already built Paperclip companies should be able to import them, preserve the useful company structure, and let Foreman upgrade the operating discipline instead of starting over. People who do not want Paperclip should still be able to run the whole Foreman loop inside Hermes from a strong README and local workspace.
 
 ## Resolution Heartbeat
 
@@ -193,7 +203,7 @@ Paperclip should never be mandatory just to keep work moving. If a user wants to
 
 The customer should not feel like they are managing a swarm. Foreman companies should present one responsible operator — a CEO, managing editor, producer, or foreman — who reports to the human, asks for decisions, and shields them from process noise while many agents work behind the curtain.
 
-For Personal Publishing House, that means: drop in a manuscript, choose how far you want the company to take it, and let one accountable publishing operator report back while the system handles editorial review, proofing, metadata, launch planning, reader follow-up, and relaunch work.
+For Little Publishing House, that means: drop in whatever exists — idea, notes, partial draft, finished manuscript, already-edited book, or launch mess — choose how far you want the company to take it, and let one accountable publishing operator report back while the system handles editorial review, proofing, metadata, product pages, direct-sales setup, launch planning, reader follow-up, and relaunch work.
 
 ## Why Foreman Exists
 
