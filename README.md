@@ -41,6 +41,27 @@ Paperclip-board mode: Strong README + Paperclip Kanban/org chart + Hermes runtim
 
 People who already built Paperclip companies should be able to import them, preserve the useful company structure, and let Foreman upgrade the operating discipline instead of starting over. People who do not want Paperclip should still be able to run the whole Foreman loop inside Hermes from a strong README and local workspace.
 
+## Company Packages
+
+### Little Publishing House
+
+Little Publishing House is now the first physical Foreman Company package.
+
+```bash
+./scripts/foreman lph new /tmp/my-book \
+  --title "My Book" \
+  --stage "partial draft" \
+  --mode hermes \
+  --goal "book project map"
+
+./scripts/foreman lph doctor /tmp/my-book
+./scripts/foreman lph heartbeat /tmp/my-book
+```
+
+Use `--mode hermes` when the README/workspace is enough and Hermes will run the work. Use `--mode paperclip` when Paperclip should act as the visible external Kanban/company board.
+
+See [`companies/little-publishing-house/`](companies/little-publishing-house/) and [`companies/little-publishing-house/LIVESTREAM_DEMO.md`](companies/little-publishing-house/LIVESTREAM_DEMO.md).
+
 ## Resolution Heartbeat
 
 Foreman should not just show that work is stuck. Foreman should drain the review queue.

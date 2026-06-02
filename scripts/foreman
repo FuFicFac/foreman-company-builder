@@ -24,11 +24,32 @@ case "$COMMAND" in
   chat)
     exec "$ROOT/scripts/foreman-chat.sh" "$@"
     ;;
+  lph|little-publishing-house)
+    exec python3 "$ROOT/scripts/foreman-lph.py" "$@"
+    ;;
+  company)
+    SUBCOMMAND="${1:-help}"
+    shift || true
+    case "$SUBCOMMAND" in
+      lph|little-publishing-house)
+        exec python3 "$ROOT/scripts/foreman-lph.py" "$@"
+        ;;
+      *)
+        echo "Unknown company command: $SUBCOMMAND" >&2
+        echo "Run: foreman lph --help" >&2
+        exit 1
+        ;;
+    esac
+    ;;
   help|-h|--help)
     cat <<'EOF'
 Foreman CLI
 
 Usage:
+  foreman lph new <project-dir> --title <title> --stage <stage> [--mode hermes|paperclip] [--goal <goal>]
+  foreman lph doctor <project-dir>
+  foreman lph heartbeat <project-dir>
+  foreman company little-publishing-house <command> ...
   foreman press propose --id <tool-id> --name <name> --description <text> --binary <abs-path> --command-name <name>
   foreman press validate <manifest.json>
   foreman press register <manifest.json>
