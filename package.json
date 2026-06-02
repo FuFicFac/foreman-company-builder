@@ -21,6 +21,6 @@
   ],
   "scripts": {
     "fleet-check": "bash scripts/fleet-check.sh",
-    "test": "bash tests/smoke/press-lifecycle.sh && bash tests/smoke/press-invalid-manifest.sh && bash tests/smoke/press-propose-lifecycle.sh"
+    "test": "bash tests/smoke/press-lifecycle.sh && bash tests/smoke/press-invalid-manifest.sh && bash tests/smoke/press-propose-lifecycle.sh && bash tests/smoke/lph-cli-smoke.sh"
   }
 }

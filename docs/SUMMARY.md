@@ -5,6 +5,7 @@
 - [Foreman + Little Publishing House Marketing / Design Brief](marketing-design-brief.md)
 - [Foreman Company Principles](foreman-company-principles.md)
 - [Little Publishing House Package](../companies/little-publishing-house/README.md)
+- [Little Publishing House Livestream Demo](../companies/little-publishing-house/LIVESTREAM_DEMO.md)
 - [Little Publishing House Patreon Tester Plan](../companies/little-publishing-house/PATREON_TEST_PLAN.md)
 - [Little Publishing House First-Day Checklist](little-publishing-house-first-day-checklist.md)
 - [Little Publishing House Product Brief](personal-publishing-house-product-brief.md)
