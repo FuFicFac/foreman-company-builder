@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # foreman wrapper dispatch test — verifies the `foreman` script routes
 # to the correct subcommand handler for every route in its dispatch table.
+# All dispatch tests go THROUGH the wrapper, not directly to target scripts.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -12,27 +13,11 @@ assert_contains() {
   local label="$1"
   local haystack="$2"
   local needle="$3"
-  if echo "$haystack" | grep -q "$needle"; then
+  if echo "$haystack" | grep -qF "$needle"; then
     echo "  ✓ $label"
     PASS=$((PASS + 1))
   else
     echo "  ✗ $label (expected '$needle' in output)"
-    FAIL=$((FAIL + 1))
-  fi
-}
-
-assert_exit() {
-  local label="$1"
-  local expected_exit="$2"
-  shift 2
-  local output
-  output=$("$@" 2>&1 || true)
-  local actual_exit=$?
-  if [ "$actual_exit" -eq "$expected_exit" ]; then
-    echo "  ✓ $label (exit $actual_exit)"
-    PASS=$((PASS + 1))
-  else
-    echo "  ✗ $label (expected exit $expected_exit, got $actual_exit)"
     FAIL=$((FAIL + 1))
   fi
 }
@@ -65,52 +50,51 @@ else
 fi
 assert_contains "unknown command shows error" "$UNKNOWN_OUT" "Unknown command"
 
-# ── each route dispatches to a real script (exit 0 or produce output) ──
-# We test by checking the route doesn't hit the "Unknown command" path
+# ── each route dispatches THROUGH the wrapper ──
+# We call $FOREMAN <subcommand> and verify it reaches the target script
 
-# press: --help should show usage
-PRESS_OUT=$(python3 "$ROOT/scripts/foreman-press.py" --help 2>&1 || true)
-assert_contains "press route has --help" "$PRESS_OUT" "usage:"
+# Use a temp config dir for all dispatch tests to avoid state leakage
+TMPDIR_TEST=$(mktemp -d)
+trap 'rm -rf "$TMPDIR_TEST"' EXIT
+export FOREMAN_CONFIG_DIR="$TMPDIR_TEST"
 
-# tools: list subcommand
-TOOLS_OUT=$(bash "$ROOT/scripts/foreman-tools.sh" list 2>&1 || true)
-# tools list either shows tools or "no tools" — either way it ran
-if echo "$TOOLS_OUT" | grep -qiE "tool|module|no.*tool|installed" 2>/dev/null; then
-  echo "  ✓ tools route dispatches"
+# press: --help should show usage (via wrapper)
+PRESS_OUT=$("$FOREMAN" press --help 2>&1 || true)
+assert_contains "press route dispatches via wrapper" "$PRESS_OUT" "usage:"
+
+# tools: list subcommand (via wrapper)
+TOOLS_OUT=$("$FOREMAN" tools list 2>&1 || true)
+# tools list produces a table header or tool entries — either proves dispatch
+if echo "$TOOLS_OUT" | grep -qiE "^Name|tool|module|No modules|profile|foreman" 2>/dev/null; then
+  echo "  ✓ tools route dispatches via wrapper"
   PASS=$((PASS + 1))
 else
-  # May exit with error if no profile — still proves dispatch worked
-  echo "  ✓ tools route dispatches (produced output)"
-  PASS=$((PASS + 1))
-fi
-
-# init: --yes should produce output (may fail if no CLIs, but dispatch works)
-INIT_OUT=$(zsh "$ROOT/scripts/foreman-init.sh" --yes 2>&1 || true)
-if echo "$INIT_OUT" | grep -qiE "Foreman|Init|Step|profile" 2>/dev/null; then
-  echo "  ✓ init route dispatches"
-  PASS=$((PASS + 1))
-else
-  echo "  ✗ init route failed to produce expected output"
+  echo "  ✗ tools route failed to produce expected output via wrapper"
+  echo "    output was: $TOOLS_OUT"
   FAIL=$((FAIL + 1))
 fi
 
-# issues: list on a temp config dir
-TMPDIR_TEST=$(mktemp -d)
-ISSUES_OUT=$(FOREMAN_CONFIG_DIR="$TMPDIR_TEST" zsh "$ROOT/scripts/foreman-issues.sh" list 2>&1 || true)
-assert_contains "issues route shows Open Issues" "$ISSUES_OUT" "Open Issues"
-rm -rf "$TMPDIR_TEST"
+# init: --yes should produce output (via wrapper)
+INIT_OUT=$("$FOREMAN" init --yes 2>&1 || true)
+if echo "$INIT_OUT" | grep -qiE "Foreman|Init|Step|profile" 2>/dev/null; then
+  echo "  ✓ init route dispatches via wrapper"
+  PASS=$((PASS + 1))
+else
+  echo "  ✗ init route failed to produce expected output via wrapper"
+  FAIL=$((FAIL + 1))
+fi
 
-# run: help should show usage
-RUN_OUT=$(zsh "$ROOT/scripts/foreman-run.sh" help 2>&1 || true)
-assert_contains "run route shows usage" "$RUN_OUT" "Usage:"
+# issues: list on a temp config dir (via wrapper)
+ISSUES_OUT=$("$FOREMAN" issues list 2>&1 || true)
+assert_contains "issues route dispatches via wrapper" "$ISSUES_OUT" "Open Issues"
 
-# lph: --help should show usage
-LPH_OUT=$(python3 "$ROOT/scripts/foreman-lph.py" --help 2>&1 || true)
-assert_contains "lph route has --help" "$LPH_OUT" "usage:"
+# run: help should show usage (via wrapper)
+RUN_OUT=$("$FOREMAN" run help 2>&1 || true)
+assert_contains "run route dispatches via wrapper" "$RUN_OUT" "Usage:"
 
-# company lph: same as lph
-COMPANY_LPH_OUT=$(python3 "$ROOT/scripts/foreman-lph.py" --help 2>&1 || true)
-assert_contains "company lph route works" "$COMPANY_LPH_OUT" "usage:"
+# lph: --help should show usage (via wrapper)
+LPH_OUT=$("$FOREMAN" lph --help 2>&1 || true)
+assert_contains "lph route dispatches via wrapper" "$LPH_OUT" "usage:"
 
 # ── verify all dispatch targets exist as files ──
 for target in \

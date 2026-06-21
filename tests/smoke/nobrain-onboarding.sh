@@ -6,7 +6,6 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 CHAT_SCRIPT="$ROOT/scripts/foreman-chat.sh"
-CATALOG="$ROOT/modules/departments/catalog.json"
 PASS=0
 FAIL=0
 
@@ -16,7 +15,6 @@ trap 'rm -rf "$TMPDIR_TEST"' EXIT
 export FOREMAN_CONFIG_DIR="$TMPDIR_TEST"
 
 # Create a profile with no brain so the fallback triggers
-mkdir -p "$TMPDIR_TEST"
 cat > "$TMPDIR_TEST/profile.json" << 'PROFILE'
 {
   "brain": {"provider": "none", "model": "none"},
@@ -33,11 +31,26 @@ assert_contains() {
   # Strip ANSI escape codes for matching
   local clean_haystack
   clean_haystack=$(echo "$haystack" | sed 's/\x1b\[[0-9;]*m//g')
-  if echo "$clean_haystack" | grep -q "$needle"; then
+  if echo "$clean_haystack" | grep -qF "$needle"; then
     echo "  ✓ $label"
     PASS=$((PASS + 1))
   else
     echo "  ✗ $label (expected '$needle' in output)"
+    FAIL=$((FAIL + 1))
+  fi
+}
+
+assert_persisted() {
+  local label="$1"
+  local expected_type="$2"
+  local project_file="$TMPDIR_TEST/project.json"
+  local actual_type
+  actual_type=$(python3 -c "import json; d=json.load(open('$project_file')); print(d.get('company_type',''))" 2>/dev/null || echo "")
+  if [ "$actual_type" = "$expected_type" ]; then
+    echo "  ✓ $label persisted ($expected_type)"
+    PASS=$((PASS + 1))
+  else
+    echo "  ✗ $label not persisted (expected $expected_type, got '$actual_type')"
     FAIL=$((FAIL + 1))
   fi
 }
@@ -52,20 +65,10 @@ typescript
 https://github.com/test/myapp" | zsh "$CHAT_SCRIPT" --onboard 2>&1 || true)
 assert_contains "software shows company type menu" "$SW_OUT" "Software / app / SaaS"
 assert_contains "software asks for project name" "$SW_OUT" "Project name"
-
-# Verify the company type was set
-SW_TYPE=$(python3 -c "import json; d=json.load(open('$TMPDIR_TEST/projects/unnamed/project.json')); print(d.get('company_type',''))" 2>/dev/null || echo "")
-if [ "$SW_TYPE" = "software" ]; then
-  echo "  ✓ software type saved to project"
-  PASS=$((PASS + 1))
-else
-  echo "  ? software type not saved (got '$SW_TYPE') — onboarding may require more setup"
-  # Not a hard fail — the fallback menu may not complete full onboarding in test mode
-fi
+assert_persisted "software type saved" "software"
 
 # ── Type 2: Physical product ──
 echo "  testing physical_product type..."
-# Reset config for each test
 rm -rf "$TMPDIR_TEST/projects"
 PP_OUT=$(echo "2
 GadgetCo
@@ -74,6 +77,7 @@ shopify
 stocked" | zsh "$CHAT_SCRIPT" --onboard 2>&1 || true)
 assert_contains "physical_product shows menu" "$PP_OUT" "Physical product"
 assert_contains "physical_product asks what you sell" "$PP_OUT" "What do you sell"
+assert_persisted "physical_product type saved" "physical_product"
 
 # ── Type 3: Local service ──
 echo "  testing local_service type..."
@@ -85,6 +89,7 @@ Online
 referrals" | zsh "$CHAT_SCRIPT" --onboard 2>&1 || true)
 assert_contains "local_service shows menu" "$LS_OUT" "Local service"
 assert_contains "local_service asks service type" "$LS_OUT" "Service type"
+assert_persisted "local_service type saved" "local_service"
 
 # ── Type 4: Creator ──
 echo "  testing creator type..."
@@ -96,6 +101,7 @@ video
 weekly" | zsh "$CHAT_SCRIPT" --onboard 2>&1 || true)
 assert_contains "creator shows menu" "$CR_OUT" "Creator / media / content"
 assert_contains "creator asks niche" "$CR_OUT" "Niche"
+assert_persisted "creator type saved" "creator"
 
 # ── Type 5: Publishing ──
 echo "  testing publishing type..."
@@ -112,6 +118,7 @@ assert_contains "publishing shows menu" "$PB_OUT" "Publishing / books"
 assert_contains "publishing asks focus" "$PB_OUT" "Publishing focus"
 assert_contains "publishing asks formats" "$PB_OUT" "Formats"
 assert_contains "publishing asks sell direct" "$PB_OUT" "Sell direct"
+assert_persisted "publishing type saved" "publishing"
 
 # ── Type 6: Education / community ──
 echo "  testing education_community type..."
@@ -123,14 +130,21 @@ skool
 paid-membership" | zsh "$CHAT_SCRIPT" --onboard 2>&1 || true)
 assert_contains "education shows menu" "$ED_OUT" "Education / community"
 assert_contains "education asks topic" "$ED_OUT" "Topic"
+assert_persisted "education_community type saved" "education_community"
 
 # ── Invalid choice ──
 echo "  testing invalid choice..."
-INV_OUT=$(echo "99" | zsh "$CHAT_SCRIPT" --onboard 2>&1 || true)
+INV_OUT=$(echo "99" | zsh "$CHAT_SCRIPT" --onboard 2>&1) && INV_EXIT=0 || INV_EXIT=$?
 assert_contains "invalid choice rejected" "$INV_OUT" "Invalid choice"
+if [ "$INV_EXIT" -ne 0 ]; then
+  echo "  ✓ invalid choice exits non-zero (exit $INV_EXIT)"
+  PASS=$((PASS + 1))
+else
+  echo "  ✗ invalid choice should exit non-zero"
+  FAIL=$((FAIL + 1))
+fi
 
 # ── Verify all 6 types appear in the menu ──
-# Reset state and run one more time to check the full menu is printed
 rm -rf "$TMPDIR_TEST/projects"
 FULL_MENU=$(echo "1
 test

@@ -50,13 +50,14 @@ else:
     if [[ -z "$TITLE" ]]; then
       echo -e "${R}Usage: foreman issues add \"Issue title\"${NC}"; exit 1
     fi
+    TITLE_ESCAPED=$(python3 -c "import json,sys; print(json.dumps(sys.argv[1]))" "$TITLE")
     python3 -c "
 import json, sys
 with open('$ISSUES_FILE') as f:
     data = json.load(f)
 issue = {
     'id': data['next_id'],
-    'title': '''$TITLE''',
+    'title': json.loads(sys.argv[1]),
     'status': 'open',
     'priority': 'normal',
     'assignee': None,
@@ -69,7 +70,7 @@ data['next_id'] += 1
 with open('$ISSUES_FILE', 'w') as f:
     json.dump(data, f, indent=2)
 print(f'  Created issue #{issue[\"id\"]}: {issue[\"title\"]}')
-"
+" "$TITLE_ESCAPED"
     ;;
 
   close)

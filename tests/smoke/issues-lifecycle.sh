@@ -15,7 +15,7 @@ trap 'rm -rf "$TMPDIR_TEST"' EXIT
 export FOREMAN_CONFIG_DIR="$TMPDIR_TEST"
 
 run() {
-  echo "  $ $*" >&2
+  echo "  $*" >&2
   "$@" 2>&1
 }
 
@@ -23,27 +23,11 @@ assert_contains() {
   local label="$1"
   local haystack="$2"
   local needle="$3"
-  if echo "$haystack" | grep -q "$needle"; then
+  if echo "$haystack" | grep -qF "$needle"; then
     echo "  ✓ $label"
     PASS=$((PASS + 1))
   else
     echo "  ✗ $label (expected '$needle' in output)"
-    FAIL=$((FAIL + 1))
-  fi
-}
-
-assert_json_field() {
-  local label="$1"
-  local json_file="$2"
-  local field="$3"
-  local expected="$4"
-  local actual
-  actual=$(python3 -c "import json; d=json.load(open('$json_file')); print(d$expected)" 2>/dev/null || echo "PARSE_ERROR")
-  if [ "$actual" != "PARSE_ERROR" ] && [ "$actual" = "$field" ]; then
-    echo "  ✓ $label"
-    PASS=$((PASS + 1))
-  else
-    echo "  ✗ $label (expected $expected=$field, got $actual)"
     FAIL=$((FAIL + 1))
   fi
 }
@@ -65,6 +49,21 @@ assert_contains "add shows title" "$ADD_OUT" "Fix the homepage bug"
 # ── add issue 2 ──
 ADD2_OUT=$(run zsh "$ISSUES_SCRIPT" add "Write marketing copy")
 assert_contains "add second issue" "$ADD2_OUT" "Created issue #2"
+
+# ── add issue with special characters (security test) ──
+echo "  testing add with special characters..."
+ADD_SPECIAL=$(run zsh "$ISSUES_SCRIPT" add "Fix the user's bug")
+assert_contains "special char add succeeds" "$ADD_SPECIAL" "Created issue #3"
+
+# Verify special char title was saved correctly
+SPECIAL_TITLE=$(python3 -c "import json; d=json.load(open('$TMPDIR_TEST/issues.json')); i=[x for x in d['issues'] if x['id']==3][0]; print(i['title'])" 2>/dev/null || echo "")
+if [ "$SPECIAL_TITLE" = "Fix the user's bug" ]; then
+  echo "  ✓ special char title persisted correctly"
+  PASS=$((PASS + 1))
+else
+  echo "  ✗ special char title not persisted (got '$SPECIAL_TITLE')"
+  FAIL=$((FAIL + 1))
+fi
 
 # ── list with issues ──
 echo "  testing list (populated)..."
@@ -119,7 +118,7 @@ fi
 # ── list no longer shows closed issue ──
 LIST4_OUT=$(run zsh "$ISSUES_SCRIPT" list)
 assert_contains "list still shows open issue 2" "$LIST4_OUT" "#2"
-if echo "$LIST4_OUT" | grep -q "Fix the homepage bug"; then
+if echo "$LIST4_OUT" | grep -qF "Fix the homepage bug"; then
   echo "  ✗ closed issue 1 should not appear in open list"
   FAIL=$((FAIL + 1))
 else
@@ -129,11 +128,11 @@ fi
 
 # ── next_id incremented correctly ──
 NEXT_ID=$(python3 -c "import json; d=json.load(open('$TMPDIR_TEST/issues.json')); print(d['next_id'])" 2>/dev/null || echo "")
-if [ "$NEXT_ID" = "3" ]; then
-  echo "  ✓ next_id is 3"
+if [ "$NEXT_ID" = "4" ]; then
+  echo "  ✓ next_id is 4"
   PASS=$((PASS + 1))
 else
-  echo "  ✗ next_id should be 3 (got '$NEXT_ID')"
+  echo "  ✗ next_id should be 4 (got '$NEXT_ID')"
   FAIL=$((FAIL + 1))
 fi
 
