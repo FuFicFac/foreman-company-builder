@@ -153,6 +153,7 @@ These are fast checks to prove the department is "alive" and aligned.
 ```text
 request → approve → install → smoke-test → document
 ```
+**Loop mode**: `lean` — standard execution loop with inspection gates at workflow stage boundaries.
 
 ### Context packet requirements (tooling/IT runs)
 

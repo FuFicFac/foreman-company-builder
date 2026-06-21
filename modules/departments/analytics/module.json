@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "analytics",
   "version": "1.0.0",
-  "description": "Analytics / Reporting \u2014 KPIs, dashboards, experiment readouts, weekly/monthly reports, and evidence capture.",
+  "description": "Analytics / Reporting — KPIs, dashboards, experiment readouts, weekly/monthly reports, and evidence capture.",
   "purpose": "KPIs, dashboards, experiment readouts, weekly/monthly reports, and evidence capture.",
   "domain": "analytics",
   "capabilities": [
@@ -75,7 +75,11 @@
   ],
   "human_approval_gates": [
     "metric-definition-change",
-    "experiment-ship"
+    "experiment-ship",
+    "Metric definition change",
+    "Experiment ship",
+    "Dashboard/schema deletion",
+    "Public claims derived from data"
   ],
   "context_packet_requirements": [
     "company-brief",
@@ -100,6 +104,36 @@
       "check": "KPI definitions exist for company type",
       "evidence": "kpi-schema",
       "severity": "warning"
+    },
+    {
+      "id": "weekly-report-shipped",
+      "check": "at least one `weekly-report` + `kpi-snapshot` from the current cycle.",
+      "evidence": "weekly-report-shipped",
+      "severity": "info"
+    },
+    {
+      "id": "data-quality-gate-ran",
+      "check": "the most recent report shows a data-quality inspector pass/fail record.",
+      "evidence": "data-quality-gate-ran",
+      "severity": "info"
+    },
+    {
+      "id": "experiment-log-exists",
+      "check": "active experiments with hypothesis, metric, owner, and status.",
+      "evidence": "experiment-log-exists",
+      "severity": "info"
+    },
+    {
+      "id": "next-actions-are-owner-assigned",
+      "check": "the latest report lists 1–3 recommendations with named owners.",
+      "evidence": "next-actions-are-owner-assigned",
+      "severity": "info"
+    },
+    {
+      "id": "source-map-exists",
+      "check": "each KPI traces to a named source and refresh cadence.",
+      "evidence": "source-map-exists",
+      "severity": "info"
     }
   ],
   "company_type_mappings": {

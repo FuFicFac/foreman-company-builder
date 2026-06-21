@@ -146,6 +146,7 @@ These are fast checks to prove the department is "alive" and aligned.
 ```text
 collect-data → validate-quality → synthesize → recommend-actions
 ```
+**Loop mode**: `lean` — standard execution loop with inspection gates at workflow stage boundaries.
 
 ### Context packet requirements (analytics runs)
 

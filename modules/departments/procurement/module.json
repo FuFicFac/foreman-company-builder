@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "procurement",
   "version": "1.0.0",
-  "description": "Procurement / Vendor / Supply Chain \u2014 Vendors, suppliers, inventory, manufacturing, shipping, and fulfillment partners.",
+  "description": "Procurement / Vendor / Supply Chain — Vendors, suppliers, inventory, manufacturing, shipping, and fulfillment partners.",
   "purpose": "Vendors, suppliers, inventory, manufacturing, shipping, and fulfillment partners.",
   "domain": "procurement",
   "capabilities": [
@@ -102,6 +102,36 @@
       "check": "vendor database schema defined",
       "evidence": "vendor-schema",
       "severity": "warning"
+    },
+    {
+      "id": "vendor-record-exists",
+      "check": "at least one active vendor-record with capability, terms, and approval state.",
+      "evidence": "vendor-record-exists",
+      "severity": "info"
+    },
+    {
+      "id": "evaluation-checklist-used",
+      "check": "at least one completed evaluation-checklist with supplier-quality, cost-fit, and lead-time-risk verdicts.",
+      "evidence": "evaluation-checklist-used",
+      "severity": "info"
+    },
+    {
+      "id": "inventory-report-exists",
+      "check": "a current inventory-report mapping active inventory and fulfillment capabilities.",
+      "evidence": "inventory-report-exists",
+      "severity": "info"
+    },
+    {
+      "id": "approval-gates-are-explicit",
+      "check": "vendor-approval, purchase-order, and inventory-writeoff gates are listed and used.",
+      "evidence": "approval-gates-are-explicit",
+      "severity": "info"
+    },
+    {
+      "id": "monitoring-in-place",
+      "check": "active vendors have performance tracking against the evaluation checklist.",
+      "evidence": "monitoring-in-place",
+      "severity": "info"
     }
   ],
   "company_type_mappings": {

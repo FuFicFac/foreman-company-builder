@@ -150,6 +150,7 @@ These are fast checks to prove the department is "alive" and aligned.
 ```text
 submit-claim → risk-classify → approve-or-revise (human gate as needed) → log-decision
 ```
+**Loop mode**: `deluxe` — high-stakes department. Every action runs through enhanced verification gates with mandatory human approval before commit.
 
 For contract and privacy work, mirror the same shape: intake → risk-classify → approve-or-revise (human gate) → log-decision.
 

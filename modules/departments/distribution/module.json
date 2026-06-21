@@ -3,8 +3,8 @@
   "kind": "department",
   "department_slug": "distribution",
   "version": "1.0.0",
-  "description": "Distribution / Channel Management \u2014 Where and how the product reaches customers \u2014 separate from marketing message.",
-  "purpose": "Where and how the product reaches customers \u2014 separate from marketing message.",
+  "description": "Distribution / Channel Management — Where and how the product reaches customers — separate from marketing message.",
+  "purpose": "Where and how the product reaches customers — separate from marketing message.",
   "domain": "distribution",
   "capabilities": [
     "distribution-channels"
@@ -77,7 +77,12 @@
   "human_approval_gates": [
     "new-channel",
     "partner-agreement",
-    "exclusivity-terms"
+    "exclusivity-terms",
+    "New channel",
+    "Partner agreement",
+    "Exclusivity terms",
+    "Listing deletion / channel exit",
+    "Regulated-claim listings"
   ],
   "context_packet_requirements": [
     "company-brief",
@@ -102,6 +107,36 @@
       "check": "active channels documented",
       "evidence": "channel-strategy",
       "severity": "warning"
+    },
+    {
+      "id": "listing-package-exists",
+      "check": "at least one complete `listing-artifacts` set for an active channel.",
+      "evidence": "listing-package-exists",
+      "severity": "info"
+    },
+    {
+      "id": "channel-launch-checklist-exists",
+      "check": "the `channel-checklist` template is defined and has been used.",
+      "evidence": "channel-launch-checklist-exists",
+      "severity": "info"
+    },
+    {
+      "id": "compliance-gate-ran",
+      "check": "the most recent launch shows a compliance-check inspector pass record.",
+      "evidence": "compliance-gate-ran",
+      "severity": "info"
+    },
+    {
+      "id": "per-channel-economics-exist",
+      "check": "each active channel has a margin/contribution estimate.",
+      "evidence": "per-channel-economics-exist",
+      "severity": "info"
+    },
+    {
+      "id": "partner-briefs-exist",
+      "check": "active partners have a `partner-brief` on file.",
+      "evidence": "partner-briefs-exist",
+      "severity": "info"
     }
   ],
   "company_type_mappings": {

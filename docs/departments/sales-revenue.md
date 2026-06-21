@@ -157,6 +157,7 @@ These are fast checks to prove the department is "alive" and aligned.
 ```text
 lead-intake → qualify → proposal → negotiate → close → handoff
 ```
+**Loop mode**: `lean` — standard execution loop with inspection gates at workflow stage boundaries.
 
 ### Context packet requirements (sales runs)
 

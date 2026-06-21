@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "legal-compliance",
   "version": "1.0.0",
-  "description": "Legal / Compliance \u2014 Contracts, licenses, privacy, terms, regulated claims, warranties, and legal escalation.",
+  "description": "Legal / Compliance — Contracts, licenses, privacy, terms, regulated claims, warranties, and legal escalation.",
   "purpose": "Contracts, licenses, privacy, terms, regulated claims, warranties, and legal escalation.",
   "domain": "legal-compliance",
   "capabilities": [
@@ -104,6 +104,42 @@
       "check": "terms/privacy checklist started",
       "evidence": "legal-checklist",
       "severity": "warning"
+    },
+    {
+      "id": "terms-privacy-checklist-started",
+      "check": "a legal-checklist exists covering terms, privacy, and core contract templates.",
+      "evidence": "terms-privacy-checklist-started",
+      "severity": "info"
+    },
+    {
+      "id": "claim-review-record-exists",
+      "check": "at least one recent regulated-claim review with decision, rationale, and review date.",
+      "evidence": "claim-review-record-exists",
+      "severity": "info"
+    },
+    {
+      "id": "templates-versioned",
+      "check": "terms, privacy, and contractor agreement templates exist with version markers.",
+      "evidence": "templates-versioned",
+      "severity": "info"
+    },
+    {
+      "id": "risk-classification-in-use",
+      "check": "active artifacts are tagged with a risk tier and escalation path.",
+      "evidence": "risk-classification-in-use",
+      "severity": "info"
+    },
+    {
+      "id": "approval-gates-are-explicit",
+      "check": "the four human-approval gates are listed and referenced from claim/contract workflows.",
+      "evidence": "approval-gates-are-explicit",
+      "severity": "info"
+    },
+    {
+      "id": "inspector-verdicts-logged",
+      "check": "recent claims-check / ip-license-check / privacy-check / contract-risk verdicts are archived.",
+      "evidence": "inspector-verdicts-logged",
+      "severity": "info"
     }
   ],
   "company_type_mappings": {

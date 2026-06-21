@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "finance",
   "version": "1.0.0",
-  "description": "Finance / Accounting \u2014 Track pricing, revenue, costs, margins, budgets, invoices, taxes, and financial approval gates.",
+  "description": "Finance / Accounting — Track pricing, revenue, costs, margins, budgets, invoices, taxes, and financial approval gates.",
   "purpose": "Track pricing, revenue, costs, margins, budgets, invoices, taxes, and financial approval gates.",
   "domain": "finance",
   "capabilities": [
@@ -80,7 +80,9 @@
     "discount",
     "refund",
     "payroll",
-    "tax-filing"
+    "tax-filing",
+    "Tax filing",
+    "Irreversible financial actions"
   ],
   "context_packet_requirements": [
     "company-brief",
@@ -106,6 +108,36 @@
       "check": "budget policy schema defined",
       "evidence": "budget-policy",
       "severity": "warning"
+    },
+    {
+      "id": "monthly-close-ran",
+      "check": "at least one `margin-report` + `expense-ledger` from the current cycle.",
+      "evidence": "monthly-close-ran",
+      "severity": "info"
+    },
+    {
+      "id": "invoice-log-exists",
+      "check": "issued invoices are tracked with status (paid/overdue).",
+      "evidence": "invoice-log-exists",
+      "severity": "info"
+    },
+    {
+      "id": "approval-gates-are-explicit",
+      "check": "the list of what requires a human (spend, discount, refund, payroll, tax-filing) is documented and used.",
+      "evidence": "approval-gates-are-explicit",
+      "severity": "info"
+    },
+    {
+      "id": "unit-economics-exist",
+      "check": "each product/service has a current margin estimate.",
+      "evidence": "unit-economics-exist",
+      "severity": "info"
+    },
+    {
+      "id": "cashflow-signal-exists",
+      "check": "a current cash position or burn-rate indicator is available.",
+      "evidence": "cashflow-signal-exists",
+      "severity": "info"
     }
   ],
   "company_type_mappings": {

@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "risk-continuity",
   "version": "1.0.0",
-  "description": "Risk / Insurance / Business Continuity \u2014 Operational, platform, financial risk; insurance; backups; continuity plans.",
+  "description": "Risk / Insurance / Business Continuity — Operational, platform, financial risk; insurance; backups; continuity plans.",
   "purpose": "Operational, platform, financial risk; insurance; backups; continuity plans.",
   "domain": "risk-continuity",
   "capabilities": [
@@ -16,7 +16,13 @@
     "Maintain risk register",
     "Classify risks red/yellow/green",
     "Document continuity and backup checklists",
-    "Route insurance and continuity escalations"
+    "Route insurance and continuity escalations",
+    "Risk register maintenance",
+    "Risk classification",
+    "Continuity + backup checklists",
+    "Escalation routing",
+    "Cross-department risk visibility",
+    "Continuity readiness"
   ],
   "workflows": [
     {
@@ -99,6 +105,36 @@
       "check": "risk register initialized",
       "evidence": "risk-register",
       "severity": "warning"
+    },
+    {
+      "id": "classification-standard-exists",
+      "check": "a documented red / yellow / green classification rubric is in use.",
+      "evidence": "classification-standard-exists",
+      "severity": "info"
+    },
+    {
+      "id": "monthly-review-ran",
+      "check": "a risk report from the most recent month exists with new, changed, and resolved risks.",
+      "evidence": "monthly-review-ran",
+      "severity": "info"
+    },
+    {
+      "id": "red-risks-have-owners",
+      "check": "every red risk has a named owner, mitigation, and review date.",
+      "evidence": "red-risks-have-owners",
+      "severity": "info"
+    },
+    {
+      "id": "continuity-plan-exists",
+      "check": "at least one continuity plan and backup checklist are documented and dated.",
+      "evidence": "continuity-plan-exists",
+      "severity": "info"
+    },
+    {
+      "id": "backups-verified",
+      "check": "a backup-verification record exists showing the most recent check, not just a checklist.",
+      "evidence": "backups-verified",
+      "severity": "info"
     }
   ],
   "company_type_mappings": {

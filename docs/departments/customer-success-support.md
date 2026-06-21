@@ -166,6 +166,7 @@ These are fast checks to prove the department is "alive" and aligned.
 Support: intake → triage → resolve → verify → follow-up
 Onboarding: welcome → setup → first-value → check-in
 ```
+**Loop mode**: `lean` — standard execution loop with inspection gates at workflow stage boundaries.
 
 ### Context packet requirements (customer-success runs)
 

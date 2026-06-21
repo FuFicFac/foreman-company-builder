@@ -147,6 +147,7 @@ These are fast checks to prove the department is "alive" and aligned.
 ```text
 dispatch-builder → dispatch-inspector → verdict → fix-or-approve (human gate on three-strike) → evidence-capture
 ```
+**Loop mode**: `deluxe` — high-stakes department. Every action runs through enhanced verification gates with mandatory human approval before commit.
 
 ### Context packet requirements (quality / foreman inspection runs)
 

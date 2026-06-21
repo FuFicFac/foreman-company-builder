@@ -146,6 +146,7 @@ These are fast checks to prove the department is "alive" and aligned.
 ```text
 evaluate → approve (human gate) → contract → integrate → monitor
 ```
+**Loop mode**: `lean` — standard execution loop with inspection gates at workflow stage boundaries.
 
 For purchase-order and inventory work, mirror the same shape: evaluate need → approve PO (human gate) → place order → receive/inspect → log.
 

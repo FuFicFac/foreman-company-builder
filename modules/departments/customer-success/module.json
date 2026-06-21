@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "customer-success",
   "version": "1.0.0",
-  "description": "Customer Success / Support \u2014 Onboarding, support, retention, feedback, refunds, complaints, and renewal flows.",
+  "description": "Customer Success / Support — Onboarding, support, retention, feedback, refunds, complaints, and renewal flows.",
   "purpose": "Onboarding, support, retention, feedback, refunds, complaints, and renewal flows.",
   "domain": "customer-success",
   "capabilities": [
@@ -96,7 +96,11 @@
   "human_approval_gates": [
     "refund",
     "exception-policy",
-    "account-credit"
+    "account-credit",
+    "Exception policy",
+    "Account credit",
+    "Account closure / data deletion",
+    "Public response to a complaint"
   ],
   "context_packet_requirements": [
     "company-brief",
@@ -121,6 +125,36 @@
       "check": "support intake fields defined",
       "evidence": "ticket-schema",
       "severity": "warning"
+    },
+    {
+      "id": "onboarding-checklist-exists",
+      "check": "a template checklist exists and has been used at least once.",
+      "evidence": "onboarding-checklist-exists",
+      "severity": "info"
+    },
+    {
+      "id": "sla-policy-exists",
+      "check": "documented SLA targets per ticket category.",
+      "evidence": "sla-policy-exists",
+      "severity": "info"
+    },
+    {
+      "id": "recent-tickets-have-resolution-summaries",
+      "check": "last 5 closed tickets each have a `resolution-summary`.",
+      "evidence": "recent-tickets-have-resolution-summaries",
+      "severity": "info"
+    },
+    {
+      "id": "feedback-summary-exists",
+      "check": "at least one structured `feedback-summary` from the current cycle.",
+      "evidence": "feedback-summary-exists",
+      "severity": "info"
+    },
+    {
+      "id": "refundexception-log-exists",
+      "check": "refunds and exceptions are logged with approver and amount.",
+      "evidence": "refundexception-log-exists",
+      "severity": "info"
     }
   ],
   "company_type_mappings": {

@@ -158,6 +158,7 @@ These are fast checks to prove the department is "alive" and aligned.
 ```text
 brief → positioning → copy-draft → creative-direction → launch (human gate) → performance-review
 ```
+**Loop mode**: `lean` — standard execution loop with inspection gates at workflow stage boundaries.
 
 ### Context packet requirements (marketing runs)
 

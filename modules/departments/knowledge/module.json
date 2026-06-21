@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "knowledge",
   "version": "1.0.0",
-  "description": "Knowledge / Documentation \u2014 Living source of truth: SOPs, decisions, customer insights, product facts, tool docs, runbooks.",
+  "description": "Knowledge / Documentation — Living source of truth: SOPs, decisions, customer insights, product facts, tool docs, runbooks.",
   "purpose": "Living source of truth: SOPs, decisions, customer insights, product facts, tool docs, runbooks.",
   "domain": "knowledge",
   "capabilities": [
@@ -74,7 +74,11 @@
   ],
   "human_approval_gates": [
     "canonical-doc-change",
-    "archive-doc"
+    "archive-doc",
+    "Canonical doc change",
+    "Archive doc",
+    "Wiki restructure",
+    "Public publish of internal docs"
   ],
   "context_packet_requirements": [
     "company-brief",
@@ -105,6 +109,30 @@
       "check": "decision log accessible",
       "evidence": "decision-log",
       "severity": "warning"
+    },
+    {
+      "id": "artifact-index-exists",
+      "check": "an `artifact-index` lists canonical artifacts with owners.",
+      "evidence": "artifact-index-exists",
+      "severity": "info"
+    },
+    {
+      "id": "freshness-sweep-ran",
+      "check": "at least one `freshness-report` from the current cycle.",
+      "evidence": "freshness-sweep-ran",
+      "severity": "info"
+    },
+    {
+      "id": "link-integrity-gate-ran",
+      "check": "the most recent sweep shows a link-integrity inspector pass record.",
+      "evidence": "link-integrity-gate-ran",
+      "severity": "info"
+    },
+    {
+      "id": "owners-assigned",
+      "check": "stale artifacts from the last sweep have named owners, not \"unassigned\".",
+      "evidence": "owners-assigned",
+      "severity": "info"
     }
   ],
   "company_type_mappings": {

@@ -150,6 +150,7 @@ These are fast checks to prove the department is "alive" and aligned.
 ```text
 brief → engage (human gate) → deliverable-review → payment-handoff → offboard (human gate)
 ```
+**Loop mode**: `lean` — standard execution loop with inspection gates at workflow stage boundaries.
 
 ### Context packet requirements (people / contractors runs)
 
