@@ -26,6 +26,20 @@
 - [Executive / Strategy](departments/executive-strategy.md)
 - [Product / Service Delivery](departments/product-service-delivery.md)
 - [Operations / SOPs](departments/operations-sops.md)
+- [Marketing](departments/marketing.md)
+- [Sales / Revenue](departments/sales-revenue.md)
+- [Customer Success / Support](departments/customer-success-support.md)
+- [Finance / Accounting](departments/finance-accounting.md)
+- [Legal / Compliance](departments/legal-compliance.md)
+- [People / Contractors](departments/people-contractors.md)
+- [Analytics / Reporting](departments/analytics-reporting.md)
+- [Tooling / IT / Security](departments/tooling-it-security.md)
+- [Quality / Foreman Inspection](departments/quality-foreman-inspection.md)
+- [Research / Intelligence](departments/research-intelligence.md)
+- [Procurement / Vendor / Supply Chain](departments/procurement-vendor-supply-chain.md)
+- [Distribution / Channel Management](departments/distribution-channel-management.md)
+- [Risk / Insurance / Business Continuity](departments/risk-insurance-business-continuity.md)
+- [Knowledge / Documentation](departments/knowledge-documentation.md)
 
 ## Guides
 
