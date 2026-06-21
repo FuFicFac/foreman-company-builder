@@ -24,6 +24,15 @@ case "$COMMAND" in
   chat)
     exec "$ROOT/scripts/foreman-chat.sh" "$@"
     ;;
+  run|runs)
+    exec "$ROOT/scripts/foreman-run.sh" "$@"
+    ;;
+  update)
+    exec "$ROOT/scripts/foreman-update.sh" "$@"
+    ;;
+  fleet|fleet-check)
+    exec "$ROOT/scripts/fleet-check.sh" "$@"
+    ;;
   lph|little-publishing-house)
     exec python3 "$ROOT/scripts/foreman-lph.py" "$@"
     ;;
@@ -46,16 +55,17 @@ case "$COMMAND" in
 Foreman CLI
 
 Usage:
-  foreman lph new <project-dir> --title <title> --stage <stage> [--mode hermes|paperclip] [--goal <goal>]
-  foreman lph doctor <project-dir>
-  foreman lph heartbeat <project-dir>
-  foreman company little-publishing-house <command> ...
-  foreman press propose --id <tool-id> --name <name> --description <text> --binary <abs-path> --command-name <name>
-  foreman press validate <manifest.json>
-  foreman press register <manifest.json>
-  foreman press list
-  foreman press inspect <tool-id>
+  foreman init
+  foreman chat
+  foreman module [args]
   foreman tools [doctor|list|search|install|manifest]
+  foreman issues
+  foreman run <command> [args]
+  foreman update
+  foreman fleet
+  foreman lph <command> [args]
+  foreman company little-publishing-house <command> ...
+  foreman press propose|validate|register|list|inspect [args]
 EOF
     ;;
   *)
