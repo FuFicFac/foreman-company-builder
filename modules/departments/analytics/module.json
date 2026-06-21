@@ -1,0 +1,138 @@
+{
+  "name": "analytics",
+  "kind": "department",
+  "department_slug": "analytics",
+  "version": "1.0.0",
+  "description": "Analytics / Reporting \u2014 KPIs, dashboards, experiment readouts, weekly/monthly reports, and evidence capture.",
+  "purpose": "KPIs, dashboards, experiment readouts, weekly/monthly reports, and evidence capture.",
+  "domain": "analytics",
+  "capabilities": [
+    "analytics-reporting"
+  ],
+  "required_capabilities": [
+    "analytics-reporting"
+  ],
+  "universal_responsibilities": [
+    "Define KPI schema per company type",
+    "Produce recurring reports",
+    "Run experiment analysis protocol",
+    "Flag data quality issues",
+    "Recommend next actions from metrics"
+  ],
+  "workflows": [
+    {
+      "id": "weekly-report",
+      "name": "Weekly metrics report",
+      "stages": [
+        "collect-data",
+        "validate-quality",
+        "synthesize",
+        "recommend-actions"
+      ],
+      "trigger": "recurring-weekly",
+      "evidence": [
+        "weekly-report",
+        "kpi-snapshot"
+      ]
+    }
+  ],
+  "inspectors": [
+    "data-quality",
+    "conclusion-validity",
+    "next-action-clarity"
+  ],
+  "builders": [
+    "kpi-dashboard",
+    "experiment-readout",
+    "monthly-report"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "collect-data",
+    "validate-quality",
+    "synthesize",
+    "recommend-actions"
+  ],
+  "roles": [
+    "analytics-lead",
+    "data-analyst",
+    "experiment-owner"
+  ],
+  "human_approval_gates": [
+    "metric-definition-change",
+    "experiment-ship"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "data-quality",
+    "conclusion-validity",
+    "next-action-clarity",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "kpi-schema",
+      "check": "KPI definitions exist for company type",
+      "evidence": "kpi-schema",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "required",
+      "notes": "Activation, retention, MRR, error rates"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Sales velocity, returns, inventory turns"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Bookings, utilization, reviews"
+    },
+    "creator": {
+      "relevance": "required",
+      "notes": "Views, CTR, sponsorship conversion"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Sales, read-through, ad ROAS"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Enrollment, completion, engagement"
+    }
+  },
+  "tool_manifest": {
+    "analytics-reporting": [
+      "google-ads",
+      "dub",
+      "company-goat"
+    ]
+  }
+}

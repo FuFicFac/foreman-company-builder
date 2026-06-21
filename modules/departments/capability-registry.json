@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "description": "Canonical FCB capability IDs for department composition",
+  "capabilities": {
+    "strategic-planning": "Mission, goals, priorities, decision rights, escalation policy",
+    "product-delivery": "Create and ship the core product or service",
+    "operations-sop": "Procedures, checklists, schedules, handoffs, fulfillment",
+    "marketing": "Positioning, copy, campaigns, SEO, social, ads, CRO",
+    "sales-revenue": "Leads, pipeline, proposals, closing, CRM, partnerships",
+    "customer-success": "Onboarding, support, retention, feedback, refunds",
+    "finance-accounting": "Pricing, revenue, costs, budgets, invoices, unit economics",
+    "legal-compliance": "Contracts, privacy, terms, regulated claims, licenses",
+    "people-contractors": "Hiring, onboarding, contractor management, offboarding",
+    "analytics-reporting": "KPIs, dashboards, experiments, operational metrics",
+    "tooling-it-security": "Accounts, integrations, credentials, access, smoke tests",
+    "quality-inspection": "Builder-inspector loops, evidence, Foreman arbitration",
+    "research-intelligence": "Market, competitor, and customer research synthesis",
+    "procurement-supply": "Vendors, inventory, manufacturing, fulfillment partners",
+    "distribution-channels": "Marketplaces, partners, channel strategy",
+    "risk-continuity": "Risk register, insurance, business continuity",
+    "knowledge-documentation": "Wiki, SOPs, decision log, artifact index",
+    "editorial": "Content creation and editorial production",
+    "metadata": "Titles, descriptions, categorization, SEO metadata",
+    "digital-commerce": "Storefront, payments, product pages",
+    "email-marketing": "Newsletters, sequences, list growth",
+    "audience-growth": "Community, social, audience development",
+    "launch-operations": "Launch planning, coordination, go-live",
+    "software-development": "Code, tests, deploy, refactor",
+    "security-review": "Security inspection and hardening",
+    "deployment": "Release and infrastructure deployment"
+  }
+}

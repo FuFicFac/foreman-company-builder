@@ -1,0 +1,138 @@
+{
+  "name": "quality-inspection",
+  "kind": "department",
+  "department_slug": "quality-inspection",
+  "version": "1.0.0",
+  "description": "Quality / Foreman Inspection \u2014 Core Foreman discipline: builder \u2192 inspector \u2192 Foreman arbitration \u2192 fix loop \u2192 evidence.",
+  "purpose": "Core Foreman discipline: builder \u2192 inspector \u2192 Foreman arbitration \u2192 fix loop \u2192 evidence.",
+  "domain": "quality-inspection",
+  "capabilities": [
+    "quality-inspection"
+  ],
+  "required_capabilities": [
+    "quality-inspection"
+  ],
+  "universal_responsibilities": [
+    "Route work to appropriate inspectors",
+    "Enforce evidence standards on all deliverables",
+    "Run three-strike escalation protocol",
+    "Arbitrate inspector disagreements",
+    "Perform closeout sweep before marking work done"
+  ],
+  "workflows": [
+    {
+      "id": "inspection-loop",
+      "name": "Foreman inspection loop",
+      "stages": [
+        "dispatch-builder",
+        "dispatch-inspector",
+        "verdict",
+        "fix-or-approve",
+        "evidence-capture"
+      ],
+      "trigger": "inspectable-work",
+      "evidence": [
+        "inspection-verdict",
+        "artifact-index"
+      ]
+    }
+  ],
+  "inspectors": [
+    "foreman-arbitrator",
+    "evidence-auditor",
+    "closeout-sweep"
+  ],
+  "builders": [],
+  "loop_mode": "deluxe",
+  "high_stakes_loop": "deluxe",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "dispatch-builder",
+    "dispatch-inspector",
+    "verdict",
+    "fix-or-approve",
+    "evidence-capture"
+  ],
+  "roles": [
+    "foreman",
+    "inspector-router",
+    "evidence-auditor"
+  ],
+  "human_approval_gates": [
+    "three-strike-escalation",
+    "force-close",
+    "waive-inspection"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "foreman-arbitrator",
+    "evidence-auditor",
+    "closeout-sweep",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "inspection-standards",
+      "check": "inspection_standards defined on active module",
+      "evidence": "module.json",
+      "severity": "blocker"
+    },
+    {
+      "id": "escalation-policy-linked",
+      "check": "three-strike policy referenced",
+      "evidence": "escalation-protocol",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "required",
+      "notes": "Code review, security, test gates"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "QC, spec compliance"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Service quality, customer promise"
+    },
+    "creator": {
+      "relevance": "required",
+      "notes": "Content quality, brand fit"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Editorial inspection personas"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Curriculum quality, accuracy"
+    }
+  },
+  "tool_manifest": {}
+}

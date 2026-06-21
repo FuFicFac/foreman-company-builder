@@ -1,0 +1,147 @@
+{
+  "name": "finance",
+  "kind": "department",
+  "department_slug": "finance",
+  "version": "1.0.0",
+  "description": "Finance / Accounting \u2014 Track pricing, revenue, costs, margins, budgets, invoices, taxes, and financial approval gates.",
+  "purpose": "Track pricing, revenue, costs, margins, budgets, invoices, taxes, and financial approval gates.",
+  "domain": "finance",
+  "capabilities": [
+    "finance-accounting"
+  ],
+  "required_capabilities": [
+    "finance-accounting"
+  ],
+  "universal_responsibilities": [
+    "Maintain budget and unit economics",
+    "Record revenue and expense events",
+    "Issue invoices and track payments",
+    "Enforce spend and discount approval gates",
+    "Report margin and cashflow health"
+  ],
+  "workflows": [
+    {
+      "id": "monthly-close",
+      "name": "Monthly financial close",
+      "stages": [
+        "reconcile",
+        "margin-report",
+        "flag-anomalies",
+        "approval-summary"
+      ],
+      "trigger": "recurring-monthly",
+      "evidence": [
+        "margin-report",
+        "expense-ledger"
+      ]
+    }
+  ],
+  "inspectors": [
+    "margin-check",
+    "cashflow-risk",
+    "policy-compliance",
+    "missing-data"
+  ],
+  "builders": [
+    "invoice",
+    "budget-memo",
+    "margin-report"
+  ],
+  "loop_mode": "deluxe",
+  "high_stakes_loop": "deluxe",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "reconcile",
+    "margin-report",
+    "flag-anomalies",
+    "approval-summary"
+  ],
+  "roles": [
+    "finance-lead",
+    "bookkeeper",
+    "pricing-analyst"
+  ],
+  "human_approval_gates": [
+    "spend",
+    "discount",
+    "refund",
+    "payroll",
+    "tax-filing"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "margin-check",
+    "cashflow-risk",
+    "policy-compliance",
+    "missing-data",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "budget-policy",
+      "check": "budget policy schema defined",
+      "evidence": "budget-policy",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "required",
+      "notes": "SaaS metrics, infra costs, contractor spend"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "COGS, inventory, shipping costs"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Labor, materials, local tax"
+    },
+    "creator": {
+      "relevance": "recommended",
+      "notes": "Ad spend, platform revenue, sponsorship income"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Royalties, print costs, direct sales"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Course revenue, platform fees, refunds"
+    }
+  },
+  "tool_manifest": {
+    "finance-accounting": [
+      "stripe",
+      "shopify"
+    ],
+    "digital-commerce": [
+      "stripe",
+      "gumroad"
+    ]
+  }
+}

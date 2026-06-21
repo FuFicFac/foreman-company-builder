@@ -1,0 +1,145 @@
+{
+  "name": "people",
+  "kind": "department",
+  "department_slug": "people",
+  "version": "1.0.0",
+  "description": "People / Contractors \u2014 Role definitions, hiring briefs, onboarding, contractor packets, deliverable review, and offboarding.",
+  "purpose": "Role definitions, hiring briefs, onboarding, contractor packets, deliverable review, and offboarding.",
+  "domain": "people",
+  "capabilities": [
+    "people-contractors"
+  ],
+  "required_capabilities": [
+    "people-contractors"
+  ],
+  "universal_responsibilities": [
+    "Define role profiles and hiring briefs",
+    "Onboard employees and contractors",
+    "Review deliverables against briefs",
+    "Coordinate payment handoff to finance",
+    "Offboard with access revocation checklist"
+  ],
+  "workflows": [
+    {
+      "id": "contractor-engagement",
+      "name": "Contractor engagement",
+      "stages": [
+        "brief",
+        "engage",
+        "deliverable-review",
+        "payment-handoff",
+        "offboard"
+      ],
+      "trigger": "new-contractor",
+      "evidence": [
+        "contractor-brief",
+        "review-record",
+        "offboarding-checklist"
+      ]
+    }
+  ],
+  "inspectors": [
+    "role-clarity",
+    "deliverable-quality",
+    "access-security"
+  ],
+  "builders": [
+    "role-profile",
+    "hiring-brief",
+    "contractor-packet"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "brief",
+    "engage",
+    "deliverable-review",
+    "payment-handoff",
+    "offboard"
+  ],
+  "roles": [
+    "people-lead",
+    "hiring-manager",
+    "contractor-coordinator"
+  ],
+  "human_approval_gates": [
+    "hire",
+    "contractor-engagement",
+    "termination",
+    "access-grant"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "role-clarity",
+    "deliverable-quality",
+    "access-security",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "role-profiles",
+      "check": "core role profiles exist",
+      "evidence": "role-profile-index",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "recommended",
+      "notes": "Engineering contractors, access control"
+    },
+    "physical_product": {
+      "relevance": "recommended",
+      "notes": "Manufacturing partners, designers"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Field staff, subcontractors"
+    },
+    "creator": {
+      "relevance": "recommended",
+      "notes": "Editors, designers, video crew"
+    },
+    "publishing": {
+      "relevance": "recommended",
+      "notes": "Editors, cover artists, narrators"
+    },
+    "education_community": {
+      "relevance": "recommended",
+      "notes": "Instructors, moderators, TAs"
+    }
+  },
+  "tool_manifest": {
+    "people-contractors": [
+      "notion",
+      "linear"
+    ]
+  },
+  "depends_on_departments": [
+    "tooling-it"
+  ]
+}

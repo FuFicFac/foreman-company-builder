@@ -1,0 +1,140 @@
+{
+  "name": "legal-compliance",
+  "kind": "department",
+  "department_slug": "legal-compliance",
+  "version": "1.0.0",
+  "description": "Legal / Compliance \u2014 Contracts, licenses, privacy, terms, regulated claims, warranties, and legal escalation.",
+  "purpose": "Contracts, licenses, privacy, terms, regulated claims, warranties, and legal escalation.",
+  "domain": "legal-compliance",
+  "capabilities": [
+    "legal-compliance"
+  ],
+  "required_capabilities": [
+    "legal-compliance"
+  ],
+  "universal_responsibilities": [
+    "Maintain terms, privacy, and contract templates",
+    "Classify legal and compliance risks",
+    "Gate regulated claims and ad compliance",
+    "Review IP, license, and employment/contractor risk",
+    "Route human/legal escalation when needed"
+  ],
+  "workflows": [
+    {
+      "id": "claim-review",
+      "name": "Regulated claim review",
+      "stages": [
+        "submit-claim",
+        "risk-classify",
+        "approve-or-revise",
+        "log-decision"
+      ],
+      "trigger": "external-facing-claim",
+      "evidence": [
+        "claim-review-record"
+      ]
+    }
+  ],
+  "inspectors": [
+    "claims-check",
+    "ip-license-check",
+    "privacy-check",
+    "contract-risk"
+  ],
+  "builders": [
+    "terms-draft",
+    "contract-checklist",
+    "risk-memo"
+  ],
+  "loop_mode": "deluxe",
+  "high_stakes_loop": "deluxe",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "submit-claim",
+    "risk-classify",
+    "approve-or-revise",
+    "log-decision"
+  ],
+  "roles": [
+    "compliance-lead",
+    "contract-reviewer",
+    "privacy-officer"
+  ],
+  "human_approval_gates": [
+    "regulated-claim",
+    "contract-signature",
+    "privacy-policy-change",
+    "legal-escalation"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "claims-check",
+    "ip-license-check",
+    "privacy-check",
+    "contract-risk",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "terms-exist",
+      "check": "terms/privacy checklist started",
+      "evidence": "legal-checklist",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "required",
+      "notes": "SaaS terms, data privacy, OSS licenses"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Warranties, safety, labeling claims"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Licensing, liability, local regulations"
+    },
+    "creator": {
+      "relevance": "recommended",
+      "notes": "Platform ToS, sponsorship disclosures"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Copyright, ISBN, distribution agreements"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "COPPA/FERPA-adjacent, certification claims"
+    }
+  },
+  "tool_manifest": {
+    "legal-compliance": [
+      "notion"
+    ]
+  }
+}

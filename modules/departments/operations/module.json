@@ -1,0 +1,158 @@
+{
+  "name": "operations",
+  "kind": "department",
+  "department_slug": "operations",
+  "version": "1.0.0",
+  "description": "Operations / SOPs \u2014 Turn repeated work into procedures, checklists, schedules, handoffs, vendor coordination, and repair loops.",
+  "purpose": "Turn repeated work into procedures, checklists, schedules, handoffs, vendor coordination, and repair loops.",
+  "domain": "operations",
+  "capabilities": [
+    "operations-sop"
+  ],
+  "required_capabilities": [
+    "operations-sop"
+  ],
+  "universal_responsibilities": [
+    "Author and maintain SOPs and runbooks",
+    "Define recurring task schedules",
+    "Manage handoff checklists between departments",
+    "Coordinate vendors and fulfillment flows",
+    "Escalate blocked operational work"
+  ],
+  "workflows": [
+    {
+      "id": "sop-lifecycle",
+      "name": "SOP authoring and refresh",
+      "stages": [
+        "draft",
+        "review",
+        "publish",
+        "schedule-refresh"
+      ],
+      "trigger": "new-or-stale-sop",
+      "evidence": [
+        "sop-document",
+        "refresh-date"
+      ]
+    },
+    {
+      "id": "handoff",
+      "name": "Cross-department handoff",
+      "stages": [
+        "prepare-packet",
+        "transfer",
+        "acknowledge",
+        "verify-complete"
+      ],
+      "trigger": "stage-complete",
+      "evidence": [
+        "handoff-checklist"
+      ]
+    }
+  ],
+  "inspectors": [
+    "sop-clarity",
+    "handoff-completeness",
+    "schedule-coverage"
+  ],
+  "builders": [
+    "sop-draft",
+    "runbook",
+    "recurring-task-setup"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "draft",
+    "review",
+    "publish",
+    "schedule-refresh",
+    "prepare-packet",
+    "transfer",
+    "acknowledge",
+    "verify-complete"
+  ],
+  "roles": [
+    "operations-lead",
+    "sop-author",
+    "scheduler",
+    "vendor-coordinator"
+  ],
+  "human_approval_gates": [
+    "sop-publish",
+    "vendor-contract",
+    "process-change"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "sop-clarity",
+    "handoff-completeness",
+    "schedule-coverage",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "core-sops",
+      "check": "at least one SOP per recurring workflow",
+      "evidence": "sop-index",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "recommended",
+      "notes": "Release ops, on-call, incident response"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Fulfillment, inventory, shipping SOPs"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Booking, dispatch, service delivery checklists"
+    },
+    "creator": {
+      "relevance": "recommended",
+      "notes": "Publishing cadence, asset management"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Editorial handoffs, vendor coordination"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Cohort ops, moderation, event runbooks"
+    }
+  },
+  "tool_manifest": {
+    "operations-sop": [
+      "notion",
+      "linear",
+      "slack"
+    ]
+  }
+}

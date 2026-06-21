@@ -1,0 +1,143 @@
+{
+  "name": "distribution",
+  "kind": "department",
+  "department_slug": "distribution",
+  "version": "1.0.0",
+  "description": "Distribution / Channel Management \u2014 Where and how the product reaches customers \u2014 separate from marketing message.",
+  "purpose": "Where and how the product reaches customers \u2014 separate from marketing message.",
+  "domain": "distribution",
+  "capabilities": [
+    "distribution-channels"
+  ],
+  "required_capabilities": [
+    "distribution-channels"
+  ],
+  "universal_responsibilities": [
+    "Define channel strategy",
+    "Manage marketplace and platform listings",
+    "Coordinate partner and channel managers",
+    "Maintain distribution tool manifest"
+  ],
+  "workflows": [
+    {
+      "id": "channel-launch",
+      "name": "New channel launch",
+      "stages": [
+        "evaluate-channel",
+        "setup-listing",
+        "verify-compliance",
+        "go-live",
+        "monitor"
+      ],
+      "trigger": "new-channel",
+      "evidence": [
+        "channel-checklist",
+        "listing-artifacts"
+      ]
+    }
+  ],
+  "inspectors": [
+    "channel-fit",
+    "listing-completeness",
+    "compliance-check"
+  ],
+  "builders": [
+    "channel-strategy",
+    "listing-package",
+    "partner-brief"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "evaluate-channel",
+    "setup-listing",
+    "verify-compliance",
+    "go-live",
+    "monitor"
+  ],
+  "roles": [
+    "distribution-lead",
+    "channel-manager",
+    "marketplace-specialist"
+  ],
+  "human_approval_gates": [
+    "new-channel",
+    "partner-agreement",
+    "exclusivity-terms"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "channel-fit",
+    "listing-completeness",
+    "compliance-check",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "channel-map",
+      "check": "active channels documented",
+      "evidence": "channel-strategy",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "recommended",
+      "notes": "App stores, marketplaces, resellers"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Retail, Amazon, wholesale"
+    },
+    "local_service": {
+      "relevance": "recommended",
+      "notes": "Directories, partnerships"
+    },
+    "creator": {
+      "relevance": "required",
+      "notes": "YouTube, podcasts, syndication"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "KDP, Ingram, direct, audio"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "LMS, Udemy, own platform"
+    }
+  },
+  "tool_manifest": {
+    "distribution-channels": [
+      "shopify",
+      "gumroad"
+    ],
+    "digital-commerce": [
+      "shopify",
+      "stripe"
+    ]
+  }
+}

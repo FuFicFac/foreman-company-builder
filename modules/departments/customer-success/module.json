@@ -1,0 +1,158 @@
+{
+  "name": "customer-success",
+  "kind": "department",
+  "department_slug": "customer-success",
+  "version": "1.0.0",
+  "description": "Customer Success / Support \u2014 Onboarding, support, retention, feedback, refunds, complaints, and renewal flows.",
+  "purpose": "Onboarding, support, retention, feedback, refunds, complaints, and renewal flows.",
+  "domain": "customer-success",
+  "capabilities": [
+    "customer-success"
+  ],
+  "required_capabilities": [
+    "customer-success"
+  ],
+  "universal_responsibilities": [
+    "Onboard new customers with checklists",
+    "Handle support tickets and SLA tracking",
+    "Capture feedback and retention signals",
+    "Process refunds and escalations per policy",
+    "Identify expansion and renewal opportunities"
+  ],
+  "workflows": [
+    {
+      "id": "support-ticket",
+      "name": "Support ticket lifecycle",
+      "stages": [
+        "intake",
+        "triage",
+        "resolve",
+        "verify",
+        "follow-up"
+      ],
+      "trigger": "customer-contact",
+      "evidence": [
+        "ticket-record",
+        "resolution-summary"
+      ]
+    },
+    {
+      "id": "onboarding",
+      "name": "Customer onboarding",
+      "stages": [
+        "welcome",
+        "setup",
+        "first-value",
+        "check-in"
+      ],
+      "trigger": "new-customer",
+      "evidence": [
+        "onboarding-checklist"
+      ]
+    }
+  ],
+  "inspectors": [
+    "response-quality",
+    "sla-risk",
+    "retention-opportunity"
+  ],
+  "builders": [
+    "onboarding-checklist",
+    "support-response",
+    "feedback-summary"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "intake",
+    "triage",
+    "resolve",
+    "verify",
+    "follow-up",
+    "welcome",
+    "setup",
+    "first-value",
+    "check-in"
+  ],
+  "roles": [
+    "support-lead",
+    "onboarding-specialist",
+    "retention-analyst"
+  ],
+  "human_approval_gates": [
+    "refund",
+    "exception-policy",
+    "account-credit"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "response-quality",
+    "sla-risk",
+    "retention-opportunity",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "intake-schema",
+      "check": "support intake fields defined",
+      "evidence": "ticket-schema",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "required",
+      "notes": "SaaS support, churn prevention"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Returns, warranty, shipping issues"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Service complaints, rebooking"
+    },
+    "creator": {
+      "relevance": "recommended",
+      "notes": "Community support, patron relations"
+    },
+    "publishing": {
+      "relevance": "recommended",
+      "notes": "Reader support, direct sales issues"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Student support, community moderation handoff"
+    }
+  },
+  "tool_manifest": {
+    "customer-success": [
+      "slack",
+      "notion"
+    ]
+  }
+}

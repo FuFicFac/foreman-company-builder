@@ -1,0 +1,142 @@
+{
+  "name": "knowledge",
+  "kind": "department",
+  "department_slug": "knowledge",
+  "version": "1.0.0",
+  "description": "Knowledge / Documentation \u2014 Living source of truth: SOPs, decisions, customer insights, product facts, tool docs, runbooks.",
+  "purpose": "Living source of truth: SOPs, decisions, customer insights, product facts, tool docs, runbooks.",
+  "domain": "knowledge",
+  "capabilities": [
+    "knowledge-documentation"
+  ],
+  "required_capabilities": [
+    "knowledge-documentation"
+  ],
+  "universal_responsibilities": [
+    "Maintain company wiki structure",
+    "Index artifacts and decision log",
+    "Run documentation freshness checks",
+    "Connect knowledge to department workflows"
+  ],
+  "workflows": [
+    {
+      "id": "doc-refresh",
+      "name": "Documentation freshness sweep",
+      "stages": [
+        "scan-stale",
+        "assign-owners",
+        "update",
+        "verify-index"
+      ],
+      "trigger": "recurring-monthly",
+      "evidence": [
+        "artifact-index",
+        "freshness-report"
+      ]
+    }
+  ],
+  "inspectors": [
+    "freshness-check",
+    "link-integrity",
+    "findability"
+  ],
+  "builders": [
+    "wiki-page",
+    "decision-log-entry",
+    "artifact-index-update"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "scan-stale",
+    "assign-owners",
+    "update",
+    "verify-index"
+  ],
+  "roles": [
+    "knowledge-lead",
+    "doc-owner",
+    "wiki-curator"
+  ],
+  "human_approval_gates": [
+    "canonical-doc-change",
+    "archive-doc"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "freshness-check",
+    "link-integrity",
+    "findability",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "wiki-structure",
+      "check": "wiki structure defined",
+      "evidence": "wiki-index",
+      "severity": "warning"
+    },
+    {
+      "id": "decision-log",
+      "check": "decision log accessible",
+      "evidence": "decision-log",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "required",
+      "notes": "Architecture docs, runbooks, ADRs"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Specs, supplier docs, compliance"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Service playbooks, customer notes"
+    },
+    "creator": {
+      "relevance": "recommended",
+      "notes": "Brand bible, content calendar archive"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Series bible, style guide, canon"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Curriculum docs, community guidelines"
+    }
+  },
+  "tool_manifest": {
+    "knowledge-documentation": [
+      "notion",
+      "wikipedia"
+    ]
+  }
+}

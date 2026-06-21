@@ -1,0 +1,169 @@
+{
+  "name": "executive",
+  "kind": "department",
+  "department_slug": "executive",
+  "version": "1.0.0",
+  "description": "Executive / Strategy \u2014 Define mission, business model, goals, decision rights, escalation policy, and operating cadence.",
+  "purpose": "Define mission, business model, goals, decision rights, escalation policy, and operating cadence.",
+  "domain": "executive",
+  "capabilities": [
+    "strategic-planning"
+  ],
+  "required_capabilities": [
+    "strategic-planning"
+  ],
+  "universal_responsibilities": [
+    "Set and refresh company mission and priorities",
+    "Allocate attention and budget across departments",
+    "Resolve cross-department conflicts and escalations",
+    "Maintain decision log and weekly operating plan",
+    "Define what requires chairman or human approval"
+  ],
+  "workflows": [
+    {
+      "id": "weekly-cadence",
+      "name": "Weekly operating cadence",
+      "stages": [
+        "review-priorities",
+        "assign-work",
+        "surface-blockers",
+        "decision-log"
+      ],
+      "trigger": "recurring-weekly",
+      "evidence": [
+        "weekly-plan",
+        "decision-log-entry"
+      ]
+    },
+    {
+      "id": "strategic-review",
+      "name": "Quarterly strategic review",
+      "stages": [
+        "assess-metrics",
+        "revise-goals",
+        "rebalance-departments"
+      ],
+      "trigger": "recurring-quarterly",
+      "evidence": [
+        "strategic-memo",
+        "updated-priorities"
+      ]
+    }
+  ],
+  "inspectors": [
+    "strategic-fit",
+    "risk-assessment",
+    "prioritization-check"
+  ],
+  "builders": [
+    "priority-memo",
+    "decision-brief",
+    "weekly-plan"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "review-priorities",
+    "assign-work",
+    "surface-blockers",
+    "decision-log",
+    "assess-metrics",
+    "revise-goals",
+    "rebalance-departments"
+  ],
+  "roles": [
+    "executive-ceo",
+    "strategy-analyst",
+    "chief-of-staff"
+  ],
+  "human_approval_gates": [
+    "mission-change",
+    "major-pivot",
+    "budget-reallocation",
+    "escalation-policy-change"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "strategic-fit",
+    "risk-assessment",
+    "prioritization-check",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "mission-defined",
+      "check": "company-brief.mission is non-empty",
+      "evidence": "company-brief",
+      "severity": "blocker"
+    },
+    {
+      "id": "escalation-policy",
+      "check": "escalation rules documented",
+      "evidence": "escalation-policy artifact",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "required",
+      "notes": "Roadmap, prioritization, technical debt vs feature tradeoffs"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "SKU strategy, margin targets, supplier risk"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Service area, capacity, pricing model"
+    },
+    "creator": {
+      "relevance": "required",
+      "notes": "Brand direction, monetization mix, platform risk"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Imprint strategy, catalog priorities, launch calendar"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Curriculum vision, community norms, certification goals"
+    }
+  },
+  "tool_manifest": {
+    "strategic-planning": [
+      "notion",
+      "linear"
+    ],
+    "analytics-reporting": [
+      "company-goat"
+    ]
+  },
+  "recommended_capabilities": [
+    "analytics-reporting",
+    "research-intelligence"
+  ]
+}

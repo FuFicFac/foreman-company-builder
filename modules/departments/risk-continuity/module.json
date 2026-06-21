@@ -1,0 +1,135 @@
+{
+  "name": "risk-continuity",
+  "kind": "department",
+  "department_slug": "risk-continuity",
+  "version": "1.0.0",
+  "description": "Risk / Insurance / Business Continuity \u2014 Operational, platform, financial risk; insurance; backups; continuity plans.",
+  "purpose": "Operational, platform, financial risk; insurance; backups; continuity plans.",
+  "domain": "risk-continuity",
+  "capabilities": [
+    "risk-continuity"
+  ],
+  "required_capabilities": [
+    "risk-continuity"
+  ],
+  "universal_responsibilities": [
+    "Maintain risk register",
+    "Classify risks red/yellow/green",
+    "Document continuity and backup checklists",
+    "Route insurance and continuity escalations"
+  ],
+  "workflows": [
+    {
+      "id": "risk-review",
+      "name": "Monthly risk review",
+      "stages": [
+        "scan-risks",
+        "classify",
+        "mitigate",
+        "report"
+      ],
+      "trigger": "recurring-monthly",
+      "evidence": [
+        "risk-register",
+        "risk-report"
+      ]
+    }
+  ],
+  "inspectors": [
+    "risk-classification",
+    "mitigation-coverage",
+    "backup-verification"
+  ],
+  "builders": [
+    "risk-register-entry",
+    "continuity-plan",
+    "insurance-memo"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "scan-risks",
+    "classify",
+    "mitigate",
+    "report"
+  ],
+  "roles": [
+    "risk-lead",
+    "continuity-owner"
+  ],
+  "human_approval_gates": [
+    "insurance-purchase",
+    "continuity-activation",
+    "risk-acceptance"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "risk-classification",
+    "mitigation-coverage",
+    "backup-verification",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "risk-register",
+      "check": "risk register initialized",
+      "evidence": "risk-register",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "recommended",
+      "notes": "Platform dependency, security incidents"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Supply chain, liability, product recall"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Liability, weather, staffing"
+    },
+    "creator": {
+      "relevance": "recommended",
+      "notes": "Platform deplatforming, demonetization"
+    },
+    "publishing": {
+      "relevance": "recommended",
+      "notes": "Platform policy, print partner risk"
+    },
+    "education_community": {
+      "relevance": "recommended",
+      "notes": "Data breach, platform outage"
+    }
+  },
+  "tool_manifest": {
+    "risk-continuity": [
+      "notion"
+    ]
+  }
+}

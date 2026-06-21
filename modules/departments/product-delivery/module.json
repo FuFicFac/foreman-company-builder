@@ -1,0 +1,257 @@
+{
+  "name": "product-delivery",
+  "kind": "department",
+  "department_slug": "product-delivery",
+  "version": "1.0.0",
+  "description": "Product / Service Delivery \u2014 Define how the company creates and ships what it sells \u2014 software, physical goods, services, content, courses, or local work.",
+  "purpose": "Define how the company creates and ships what it sells \u2014 software, physical goods, services, content, courses, or local work.",
+  "domain": "product-delivery",
+  "capabilities": [
+    "product-delivery",
+    "launch-operations"
+  ],
+  "required_capabilities": [
+    "product-delivery"
+  ],
+  "recommended_capabilities": [
+    "operations-sop",
+    "quality-inspection",
+    "launch-operations"
+  ],
+  "universal_responsibilities": [
+    "Intake and scope new deliverables",
+    "Run delivery stages from idea to shipped",
+    "Define acceptance criteria and evidence rules",
+    "Coordinate builders and handoffs to QA",
+    "Track delivery blockers and customer promise fit",
+    "Maintain ship/fulfillment checklists and post-ship learning loop"
+  ],
+  "workflows": [
+    {
+      "id": "delivery-pipeline",
+      "name": "Standard delivery pipeline",
+      "stages": [
+        "intake",
+        "scope",
+        "build",
+        "verify",
+        "ship",
+        "post-ship-check"
+      ],
+      "trigger": "new-deliverable",
+      "evidence": [
+        "acceptance-criteria",
+        "ship-artifact",
+        "post-ship-verdict"
+      ]
+    },
+    {
+      "id": "change-control",
+      "name": "Scope and change control",
+      "stages": [
+        "detect-change",
+        "assess-impact",
+        "approve-or-reject",
+        "update-scope",
+        "re-baseline-acceptance"
+      ],
+      "trigger": "scope-change-request",
+      "evidence": [
+        "change-request",
+        "updated-acceptance-criteria",
+        "human-decision"
+      ]
+    },
+    {
+      "id": "release-fulfillment",
+      "name": "Ship / fulfill / handoff",
+      "stages": [
+        "release-plan",
+        "go-live-checklist",
+        "handoff",
+        "monitor",
+        "rollback-or-repair"
+      ],
+      "trigger": "ready-to-ship",
+      "evidence": [
+        "release-notes",
+        "handoff-checklist",
+        "monitoring-notes"
+      ]
+    }
+  ],
+  "inspectors": [
+    "quality-check",
+    "customer-promise-fit",
+    "acceptance-verification",
+    "operational-readiness"
+  ],
+  "builders": [
+    "intake-triage",
+    "spec-brief",
+    "feature-implementation",
+    "content-draft",
+    "service-package",
+    "prototype-build",
+    "release-plan"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "intake",
+    "scope",
+    "build",
+    "verify",
+    "ship",
+    "post-ship-check",
+    "detect-change",
+    "assess-impact",
+    "approve-or-reject",
+    "update-scope",
+    "re-baseline-acceptance",
+    "release-plan",
+    "go-live-checklist",
+    "handoff",
+    "monitor",
+    "rollback-or-repair"
+  ],
+  "roles": [
+    "product-lead",
+    "builder",
+    "producer",
+    "delivery-coordinator",
+    "release-owner"
+  ],
+  "human_approval_gates": [
+    "scope-change",
+    "ship-date",
+    "customer-promise-change",
+    "major-spec-change",
+    "waive-acceptance"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "quality-check",
+    "customer-promise-fit",
+    "acceptance-verification",
+    "operational-readiness",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "intake-schema",
+      "check": "deliverable intake fields defined",
+      "evidence": "intake-schema",
+      "severity": "blocker"
+    },
+    {
+      "id": "acceptance-rules",
+      "check": "acceptance criteria template exists",
+      "evidence": "acceptance-template",
+      "severity": "warning"
+    },
+    {
+      "id": "handoff-packet",
+      "check": "delivery handoff checklist template exists",
+      "evidence": "handoff-checklist",
+      "severity": "warning"
+    },
+    {
+      "id": "post-ship-verdict",
+      "check": "post-ship verdict memo exists for shipped deliverables",
+      "evidence": "post-ship-verdict",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "required",
+      "notes": "Features, bugs, releases, deploy readiness"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Design, manufacturing, QC, packaging"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Service packages, scheduling, fulfillment"
+    },
+    "creator": {
+      "relevance": "required",
+      "notes": "Content production, formats, publishing cadence"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Manuscript pipeline, editorial stages"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Curriculum, lessons, assessments, cohort materials"
+    }
+  },
+  "tool_manifest": {
+    "product-delivery": [
+      "linear",
+      "github",
+      "notion"
+    ],
+    "software-development": [
+      "github"
+    ],
+    "editorial": [
+      "storycraft"
+    ],
+    "launch-operations": [
+      "notion",
+      "calendar"
+    ]
+  },
+  "conditional_capabilities": {
+    "software_company": [
+      "software-development",
+      "deployment"
+    ],
+    "publishing_company": [
+      "editorial",
+      "metadata"
+    ],
+    "physical_product": [
+      "procurement-supply"
+    ],
+    "creator_company": [
+      "editorial",
+      "audience-growth",
+      "launch-operations"
+    ],
+    "education_company": [
+      "launch-operations"
+    ]
+  },
+  "depends_on_departments": [
+    "quality-inspection"
+  ]
+}

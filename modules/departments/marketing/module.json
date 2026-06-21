@@ -1,0 +1,160 @@
+{
+  "name": "marketing",
+  "kind": "department",
+  "department_slug": "marketing",
+  "version": "1.0.0",
+  "description": "Marketing \u2014 Research market, position offer, produce copy and campaigns across SEO, email, social, ads, launch, and CRO.",
+  "purpose": "Research market, position offer, produce copy and campaigns across SEO, email, social, ads, launch, and CRO.",
+  "domain": "marketing",
+  "capabilities": [
+    "marketing"
+  ],
+  "required_capabilities": [
+    "marketing"
+  ],
+  "universal_responsibilities": [
+    "Define positioning and messaging",
+    "Produce channel-appropriate copy and creative direction",
+    "Plan and execute launches and campaigns",
+    "Measure conversion and channel fit",
+    "Maintain brand consistency"
+  ],
+  "workflows": [
+    {
+      "id": "campaign-cycle",
+      "name": "Campaign build and launch",
+      "stages": [
+        "brief",
+        "positioning",
+        "copy-draft",
+        "creative-direction",
+        "launch",
+        "performance-review"
+      ],
+      "trigger": "new-campaign",
+      "evidence": [
+        "campaign-brief",
+        "launch-artifacts",
+        "performance-memo"
+      ]
+    }
+  ],
+  "inspectors": [
+    "brand-check",
+    "clarity-check",
+    "conversion-check",
+    "compliance-check",
+    "channel-fit"
+  ],
+  "builders": [
+    "ad-copy",
+    "email-sequence",
+    "landing-page",
+    "social-posts"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "brief",
+    "positioning",
+    "copy-draft",
+    "creative-direction",
+    "launch",
+    "performance-review"
+  ],
+  "roles": [
+    "marketing-lead",
+    "positioning-strategist",
+    "copywriter",
+    "creative-director",
+    "analytics-analyst"
+  ],
+  "human_approval_gates": [
+    "offer-positioning",
+    "brand-claim",
+    "budget",
+    "launch-date",
+    "final-copy"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "brand-check",
+    "clarity-check",
+    "conversion-check",
+    "compliance-check",
+    "channel-fit",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "brand-brief",
+      "check": "brand brief or positioning doc exists",
+      "evidence": "brand-brief",
+      "severity": "blocker"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "recommended",
+      "notes": "Product marketing, landing pages, PLG"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Product pages, ads, retail copy"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Local SEO, reviews, service area marketing"
+    },
+    "creator": {
+      "relevance": "required",
+      "notes": "Personal brand, sponsorship pitches, funnel"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Book marketing, launch, backlist"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Course marketing, community growth"
+    }
+  },
+  "tool_manifest": {
+    "marketing": [
+      "beehiiv",
+      "mailchimp"
+    ],
+    "analytics-reporting": [
+      "google-ads",
+      "dub"
+    ]
+  },
+  "recommended_capabilities": [
+    "analytics-reporting",
+    "research-intelligence"
+  ]
+}

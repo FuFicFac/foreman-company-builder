@@ -1,0 +1,139 @@
+{
+  "name": "research",
+  "kind": "department",
+  "department_slug": "research",
+  "version": "1.0.0",
+  "description": "Research / Intelligence \u2014 Standing research function for market, competitor, and customer-language intelligence before strategy and GTM decisions.",
+  "purpose": "Standing research function for market, competitor, and customer-language intelligence before strategy and GTM decisions.",
+  "domain": "research",
+  "capabilities": [
+    "research-intelligence"
+  ],
+  "required_capabilities": [
+    "research-intelligence"
+  ],
+  "universal_responsibilities": [
+    "Run market and competitor research protocols",
+    "Mine customer language from reviews and support",
+    "Score source quality",
+    "Produce synthesis memos for executive and GTM"
+  ],
+  "workflows": [
+    {
+      "id": "research-sprint",
+      "name": "Research sprint",
+      "stages": [
+        "question",
+        "gather-sources",
+        "score-quality",
+        "synthesize",
+        "recommend"
+      ],
+      "trigger": "research-request",
+      "evidence": [
+        "research-memo",
+        "source-index"
+      ]
+    }
+  ],
+  "inspectors": [
+    "source-quality",
+    "conclusion-support",
+    "actionability"
+  ],
+  "builders": [
+    "research-memo",
+    "competitor-brief",
+    "customer-language-report"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "question",
+    "gather-sources",
+    "score-quality",
+    "synthesize",
+    "recommend"
+  ],
+  "roles": [
+    "research-lead",
+    "market-analyst",
+    "competitive-analyst"
+  ],
+  "human_approval_gates": [
+    "publish-external-research",
+    "competitive-claim"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "source-quality",
+    "conclusion-support",
+    "actionability",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "research-protocol",
+      "check": "research protocol doc exists",
+      "evidence": "research-protocol",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "recommended",
+      "notes": "Competitive features, pricing research"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Market sizing, competitor products"
+    },
+    "local_service": {
+      "relevance": "recommended",
+      "notes": "Local market, competitor services"
+    },
+    "creator": {
+      "relevance": "recommended",
+      "notes": "Niche trends, audience research"
+    },
+    "publishing": {
+      "relevance": "recommended",
+      "notes": "Genre trends, comp titles"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Learner needs, competitor courses"
+    }
+  },
+  "tool_manifest": {
+    "research-intelligence": [
+      "wikipedia",
+      "company-goat",
+      "hackernews"
+    ]
+  }
+}

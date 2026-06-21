@@ -1,0 +1,775 @@
+{
+  "version": "1.0.0",
+  "description": "FCB universal department research synthesis — composable primitives for any company type",
+  "schema_ref": "docs/department-module-schema.md",
+  "company_types": [
+    "software",
+    "physical_product",
+    "local_service",
+    "creator",
+    "publishing",
+    "education_community"
+  ],
+  "departments": [
+    {
+      "slug": "executive",
+      "name": "Executive / Strategy",
+      "purpose": "Define mission, business model, goals, decision rights, escalation policy, and operating cadence.",
+      "universal_responsibilities": [
+        "Set and refresh company mission and priorities",
+        "Allocate attention and budget across departments",
+        "Resolve cross-department conflicts and escalations",
+        "Maintain decision log and weekly operating plan",
+        "Define what requires chairman or human approval"
+      ],
+      "workflows": [
+        {
+          "id": "weekly-cadence",
+          "name": "Weekly operating cadence",
+          "stages": ["review-priorities", "assign-work", "surface-blockers", "decision-log"],
+          "trigger": "recurring-weekly",
+          "evidence": ["weekly-plan", "decision-log-entry"]
+        },
+        {
+          "id": "strategic-review",
+          "name": "Quarterly strategic review",
+          "stages": ["assess-metrics", "revise-goals", "rebalance-departments"],
+          "trigger": "recurring-quarterly",
+          "evidence": ["strategic-memo", "updated-priorities"]
+        }
+      ],
+      "capabilities": ["strategic-planning"],
+      "required_capabilities": ["strategic-planning"],
+      "recommended_capabilities": ["analytics-reporting", "research-intelligence"],
+      "roles": ["executive-ceo", "strategy-analyst", "chief-of-staff"],
+      "builders": ["priority-memo", "decision-brief", "weekly-plan"],
+      "inspectors": ["strategic-fit", "risk-assessment", "prioritization-check"],
+      "human_approval_gates": ["mission-change", "major-pivot", "budget-reallocation", "escalation-policy-change"],
+      "tool_manifest": {
+        "strategic-planning": ["notion", "linear"],
+        "analytics-reporting": ["company-goat"]
+      },
+      "smoke_tests": [
+        { "id": "mission-defined", "check": "company-brief.mission is non-empty", "evidence": "company-brief", "severity": "blocker" },
+        { "id": "escalation-policy", "check": "escalation rules documented", "evidence": "escalation-policy artifact", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "required", "notes": "Roadmap, prioritization, technical debt vs feature tradeoffs" },
+        "physical_product": { "relevance": "required", "notes": "SKU strategy, margin targets, supplier risk" },
+        "local_service": { "relevance": "required", "notes": "Service area, capacity, pricing model" },
+        "creator": { "relevance": "required", "notes": "Brand direction, monetization mix, platform risk" },
+        "publishing": { "relevance": "required", "notes": "Imprint strategy, catalog priorities, launch calendar" },
+        "education_community": { "relevance": "required", "notes": "Curriculum vision, community norms, certification goals" }
+      }
+    },
+    {
+      "slug": "product-delivery",
+      "name": "Product / Service Delivery",
+      "purpose": "Define how the company creates and ships what it sells — software, physical goods, services, content, courses, or local work.",
+      "universal_responsibilities": [
+        "Intake and scope new deliverables",
+        "Run delivery stages from idea to shipped",
+        "Define acceptance criteria and evidence rules",
+        "Coordinate builders and handoffs to QA",
+        "Track delivery blockers and customer promise fit",
+        "Maintain ship/fulfillment checklists and post-ship learning loop"
+      ],
+      "workflows": [
+        {
+          "id": "delivery-pipeline",
+          "name": "Standard delivery pipeline",
+          "stages": ["intake", "scope", "build", "verify", "ship", "post-ship-check"],
+          "trigger": "new-deliverable",
+          "evidence": ["acceptance-criteria", "ship-artifact", "post-ship-verdict"]
+        },
+        {
+          "id": "change-control",
+          "name": "Scope and change control",
+          "stages": ["detect-change", "assess-impact", "approve-or-reject", "update-scope", "re-baseline-acceptance"],
+          "trigger": "scope-change-request",
+          "evidence": ["change-request", "updated-acceptance-criteria", "human-decision"]
+        },
+        {
+          "id": "release-fulfillment",
+          "name": "Ship / fulfill / handoff",
+          "stages": ["release-plan", "go-live-checklist", "handoff", "monitor", "rollback-or-repair"],
+          "trigger": "ready-to-ship",
+          "evidence": ["release-notes", "handoff-checklist", "monitoring-notes"]
+        }
+      ],
+      "capabilities": ["product-delivery", "launch-operations"],
+      "required_capabilities": ["product-delivery"],
+      "recommended_capabilities": ["operations-sop", "quality-inspection", "launch-operations"],
+      "conditional_capabilities": {
+        "software_company": ["software-development", "deployment"],
+        "publishing_company": ["editorial", "metadata"],
+        "physical_product": ["procurement-supply"],
+        "creator_company": ["editorial", "audience-growth", "launch-operations"],
+        "education_company": ["launch-operations"]
+      },
+      "roles": ["product-lead", "builder", "producer", "delivery-coordinator"],
+      "builders": ["intake-triage", "spec-brief", "feature-implementation", "content-draft", "service-package", "prototype-build", "release-plan"],
+      "inspectors": ["quality-check", "customer-promise-fit", "acceptance-verification", "operational-readiness"],
+      "human_approval_gates": ["scope-change", "ship-date", "customer-promise-change", "major-spec-change"],
+      "tool_manifest": {
+        "product-delivery": ["linear", "github", "notion"],
+        "software-development": ["github"],
+        "editorial": ["storycraft"],
+        "launch-operations": ["notion", "calendar"]
+      },
+      "smoke_tests": [
+        { "id": "intake-schema", "check": "deliverable intake fields defined", "evidence": "intake-schema", "severity": "blocker" },
+        { "id": "acceptance-rules", "check": "acceptance criteria template exists", "evidence": "acceptance-template", "severity": "warning" },
+        { "id": "handoff-packet", "check": "delivery handoff checklist template exists", "evidence": "handoff-checklist", "severity": "warning" },
+        { "id": "post-ship-verdict", "check": "post-ship verdict memo exists for shipped deliverables", "evidence": "post-ship-verdict", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "required", "notes": "Features, bugs, releases, deploy readiness" },
+        "physical_product": { "relevance": "required", "notes": "Design, manufacturing, QC, packaging" },
+        "local_service": { "relevance": "required", "notes": "Service packages, scheduling, fulfillment" },
+        "creator": { "relevance": "required", "notes": "Content production, formats, publishing cadence" },
+        "publishing": { "relevance": "required", "notes": "Manuscript pipeline, editorial stages" },
+        "education_community": { "relevance": "required", "notes": "Curriculum, lessons, assessments, cohort materials" }
+      },
+      "depends_on_departments": ["quality-inspection"]
+    },
+    {
+      "slug": "operations",
+      "name": "Operations / SOPs",
+      "purpose": "Turn repeated work into procedures, checklists, schedules, handoffs, vendor coordination, and repair loops.",
+      "universal_responsibilities": [
+        "Author and maintain SOPs and runbooks",
+        "Define recurring task schedules",
+        "Manage handoff checklists between departments",
+        "Coordinate vendors and fulfillment flows",
+        "Escalate blocked operational work"
+      ],
+      "workflows": [
+        {
+          "id": "sop-lifecycle",
+          "name": "SOP authoring and refresh",
+          "stages": ["draft", "review", "publish", "schedule-refresh"],
+          "trigger": "new-or-stale-sop",
+          "evidence": ["sop-document", "refresh-date"]
+        },
+        {
+          "id": "handoff",
+          "name": "Cross-department handoff",
+          "stages": ["prepare-packet", "transfer", "acknowledge", "verify-complete"],
+          "trigger": "stage-complete",
+          "evidence": ["handoff-checklist"]
+        }
+      ],
+      "capabilities": ["operations-sop"],
+      "required_capabilities": ["operations-sop"],
+      "roles": ["operations-lead", "sop-author", "scheduler", "vendor-coordinator"],
+      "builders": ["sop-draft", "runbook", "recurring-task-setup"],
+      "inspectors": ["sop-clarity", "handoff-completeness", "schedule-coverage"],
+      "human_approval_gates": ["sop-publish", "vendor-contract", "process-change"],
+      "tool_manifest": {
+        "operations-sop": ["notion", "linear", "slack"]
+      },
+      "smoke_tests": [
+        { "id": "core-sops", "check": "at least one SOP per recurring workflow", "evidence": "sop-index", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "recommended", "notes": "Release ops, on-call, incident response" },
+        "physical_product": { "relevance": "required", "notes": "Fulfillment, inventory, shipping SOPs" },
+        "local_service": { "relevance": "required", "notes": "Booking, dispatch, service delivery checklists" },
+        "creator": { "relevance": "recommended", "notes": "Publishing cadence, asset management" },
+        "publishing": { "relevance": "required", "notes": "Editorial handoffs, vendor coordination" },
+        "education_community": { "relevance": "required", "notes": "Cohort ops, moderation, event runbooks" }
+      }
+    },
+    {
+      "slug": "marketing",
+      "name": "Marketing",
+      "purpose": "Research market, position offer, produce copy and campaigns across SEO, email, social, ads, launch, and CRO.",
+      "universal_responsibilities": [
+        "Define positioning and messaging",
+        "Produce channel-appropriate copy and creative direction",
+        "Plan and execute launches and campaigns",
+        "Measure conversion and channel fit",
+        "Maintain brand consistency"
+      ],
+      "workflows": [
+        {
+          "id": "campaign-cycle",
+          "name": "Campaign build and launch",
+          "stages": ["brief", "positioning", "copy-draft", "creative-direction", "launch", "performance-review"],
+          "trigger": "new-campaign",
+          "evidence": ["campaign-brief", "launch-artifacts", "performance-memo"]
+        }
+      ],
+      "capabilities": ["marketing"],
+      "required_capabilities": ["marketing"],
+      "recommended_capabilities": ["analytics-reporting", "research-intelligence"],
+      "roles": ["marketing-lead", "positioning-strategist", "copywriter", "creative-director", "analytics-analyst"],
+      "builders": ["ad-copy", "email-sequence", "landing-page", "social-posts"],
+      "inspectors": ["brand-check", "clarity-check", "conversion-check", "compliance-check", "channel-fit"],
+      "human_approval_gates": ["offer-positioning", "brand-claim", "budget", "launch-date", "final-copy"],
+      "tool_manifest": {
+        "marketing": ["beehiiv", "mailchimp"],
+        "analytics-reporting": ["google-ads", "dub"]
+      },
+      "smoke_tests": [
+        { "id": "brand-brief", "check": "brand brief or positioning doc exists", "evidence": "brand-brief", "severity": "blocker" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "recommended", "notes": "Product marketing, landing pages, PLG" },
+        "physical_product": { "relevance": "required", "notes": "Product pages, ads, retail copy" },
+        "local_service": { "relevance": "required", "notes": "Local SEO, reviews, service area marketing" },
+        "creator": { "relevance": "required", "notes": "Personal brand, sponsorship pitches, funnel" },
+        "publishing": { "relevance": "required", "notes": "Book marketing, launch, backlist" },
+        "education_community": { "relevance": "required", "notes": "Course marketing, community growth" }
+      },
+      "external_resources": ["coreyhaines31/marketingskills"]
+    },
+    {
+      "slug": "sales",
+      "name": "Sales / Revenue",
+      "purpose": "Handle leads, pipeline, qualification, proposals, pricing presentation, closing, CRM, and account expansion.",
+      "universal_responsibilities": [
+        "Qualify and stage leads",
+        "Prepare proposals and pricing presentations",
+        "Manage pipeline and follow-up cadence",
+        "Hand off closed deals to delivery and success",
+        "Track partnerships and referrals"
+      ],
+      "workflows": [
+        {
+          "id": "pipeline",
+          "name": "Lead to close",
+          "stages": ["lead-intake", "qualify", "proposal", "negotiate", "close", "handoff"],
+          "trigger": "new-lead",
+          "evidence": ["crm-record", "proposal", "handoff-checklist"]
+        }
+      ],
+      "capabilities": ["sales-revenue"],
+      "required_capabilities": ["sales-revenue"],
+      "roles": ["sales-lead", "account-executive", "sdr", "partnerships-manager"],
+      "builders": ["proposal-draft", "pricing-sheet", "follow-up-sequence"],
+      "inspectors": ["qualification-check", "offer-fit", "objection-coverage", "handoff-quality"],
+      "human_approval_gates": ["discount", "custom-pricing", "partnership-terms", "contract-signature"],
+      "tool_manifest": {
+        "sales-revenue": ["linear", "notion"]
+      },
+      "smoke_tests": [
+        { "id": "pipeline-stages", "check": "pipeline stage definitions exist", "evidence": "pipeline-schema", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "recommended", "notes": "B2B pipeline, demos, enterprise deals" },
+        "physical_product": { "relevance": "recommended", "notes": "Wholesale, retail partnerships" },
+        "local_service": { "relevance": "required", "notes": "Estimates, booking, local B2B" },
+        "creator": { "relevance": "optional", "notes": "Sponsorships, brand deals" },
+        "publishing": { "relevance": "optional", "notes": "Rights, bulk, institutional sales" },
+        "education_community": { "relevance": "required", "notes": "Course sales, cohort enrollment" }
+      }
+    },
+    {
+      "slug": "customer-success",
+      "name": "Customer Success / Support",
+      "purpose": "Onboarding, support, retention, feedback, refunds, complaints, and renewal flows.",
+      "universal_responsibilities": [
+        "Onboard new customers with checklists",
+        "Handle support tickets and SLA tracking",
+        "Capture feedback and retention signals",
+        "Process refunds and escalations per policy",
+        "Identify expansion and renewal opportunities"
+      ],
+      "workflows": [
+        {
+          "id": "support-ticket",
+          "name": "Support ticket lifecycle",
+          "stages": ["intake", "triage", "resolve", "verify", "follow-up"],
+          "trigger": "customer-contact",
+          "evidence": ["ticket-record", "resolution-summary"]
+        },
+        {
+          "id": "onboarding",
+          "name": "Customer onboarding",
+          "stages": ["welcome", "setup", "first-value", "check-in"],
+          "trigger": "new-customer",
+          "evidence": ["onboarding-checklist"]
+        }
+      ],
+      "capabilities": ["customer-success"],
+      "required_capabilities": ["customer-success"],
+      "roles": ["support-lead", "onboarding-specialist", "retention-analyst"],
+      "builders": ["onboarding-checklist", "support-response", "feedback-summary"],
+      "inspectors": ["response-quality", "sla-risk", "retention-opportunity"],
+      "human_approval_gates": ["refund", "exception-policy", "account-credit"],
+      "tool_manifest": {
+        "customer-success": ["slack", "notion"]
+      },
+      "smoke_tests": [
+        { "id": "intake-schema", "check": "support intake fields defined", "evidence": "ticket-schema", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "required", "notes": "SaaS support, churn prevention" },
+        "physical_product": { "relevance": "required", "notes": "Returns, warranty, shipping issues" },
+        "local_service": { "relevance": "required", "notes": "Service complaints, rebooking" },
+        "creator": { "relevance": "recommended", "notes": "Community support, patron relations" },
+        "publishing": { "relevance": "recommended", "notes": "Reader support, direct sales issues" },
+        "education_community": { "relevance": "required", "notes": "Student support, community moderation handoff" }
+      }
+    },
+    {
+      "slug": "finance",
+      "name": "Finance / Accounting",
+      "purpose": "Track pricing, revenue, costs, margins, budgets, invoices, taxes, and financial approval gates.",
+      "universal_responsibilities": [
+        "Maintain budget and unit economics",
+        "Record revenue and expense events",
+        "Issue invoices and track payments",
+        "Enforce spend and discount approval gates",
+        "Report margin and cashflow health"
+      ],
+      "workflows": [
+        {
+          "id": "monthly-close",
+          "name": "Monthly financial close",
+          "stages": ["reconcile", "margin-report", "flag-anomalies", "approval-summary"],
+          "trigger": "recurring-monthly",
+          "evidence": ["margin-report", "expense-ledger"]
+        }
+      ],
+      "capabilities": ["finance-accounting"],
+      "required_capabilities": ["finance-accounting"],
+      "roles": ["finance-lead", "bookkeeper", "pricing-analyst"],
+      "builders": ["invoice", "budget-memo", "margin-report"],
+      "inspectors": ["margin-check", "cashflow-risk", "policy-compliance", "missing-data"],
+      "human_approval_gates": ["spend", "discount", "refund", "payroll", "tax-filing"],
+      "tool_manifest": {
+        "finance-accounting": ["stripe", "shopify"],
+        "digital-commerce": ["stripe", "gumroad"]
+      },
+      "smoke_tests": [
+        { "id": "budget-policy", "check": "budget policy schema defined", "evidence": "budget-policy", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "required", "notes": "SaaS metrics, infra costs, contractor spend" },
+        "physical_product": { "relevance": "required", "notes": "COGS, inventory, shipping costs" },
+        "local_service": { "relevance": "required", "notes": "Labor, materials, local tax" },
+        "creator": { "relevance": "recommended", "notes": "Ad spend, platform revenue, sponsorship income" },
+        "publishing": { "relevance": "required", "notes": "Royalties, print costs, direct sales" },
+        "education_community": { "relevance": "required", "notes": "Course revenue, platform fees, refunds" }
+      }
+    },
+    {
+      "slug": "legal-compliance",
+      "name": "Legal / Compliance",
+      "purpose": "Contracts, licenses, privacy, terms, regulated claims, warranties, and legal escalation.",
+      "universal_responsibilities": [
+        "Maintain terms, privacy, and contract templates",
+        "Classify legal and compliance risks",
+        "Gate regulated claims and ad compliance",
+        "Review IP, license, and employment/contractor risk",
+        "Route human/legal escalation when needed"
+      ],
+      "workflows": [
+        {
+          "id": "claim-review",
+          "name": "Regulated claim review",
+          "stages": ["submit-claim", "risk-classify", "approve-or-revise", "log-decision"],
+          "trigger": "external-facing-claim",
+          "evidence": ["claim-review-record"]
+        }
+      ],
+      "capabilities": ["legal-compliance"],
+      "required_capabilities": ["legal-compliance"],
+      "roles": ["compliance-lead", "contract-reviewer", "privacy-officer"],
+      "builders": ["terms-draft", "contract-checklist", "risk-memo"],
+      "inspectors": ["claims-check", "ip-license-check", "privacy-check", "contract-risk"],
+      "human_approval_gates": ["regulated-claim", "contract-signature", "privacy-policy-change", "legal-escalation"],
+      "tool_manifest": {
+        "legal-compliance": ["notion"]
+      },
+      "smoke_tests": [
+        { "id": "terms-exist", "check": "terms/privacy checklist started", "evidence": "legal-checklist", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "required", "notes": "SaaS terms, data privacy, OSS licenses" },
+        "physical_product": { "relevance": "required", "notes": "Warranties, safety, labeling claims" },
+        "local_service": { "relevance": "required", "notes": "Licensing, liability, local regulations" },
+        "creator": { "relevance": "recommended", "notes": "Platform ToS, sponsorship disclosures" },
+        "publishing": { "relevance": "required", "notes": "Copyright, ISBN, distribution agreements" },
+        "education_community": { "relevance": "required", "notes": "COPPA/FERPA-adjacent, certification claims" }
+      }
+    },
+    {
+      "slug": "people",
+      "name": "People / Contractors",
+      "purpose": "Role definitions, hiring briefs, onboarding, contractor packets, deliverable review, and offboarding.",
+      "universal_responsibilities": [
+        "Define role profiles and hiring briefs",
+        "Onboard employees and contractors",
+        "Review deliverables against briefs",
+        "Coordinate payment handoff to finance",
+        "Offboard with access revocation checklist"
+      ],
+      "workflows": [
+        {
+          "id": "contractor-engagement",
+          "name": "Contractor engagement",
+          "stages": ["brief", "engage", "deliverable-review", "payment-handoff", "offboard"],
+          "trigger": "new-contractor",
+          "evidence": ["contractor-brief", "review-record", "offboarding-checklist"]
+        }
+      ],
+      "capabilities": ["people-contractors"],
+      "required_capabilities": ["people-contractors"],
+      "roles": ["people-lead", "hiring-manager", "contractor-coordinator"],
+      "builders": ["role-profile", "hiring-brief", "contractor-packet"],
+      "inspectors": ["role-clarity", "deliverable-quality", "access-security"],
+      "human_approval_gates": ["hire", "contractor-engagement", "termination", "access-grant"],
+      "tool_manifest": {
+        "people-contractors": ["notion", "linear"]
+      },
+      "smoke_tests": [
+        { "id": "role-profiles", "check": "core role profiles exist", "evidence": "role-profile-index", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "recommended", "notes": "Engineering contractors, access control" },
+        "physical_product": { "relevance": "recommended", "notes": "Manufacturing partners, designers" },
+        "local_service": { "relevance": "required", "notes": "Field staff, subcontractors" },
+        "creator": { "relevance": "recommended", "notes": "Editors, designers, video crew" },
+        "publishing": { "relevance": "recommended", "notes": "Editors, cover artists, narrators" },
+        "education_community": { "relevance": "recommended", "notes": "Instructors, moderators, TAs" }
+      },
+      "depends_on_departments": ["tooling-it"]
+    },
+    {
+      "slug": "analytics",
+      "name": "Analytics / Reporting",
+      "purpose": "KPIs, dashboards, experiment readouts, weekly/monthly reports, and evidence capture.",
+      "universal_responsibilities": [
+        "Define KPI schema per company type",
+        "Produce recurring reports",
+        "Run experiment analysis protocol",
+        "Flag data quality issues",
+        "Recommend next actions from metrics"
+      ],
+      "workflows": [
+        {
+          "id": "weekly-report",
+          "name": "Weekly metrics report",
+          "stages": ["collect-data", "validate-quality", "synthesize", "recommend-actions"],
+          "trigger": "recurring-weekly",
+          "evidence": ["weekly-report", "kpi-snapshot"]
+        }
+      ],
+      "capabilities": ["analytics-reporting"],
+      "required_capabilities": ["analytics-reporting"],
+      "roles": ["analytics-lead", "data-analyst", "experiment-owner"],
+      "builders": ["kpi-dashboard", "experiment-readout", "monthly-report"],
+      "inspectors": ["data-quality", "conclusion-validity", "next-action-clarity"],
+      "human_approval_gates": ["metric-definition-change", "experiment-ship"],
+      "tool_manifest": {
+        "analytics-reporting": ["google-ads", "dub", "company-goat"]
+      },
+      "smoke_tests": [
+        { "id": "kpi-schema", "check": "KPI definitions exist for company type", "evidence": "kpi-schema", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "required", "notes": "Activation, retention, MRR, error rates" },
+        "physical_product": { "relevance": "required", "notes": "Sales velocity, returns, inventory turns" },
+        "local_service": { "relevance": "required", "notes": "Bookings, utilization, reviews" },
+        "creator": { "relevance": "required", "notes": "Views, CTR, sponsorship conversion" },
+        "publishing": { "relevance": "required", "notes": "Sales, read-through, ad ROAS" },
+        "education_community": { "relevance": "required", "notes": "Enrollment, completion, engagement" }
+      }
+    },
+    {
+      "slug": "tooling-it",
+      "name": "Tooling / IT / Security",
+      "purpose": "Accounts, tools, integrations, credentials, environments, automations, access control, and smoke tests.",
+      "universal_responsibilities": [
+        "Maintain company tool manifest",
+        "Process credential and access requests",
+        "Run tool readiness and integration health checks",
+        "Enforce access scope and backup policies",
+        "Own shared tool manifest standard for all departments"
+      ],
+      "workflows": [
+        {
+          "id": "tool-onboard",
+          "name": "Tool onboarding",
+          "stages": ["request", "approve", "install", "smoke-test", "document"],
+          "trigger": "new-tool-request",
+          "evidence": ["tool-manifest-entry", "smoke-test-result"]
+        }
+      ],
+      "capabilities": ["tooling-it-security"],
+      "required_capabilities": ["tooling-it-security"],
+      "roles": ["it-lead", "security-reviewer", "integration-owner"],
+      "builders": ["access-request", "integration-setup", "backup-checklist"],
+      "inspectors": ["tool-readiness", "security-scope", "access-scope", "integration-health"],
+      "human_approval_gates": ["credential-grant", "production-access", "new-integration"],
+      "tool_manifest": {
+        "tooling-it-security": ["printing-press"]
+      },
+      "smoke_tests": [
+        { "id": "tool-doctor", "check": "foreman tools doctor passes for composed manifest", "evidence": "doctor-output", "severity": "blocker" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "required", "notes": "Repos, CI, cloud, secrets" },
+        "physical_product": { "relevance": "recommended", "notes": "E-commerce, inventory systems" },
+        "local_service": { "relevance": "recommended", "notes": "Booking, payments, comms" },
+        "creator": { "relevance": "required", "notes": "Platform APIs, analytics, asset storage" },
+        "publishing": { "relevance": "required", "notes": "Storefront, email, export tools" },
+        "education_community": { "relevance": "required", "notes": "LMS, community platform, payments" }
+      }
+    },
+    {
+      "slug": "quality-inspection",
+      "name": "Quality / Foreman Inspection",
+      "purpose": "Core Foreman discipline: builder → inspector → Foreman arbitration → fix loop → evidence.",
+      "universal_responsibilities": [
+        "Route work to appropriate inspectors",
+        "Enforce evidence standards on all deliverables",
+        "Run three-strike escalation protocol",
+        "Arbitrate inspector disagreements",
+        "Perform closeout sweep before marking work done"
+      ],
+      "workflows": [
+        {
+          "id": "inspection-loop",
+          "name": "Foreman inspection loop",
+          "stages": ["dispatch-builder", "dispatch-inspector", "verdict", "fix-or-approve", "evidence-capture"],
+          "trigger": "inspectable-work",
+          "evidence": ["inspection-verdict", "artifact-index"]
+        }
+      ],
+      "capabilities": ["quality-inspection"],
+      "required_capabilities": ["quality-inspection"],
+      "roles": ["foreman", "inspector-router", "evidence-auditor"],
+      "builders": [],
+      "inspectors": ["foreman-arbitrator", "evidence-auditor", "closeout-sweep"],
+      "human_approval_gates": ["three-strike-escalation", "force-close", "waive-inspection"],
+      "tool_manifest": {},
+      "smoke_tests": [
+        { "id": "inspection-standards", "check": "inspection_standards defined on active module", "evidence": "module.json", "severity": "blocker" },
+        { "id": "escalation-policy-linked", "check": "three-strike policy referenced", "evidence": "escalation-protocol", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "required", "notes": "Code review, security, test gates" },
+        "physical_product": { "relevance": "required", "notes": "QC, spec compliance" },
+        "local_service": { "relevance": "required", "notes": "Service quality, customer promise" },
+        "creator": { "relevance": "required", "notes": "Content quality, brand fit" },
+        "publishing": { "relevance": "required", "notes": "Editorial inspection personas" },
+        "education_community": { "relevance": "required", "notes": "Curriculum quality, accuracy" }
+      }
+    },
+    {
+      "slug": "research",
+      "name": "Research / Intelligence",
+      "purpose": "Standing research function for market, competitor, and customer-language intelligence before strategy and GTM decisions.",
+      "universal_responsibilities": [
+        "Run market and competitor research protocols",
+        "Mine customer language from reviews and support",
+        "Score source quality",
+        "Produce synthesis memos for executive and GTM"
+      ],
+      "workflows": [
+        {
+          "id": "research-sprint",
+          "name": "Research sprint",
+          "stages": ["question", "gather-sources", "score-quality", "synthesize", "recommend"],
+          "trigger": "research-request",
+          "evidence": ["research-memo", "source-index"]
+        }
+      ],
+      "capabilities": ["research-intelligence"],
+      "required_capabilities": ["research-intelligence"],
+      "roles": ["research-lead", "market-analyst", "competitive-analyst"],
+      "builders": ["research-memo", "competitor-brief", "customer-language-report"],
+      "inspectors": ["source-quality", "conclusion-support", "actionability"],
+      "human_approval_gates": ["publish-external-research", "competitive-claim"],
+      "tool_manifest": {
+        "research-intelligence": ["wikipedia", "company-goat", "hackernews"]
+      },
+      "smoke_tests": [
+        { "id": "research-protocol", "check": "research protocol doc exists", "evidence": "research-protocol", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "recommended", "notes": "Competitive features, pricing research" },
+        "physical_product": { "relevance": "required", "notes": "Market sizing, competitor products" },
+        "local_service": { "relevance": "recommended", "notes": "Local market, competitor services" },
+        "creator": { "relevance": "recommended", "notes": "Niche trends, audience research" },
+        "publishing": { "relevance": "recommended", "notes": "Genre trends, comp titles" },
+        "education_community": { "relevance": "required", "notes": "Learner needs, competitor courses" }
+      }
+    },
+    {
+      "slug": "procurement",
+      "name": "Procurement / Vendor / Supply Chain",
+      "purpose": "Vendors, suppliers, inventory, manufacturing, shipping, and fulfillment partners.",
+      "universal_responsibilities": [
+        "Maintain vendor database",
+        "Evaluate suppliers against checklist",
+        "Map inventory and fulfillment capabilities",
+        "Enforce procurement approval gates"
+      ],
+      "workflows": [
+        {
+          "id": "vendor-onboard",
+          "name": "Vendor onboarding",
+          "stages": ["evaluate", "approve", "contract", "integrate", "monitor"],
+          "trigger": "new-vendor",
+          "evidence": ["vendor-record", "evaluation-checklist"]
+        }
+      ],
+      "capabilities": ["procurement-supply"],
+      "required_capabilities": ["procurement-supply"],
+      "roles": ["procurement-lead", "vendor-manager", "inventory-coordinator"],
+      "builders": ["vendor-evaluation", "purchase-order", "inventory-report"],
+      "inspectors": ["supplier-quality", "cost-fit", "lead-time-risk"],
+      "human_approval_gates": ["vendor-approval", "purchase-order", "inventory-writeoff"],
+      "tool_manifest": {
+        "procurement-supply": ["notion"]
+      },
+      "smoke_tests": [
+        { "id": "vendor-schema", "check": "vendor database schema defined", "evidence": "vendor-schema", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "optional", "notes": "SaaS vendors, cloud spend" },
+        "physical_product": { "relevance": "required", "notes": "Manufacturing, packaging, 3PL" },
+        "local_service": { "relevance": "recommended", "notes": "Supplies, subcontractors" },
+        "creator": { "relevance": "optional", "notes": "Merch fulfillment" },
+        "publishing": { "relevance": "recommended", "notes": "Print vendors, distributors" },
+        "education_community": { "relevance": "optional", "notes": "Course platform vendors" }
+      }
+    },
+    {
+      "slug": "distribution",
+      "name": "Distribution / Channel Management",
+      "purpose": "Where and how the product reaches customers — separate from marketing message.",
+      "universal_responsibilities": [
+        "Define channel strategy",
+        "Manage marketplace and platform listings",
+        "Coordinate partner and channel managers",
+        "Maintain distribution tool manifest"
+      ],
+      "workflows": [
+        {
+          "id": "channel-launch",
+          "name": "New channel launch",
+          "stages": ["evaluate-channel", "setup-listing", "verify-compliance", "go-live", "monitor"],
+          "trigger": "new-channel",
+          "evidence": ["channel-checklist", "listing-artifacts"]
+        }
+      ],
+      "capabilities": ["distribution-channels"],
+      "required_capabilities": ["distribution-channels"],
+      "roles": ["distribution-lead", "channel-manager", "marketplace-specialist"],
+      "builders": ["channel-strategy", "listing-package", "partner-brief"],
+      "inspectors": ["channel-fit", "listing-completeness", "compliance-check"],
+      "human_approval_gates": ["new-channel", "partner-agreement", "exclusivity-terms"],
+      "tool_manifest": {
+        "distribution-channels": ["shopify", "gumroad"],
+        "digital-commerce": ["shopify", "stripe"]
+      },
+      "smoke_tests": [
+        { "id": "channel-map", "check": "active channels documented", "evidence": "channel-strategy", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "recommended", "notes": "App stores, marketplaces, resellers" },
+        "physical_product": { "relevance": "required", "notes": "Retail, Amazon, wholesale" },
+        "local_service": { "relevance": "recommended", "notes": "Directories, partnerships" },
+        "creator": { "relevance": "required", "notes": "YouTube, podcasts, syndication" },
+        "publishing": { "relevance": "required", "notes": "KDP, Ingram, direct, audio" },
+        "education_community": { "relevance": "required", "notes": "LMS, Udemy, own platform" }
+      }
+    },
+    {
+      "slug": "risk-continuity",
+      "name": "Risk / Insurance / Business Continuity",
+      "purpose": "Operational, platform, financial risk; insurance; backups; continuity plans.",
+      "universal_responsibilities": [
+        "Maintain risk register",
+        "Classify risks red/yellow/green",
+        "Document continuity and backup checklists",
+        "Route insurance and continuity escalations"
+      ],
+      "workflows": [
+        {
+          "id": "risk-review",
+          "name": "Monthly risk review",
+          "stages": ["scan-risks", "classify", "mitigate", "report"],
+          "trigger": "recurring-monthly",
+          "evidence": ["risk-register", "risk-report"]
+        }
+      ],
+      "capabilities": ["risk-continuity"],
+      "required_capabilities": ["risk-continuity"],
+      "roles": ["risk-lead", "continuity-owner"],
+      "builders": ["risk-register-entry", "continuity-plan", "insurance-memo"],
+      "inspectors": ["risk-classification", "mitigation-coverage", "backup-verification"],
+      "human_approval_gates": ["insurance-purchase", "continuity-activation", "risk-acceptance"],
+      "tool_manifest": {
+        "risk-continuity": ["notion"]
+      },
+      "smoke_tests": [
+        { "id": "risk-register", "check": "risk register initialized", "evidence": "risk-register", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "recommended", "notes": "Platform dependency, security incidents" },
+        "physical_product": { "relevance": "required", "notes": "Supply chain, liability, product recall" },
+        "local_service": { "relevance": "required", "notes": "Liability, weather, staffing" },
+        "creator": { "relevance": "recommended", "notes": "Platform deplatforming, demonetization" },
+        "publishing": { "relevance": "recommended", "notes": "Platform policy, print partner risk" },
+        "education_community": { "relevance": "recommended", "notes": "Data breach, platform outage" }
+      }
+    },
+    {
+      "slug": "knowledge",
+      "name": "Knowledge / Documentation",
+      "purpose": "Living source of truth: SOPs, decisions, customer insights, product facts, tool docs, runbooks.",
+      "universal_responsibilities": [
+        "Maintain company wiki structure",
+        "Index artifacts and decision log",
+        "Run documentation freshness checks",
+        "Connect knowledge to department workflows"
+      ],
+      "workflows": [
+        {
+          "id": "doc-refresh",
+          "name": "Documentation freshness sweep",
+          "stages": ["scan-stale", "assign-owners", "update", "verify-index"],
+          "trigger": "recurring-monthly",
+          "evidence": ["artifact-index", "freshness-report"]
+        }
+      ],
+      "capabilities": ["knowledge-documentation"],
+      "required_capabilities": ["knowledge-documentation"],
+      "roles": ["knowledge-lead", "doc-owner", "wiki-curator"],
+      "builders": ["wiki-page", "decision-log-entry", "artifact-index-update"],
+      "inspectors": ["freshness-check", "link-integrity", "findability"],
+      "human_approval_gates": ["canonical-doc-change", "archive-doc"],
+      "tool_manifest": {
+        "knowledge-documentation": ["notion", "wikipedia"]
+      },
+      "smoke_tests": [
+        { "id": "wiki-structure", "check": "wiki structure defined", "evidence": "wiki-index", "severity": "warning" },
+        { "id": "decision-log", "check": "decision log accessible", "evidence": "decision-log", "severity": "warning" }
+      ],
+      "company_type_mappings": {
+        "software": { "relevance": "required", "notes": "Architecture docs, runbooks, ADRs" },
+        "physical_product": { "relevance": "required", "notes": "Specs, supplier docs, compliance" },
+        "local_service": { "relevance": "required", "notes": "Service playbooks, customer notes" },
+        "creator": { "relevance": "recommended", "notes": "Brand bible, content calendar archive" },
+        "publishing": { "relevance": "required", "notes": "Series bible, style guide, canon" },
+        "education_community": { "relevance": "required", "notes": "Curriculum docs, community guidelines" }
+      }
+    }
+  ],
+  "default_department_sets": {
+    "software": ["executive", "product-delivery", "operations", "marketing", "sales", "customer-success", "finance", "legal-compliance", "people", "analytics", "tooling-it", "quality-inspection", "research", "knowledge"],
+    "physical_product": ["executive", "product-delivery", "operations", "marketing", "sales", "customer-success", "finance", "legal-compliance", "people", "analytics", "tooling-it", "quality-inspection", "research", "procurement", "distribution", "risk-continuity", "knowledge"],
+    "local_service": ["executive", "product-delivery", "operations", "marketing", "sales", "customer-success", "finance", "legal-compliance", "people", "analytics", "tooling-it", "quality-inspection", "research", "procurement", "distribution", "risk-continuity", "knowledge"],
+    "creator": ["executive", "product-delivery", "operations", "marketing", "sales", "customer-success", "finance", "legal-compliance", "people", "analytics", "tooling-it", "quality-inspection", "research", "distribution", "risk-continuity", "knowledge"],
+    "publishing": ["executive", "product-delivery", "operations", "marketing", "sales", "customer-success", "finance", "legal-compliance", "people", "analytics", "tooling-it", "quality-inspection", "research", "procurement", "distribution", "knowledge"],
+    "education_community": ["executive", "product-delivery", "operations", "marketing", "sales", "customer-success", "finance", "legal-compliance", "people", "analytics", "tooling-it", "quality-inspection", "research", "distribution", "risk-continuity", "knowledge"]
+  }
+}

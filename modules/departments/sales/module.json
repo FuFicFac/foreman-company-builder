@@ -1,0 +1,147 @@
+{
+  "name": "sales",
+  "kind": "department",
+  "department_slug": "sales",
+  "version": "1.0.0",
+  "description": "Sales / Revenue \u2014 Handle leads, pipeline, qualification, proposals, pricing presentation, closing, CRM, and account expansion.",
+  "purpose": "Handle leads, pipeline, qualification, proposals, pricing presentation, closing, CRM, and account expansion.",
+  "domain": "sales",
+  "capabilities": [
+    "sales-revenue"
+  ],
+  "required_capabilities": [
+    "sales-revenue"
+  ],
+  "universal_responsibilities": [
+    "Qualify and stage leads",
+    "Prepare proposals and pricing presentations",
+    "Manage pipeline and follow-up cadence",
+    "Hand off closed deals to delivery and success",
+    "Track partnerships and referrals"
+  ],
+  "workflows": [
+    {
+      "id": "pipeline",
+      "name": "Lead to close",
+      "stages": [
+        "lead-intake",
+        "qualify",
+        "proposal",
+        "negotiate",
+        "close",
+        "handoff"
+      ],
+      "trigger": "new-lead",
+      "evidence": [
+        "crm-record",
+        "proposal",
+        "handoff-checklist"
+      ]
+    }
+  ],
+  "inspectors": [
+    "qualification-check",
+    "offer-fit",
+    "objection-coverage",
+    "handoff-quality"
+  ],
+  "builders": [
+    "proposal-draft",
+    "pricing-sheet",
+    "follow-up-sequence"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "lead-intake",
+    "qualify",
+    "proposal",
+    "negotiate",
+    "close",
+    "handoff"
+  ],
+  "roles": [
+    "sales-lead",
+    "account-executive",
+    "sdr",
+    "partnerships-manager"
+  ],
+  "human_approval_gates": [
+    "discount",
+    "custom-pricing",
+    "partnership-terms",
+    "contract-signature"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "qualification-check",
+    "offer-fit",
+    "objection-coverage",
+    "handoff-quality",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "pipeline-stages",
+      "check": "pipeline stage definitions exist",
+      "evidence": "pipeline-schema",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "recommended",
+      "notes": "B2B pipeline, demos, enterprise deals"
+    },
+    "physical_product": {
+      "relevance": "recommended",
+      "notes": "Wholesale, retail partnerships"
+    },
+    "local_service": {
+      "relevance": "required",
+      "notes": "Estimates, booking, local B2B"
+    },
+    "creator": {
+      "relevance": "optional",
+      "notes": "Sponsorships, brand deals"
+    },
+    "publishing": {
+      "relevance": "optional",
+      "notes": "Rights, bulk, institutional sales"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "Course sales, cohort enrollment"
+    }
+  },
+  "tool_manifest": {
+    "sales-revenue": [
+      "linear",
+      "notion"
+    ]
+  }
+}

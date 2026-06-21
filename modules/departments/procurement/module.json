@@ -1,0 +1,138 @@
+{
+  "name": "procurement",
+  "kind": "department",
+  "department_slug": "procurement",
+  "version": "1.0.0",
+  "description": "Procurement / Vendor / Supply Chain \u2014 Vendors, suppliers, inventory, manufacturing, shipping, and fulfillment partners.",
+  "purpose": "Vendors, suppliers, inventory, manufacturing, shipping, and fulfillment partners.",
+  "domain": "procurement",
+  "capabilities": [
+    "procurement-supply"
+  ],
+  "required_capabilities": [
+    "procurement-supply"
+  ],
+  "universal_responsibilities": [
+    "Maintain vendor database",
+    "Evaluate suppliers against checklist",
+    "Map inventory and fulfillment capabilities",
+    "Enforce procurement approval gates"
+  ],
+  "workflows": [
+    {
+      "id": "vendor-onboard",
+      "name": "Vendor onboarding",
+      "stages": [
+        "evaluate",
+        "approve",
+        "contract",
+        "integrate",
+        "monitor"
+      ],
+      "trigger": "new-vendor",
+      "evidence": [
+        "vendor-record",
+        "evaluation-checklist"
+      ]
+    }
+  ],
+  "inspectors": [
+    "supplier-quality",
+    "cost-fit",
+    "lead-time-risk"
+  ],
+  "builders": [
+    "vendor-evaluation",
+    "purchase-order",
+    "inventory-report"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "evaluate",
+    "approve",
+    "contract",
+    "integrate",
+    "monitor"
+  ],
+  "roles": [
+    "procurement-lead",
+    "vendor-manager",
+    "inventory-coordinator"
+  ],
+  "human_approval_gates": [
+    "vendor-approval",
+    "purchase-order",
+    "inventory-writeoff"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "supplier-quality",
+    "cost-fit",
+    "lead-time-risk",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "vendor-schema",
+      "check": "vendor database schema defined",
+      "evidence": "vendor-schema",
+      "severity": "warning"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "optional",
+      "notes": "SaaS vendors, cloud spend"
+    },
+    "physical_product": {
+      "relevance": "required",
+      "notes": "Manufacturing, packaging, 3PL"
+    },
+    "local_service": {
+      "relevance": "recommended",
+      "notes": "Supplies, subcontractors"
+    },
+    "creator": {
+      "relevance": "optional",
+      "notes": "Merch fulfillment"
+    },
+    "publishing": {
+      "relevance": "recommended",
+      "notes": "Print vendors, distributors"
+    },
+    "education_community": {
+      "relevance": "optional",
+      "notes": "Course platform vendors"
+    }
+  },
+  "tool_manifest": {
+    "procurement-supply": [
+      "notion"
+    ]
+  }
+}

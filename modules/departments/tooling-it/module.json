@@ -1,0 +1,141 @@
+{
+  "name": "tooling-it",
+  "kind": "department",
+  "department_slug": "tooling-it",
+  "version": "1.0.0",
+  "description": "Tooling / IT / Security \u2014 Accounts, tools, integrations, credentials, environments, automations, access control, and smoke tests.",
+  "purpose": "Accounts, tools, integrations, credentials, environments, automations, access control, and smoke tests.",
+  "domain": "tooling-it",
+  "capabilities": [
+    "tooling-it-security"
+  ],
+  "required_capabilities": [
+    "tooling-it-security"
+  ],
+  "universal_responsibilities": [
+    "Maintain company tool manifest",
+    "Process credential and access requests",
+    "Run tool readiness and integration health checks",
+    "Enforce access scope and backup policies",
+    "Own shared tool manifest standard for all departments"
+  ],
+  "workflows": [
+    {
+      "id": "tool-onboard",
+      "name": "Tool onboarding",
+      "stages": [
+        "request",
+        "approve",
+        "install",
+        "smoke-test",
+        "document"
+      ],
+      "trigger": "new-tool-request",
+      "evidence": [
+        "tool-manifest-entry",
+        "smoke-test-result"
+      ]
+    }
+  ],
+  "inspectors": [
+    "tool-readiness",
+    "security-scope",
+    "access-scope",
+    "integration-health"
+  ],
+  "builders": [
+    "access-request",
+    "integration-setup",
+    "backup-checklist"
+  ],
+  "loop_mode": "lean",
+  "source": "fcb-department",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "request",
+    "approve",
+    "install",
+    "smoke-test",
+    "document"
+  ],
+  "roles": [
+    "it-lead",
+    "security-reviewer",
+    "integration-owner"
+  ],
+  "human_approval_gates": [
+    "credential-grant",
+    "production-access",
+    "new-integration"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "tool-readiness",
+    "security-scope",
+    "access-scope",
+    "integration-health",
+    "human-approval-respected",
+    "stage-fit"
+  ],
+  "smoke_tests": [
+    {
+      "id": "tool-doctor",
+      "check": "foreman tools doctor passes for composed manifest",
+      "evidence": "doctor-output",
+      "severity": "blocker"
+    }
+  ],
+  "company_type_mappings": {
+    "software": {
+      "relevance": "required",
+      "notes": "Repos, CI, cloud, secrets"
+    },
+    "physical_product": {
+      "relevance": "recommended",
+      "notes": "E-commerce, inventory systems"
+    },
+    "local_service": {
+      "relevance": "recommended",
+      "notes": "Booking, payments, comms"
+    },
+    "creator": {
+      "relevance": "required",
+      "notes": "Platform APIs, analytics, asset storage"
+    },
+    "publishing": {
+      "relevance": "required",
+      "notes": "Storefront, email, export tools"
+    },
+    "education_community": {
+      "relevance": "required",
+      "notes": "LMS, community platform, payments"
+    }
+  },
+  "tool_manifest": {
+    "tooling-it-security": [
+      "printing-press"
+    ]
+  }
+}
