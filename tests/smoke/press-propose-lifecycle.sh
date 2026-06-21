@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -9,7 +9,7 @@ export FOREMAN_CONFIG_DIR="$TMP/.foreman"
 FIXTURE="$ROOT/examples/press/demo-json-tool"
 MANIFEST="$TMP/demo.manifest.json"
 
-PROPOSE_OUT="$($ROOT/scripts/foreman press propose \
+PROPOSE_OUT="$("$ROOT/scripts/foreman" press propose \
   --id com.printingpress.demo-json-tool \
   --name "Demo JSON Tool" \
   --description "Safe read-only demo CLI that emits JSON." \
@@ -49,20 +49,20 @@ assert data["error_contract"]["on_nonzero_exit"] == "stderr"
 assert data["tags"] == ["demo", "read-only"]
 PY
 
-VALIDATE_OUT="$($ROOT/scripts/foreman press validate "$MANIFEST")"
+VALIDATE_OUT="$("$ROOT/scripts/foreman" press validate "$MANIFEST")"
 echo "$VALIDATE_OUT" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert data["ok"] is True; assert data["checks"]["smoke_exit_code"] == 0; assert data["checks"]["json_output"] is True; assert data["checks"]["expected_output_path"] == "$.city"'
 
-REGISTER_OUT="$($ROOT/scripts/foreman press register "$MANIFEST")"
+REGISTER_OUT="$("$ROOT/scripts/foreman" press register "$MANIFEST")"
 echo "$REGISTER_OUT" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert data["ok"] is True; assert data["status"] == "registered"; assert data["id"] == "com.printingpress.demo-json-tool"'
 
-LIST_OUT="$($ROOT/scripts/foreman press list)"
+LIST_OUT="$("$ROOT/scripts/foreman" press list)"
 echo "$LIST_OUT" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert data["ok"] is True; assert len(data["tools"]) == 1; tool=data["tools"][0]; assert tool["id"] == "com.printingpress.demo-json-tool"; assert tool["name"] == "Demo JSON Tool"; assert tool["status"] == "registered"'
 
-INSPECT_OUT="$($ROOT/scripts/foreman press inspect com.printingpress.demo-json-tool)"
+INSPECT_OUT="$("$ROOT/scripts/foreman" press inspect com.printingpress.demo-json-tool)"
 echo "$INSPECT_OUT" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert data["ok"] is True; assert data["id"] == "com.printingpress.demo-json-tool"; assert data["lifecycle"]["status"] == "registered"; assert data["lifecycle"]["registered_by"] == "foreman"; assert "registered_at" in data["lifecycle"]; assert data["permissions"]["risk_level"] == "none"'
 
 DEFAULT_PATH_MANIFEST="$TMP/default-path.manifest.json"
-$ROOT/scripts/foreman press propose \
+"$ROOT/scripts/foreman" press propose \
   --id com.printingpress.default-path \
   --name "Default Path Demo" \
   --description "Safe demo using the default root expected output path." \
@@ -70,11 +70,11 @@ $ROOT/scripts/foreman press propose \
   --command-name lookup \
   --smoke-args "lookup --city Austin" \
   > "$DEFAULT_PATH_MANIFEST"
-DEFAULT_VALIDATE_OUT="$($ROOT/scripts/foreman press validate "$DEFAULT_PATH_MANIFEST")"
+DEFAULT_VALIDATE_OUT="$("$ROOT/scripts/foreman" press validate "$DEFAULT_PATH_MANIFEST")"
 echo "$DEFAULT_VALIDATE_OUT" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert data["ok"] is True; assert data["checks"]["expected_output_path"] == "$"'
 
 OUT_FILE="$TMP/out.manifest.json"
-$ROOT/scripts/foreman press propose \
+"$ROOT/scripts/foreman" press propose \
   --id com.printingpress.demo-json-tool \
   --name "Demo JSON Tool" \
   --description "Safe read-only demo CLI that emits JSON." \

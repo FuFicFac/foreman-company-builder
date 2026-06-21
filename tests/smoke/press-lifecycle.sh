@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -56,14 +56,14 @@ cat > "$MANIFEST" <<JSON
 }
 JSON
 
-VALIDATE_OUT="$($ROOT/scripts/foreman press validate "$MANIFEST")"
+VALIDATE_OUT="$("$ROOT/scripts/foreman" press validate "$MANIFEST")"
 echo "$VALIDATE_OUT" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert data["ok"] is True; assert data["id"] == "com.printingpress.local-weather"'
 
-REGISTER_OUT="$($ROOT/scripts/foreman press register "$MANIFEST")"
+REGISTER_OUT="$("$ROOT/scripts/foreman" press register "$MANIFEST")"
 echo "$REGISTER_OUT" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert data["ok"] is True; assert data["status"] == "registered"; assert data["id"] == "com.printingpress.local-weather"'
 
-LIST_OUT="$($ROOT/scripts/foreman press list)"
+LIST_OUT="$("$ROOT/scripts/foreman" press list)"
 echo "$LIST_OUT" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert len(data["tools"]) == 1; assert data["tools"][0]["id"] == "com.printingpress.local-weather"'
 
-INSPECT_OUT="$($ROOT/scripts/foreman press inspect com.printingpress.local-weather)"
+INSPECT_OUT="$("$ROOT/scripts/foreman" press inspect com.printingpress.local-weather)"
 echo "$INSPECT_OUT" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert data["id"] == "com.printingpress.local-weather"; assert data["lifecycle"]["status"] == "registered"; assert "registered_at" in data["lifecycle"]'
