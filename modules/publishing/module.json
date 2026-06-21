@@ -13,24 +13,82 @@
     "customer-support",
     "launch-operations"
   ],
-  "required_capabilities": ["editorial", "metadata", "launch-operations"],
-  "recommended_capabilities": ["digital-commerce", "email-marketing", "analytics"],
+  "required_capabilities": [
+    "editorial",
+    "metadata",
+    "launch-operations"
+  ],
+  "recommended_capabilities": [
+    "digital-commerce",
+    "email-marketing",
+    "analytics"
+  ],
   "conditional_capabilities": {
-    "selling_direct": ["digital-commerce", "customer-support"],
-    "running_ads": ["analytics"],
-    "serial_publishing": ["audience-growth", "email-marketing"],
-    "print_fulfillment": ["customer-support", "launch-operations"]
+    "selling_direct": [
+      "digital-commerce",
+      "customer-support"
+    ],
+    "running_ads": [
+      "analytics"
+    ],
+    "serial_publishing": [
+      "audience-growth",
+      "email-marketing"
+    ],
+    "print_fulfillment": [
+      "customer-support",
+      "launch-operations"
+    ]
   },
-  "inspectors": ["VEGA", "RIFF", "IRIS", "FINCH", "STORM", "ZIGGY", "Commerce", "Metadata", "Launch"],
-  "builders": ["chapter-draft", "scene-revision", "metadata-package", "product-page", "launch-plan", "email-sequence"],
+  "inspectors": [
+    "VEGA",
+    "RIFF",
+    "IRIS",
+    "FINCH",
+    "STORM",
+    "ZIGGY",
+    "Commerce",
+    "Metadata",
+    "Launch"
+  ],
+  "builders": [
+    "chapter-draft",
+    "scene-revision",
+    "metadata-package",
+    "product-page",
+    "launch-plan",
+    "email-sequence"
+  ],
   "loop_mode": "deluxe",
   "tool_manifest": {
-    "editorial": ["storycraft", "epub-export", "pdf-tools"],
-    "digital-commerce": ["shopify", "stripe", "gumroad"],
-    "email-marketing": ["klaviyo", "mailchimp", "beehiiv"],
-    "analytics": ["google-ads", "dub"],
-    "research": ["wikipedia", "company-goat"],
-    "operations": ["linear", "notion", "slack"]
+    "editorial": [
+      "storycraft",
+      "epub-export",
+      "pdf-tools"
+    ],
+    "digital-commerce": [
+      "shopify",
+      "stripe",
+      "gumroad"
+    ],
+    "email-marketing": [
+      "klaviyo",
+      "mailchimp",
+      "beehiiv"
+    ],
+    "analytics": [
+      "google-ads",
+      "dub"
+    ],
+    "research": [
+      "wikipedia",
+      "company-goat"
+    ],
+    "operations": [
+      "linear",
+      "notion",
+      "slack"
+    ]
   },
   "heartbeat_policy": {
     "mode": "calm",
@@ -62,5 +120,75 @@
       "overnight": true
     }
   },
-  "source": "built-in"
+  "source": "built-in",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "idea",
+    "outline",
+    "partial-draft",
+    "finished-draft",
+    "developmental-edit",
+    "revision",
+    "copyedit",
+    "proofread",
+    "metadata-positioning",
+    "cover-direction",
+    "storefront-distribution",
+    "launch",
+    "reader-follow-up",
+    "analytics-relaunch"
+  ],
+  "roles": [
+    "publisher-ceo",
+    "developmental-editor",
+    "line-editor",
+    "copyeditor",
+    "proofreader",
+    "metadata-specialist",
+    "launch-coordinator",
+    "reader-follow-up-analyst",
+    "inspector"
+  ],
+  "human_approval_gates": [
+    "primary-audience",
+    "genre-positioning",
+    "cover-direction",
+    "pricing",
+    "storefront-copy-final",
+    "launch-date",
+    "paid-ad-spend"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "project-stage",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "tool-status",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "stage-fit",
+    "artifact-completeness",
+    "genre-consistency",
+    "audience-fit",
+    "commercial-clarity",
+    "human-approval-respected"
+  ]
 }

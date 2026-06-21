@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "fleet-check": "bash scripts/fleet-check.sh",
-    "test": "bash tests/smoke/press-lifecycle.sh && bash tests/smoke/press-invalid-manifest.sh && bash tests/smoke/press-propose-lifecycle.sh && bash tests/smoke/lph-cli-smoke.sh"
+    "test": "bash tests/smoke/press-lifecycle.sh && bash tests/smoke/press-invalid-manifest.sh && bash tests/smoke/press-propose-lifecycle.sh && bash tests/smoke/lph-cli-smoke.sh && bash tests/smoke/run-lifecycle.sh && bash tests/smoke/run-invalid-transitions.sh && python3 tests/json/validate-module-manifests.py modules && python3 tests/json/validate-department-primitives.py modules/departments && python3 tests/json/validate-department-catalog.py && python3 tests/json/validate-company-composition.py",
+    "run": "zsh scripts/foreman-run.sh"
   }
 }

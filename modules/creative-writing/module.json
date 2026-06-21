@@ -3,8 +3,75 @@
   "version": "1.0.0",
   "description": "Creative writing studio — dispatches chapters, inspects with StoryCraft Machine editorial personas",
   "domain": "creative-writing",
-  "inspectors": ["VEGA", "RIFF", "IRIS", "FINCH", "STORM", "ZIGGY"],
-  "builders": ["chapter-draft", "scene-revision", "outline-expansion"],
+  "inspectors": [
+    "VEGA",
+    "RIFF",
+    "IRIS",
+    "FINCH",
+    "STORM",
+    "ZIGGY"
+  ],
+  "builders": [
+    "chapter-draft",
+    "scene-revision",
+    "outline-expansion"
+  ],
   "loop_mode": "deluxe",
-  "source": "built-in"
+  "source": "built-in",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "premise",
+    "outline",
+    "draft",
+    "revision",
+    "line-edit",
+    "continuity-pass",
+    "proofread",
+    "publish-ready"
+  ],
+  "roles": [
+    "writing-ceo",
+    "outline-builder",
+    "scene-builder",
+    "revision-builder",
+    "continuity-inspector",
+    "voice-inspector",
+    "proofreader"
+  ],
+  "human_approval_gates": [
+    "premise-direction",
+    "major-plot-change",
+    "character-arc-change",
+    "final-text-approval"
+  ],
+  "context_packet_requirements": [
+    "project-brief",
+    "story-state",
+    "active-scene-or-chapter",
+    "canon-notes",
+    "voice-notes",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions"
+  ],
+  "inspection_standards": [
+    "continuity",
+    "voice-consistency",
+    "scene-purpose",
+    "character-motivation",
+    "reader-clarity"
+  ]
 }

@@ -3,8 +3,76 @@
   "version": "1.0.0",
   "description": "Marketing and content agency — dispatches copy, inspects for brand fit, clarity, and conversion",
   "domain": "marketing",
-  "inspectors": ["brand-check", "clarity-check", "conversion-check"],
-  "builders": ["ad-copy", "email-sequence", "landing-page", "social-posts"],
+  "inspectors": [
+    "brand-check",
+    "clarity-check",
+    "conversion-check"
+  ],
+  "builders": [
+    "ad-copy",
+    "email-sequence",
+    "landing-page",
+    "social-posts"
+  ],
   "loop_mode": "lean",
-  "source": "built-in"
+  "source": "built-in",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "brief",
+    "positioning",
+    "offer",
+    "copy-draft",
+    "creative-direction",
+    "campaign-build",
+    "launch",
+    "performance-review"
+  ],
+  "roles": [
+    "marketing-ceo",
+    "positioning-strategist",
+    "copywriter",
+    "creative-director",
+    "conversion-inspector",
+    "brand-inspector",
+    "analytics-analyst"
+  ],
+  "human_approval_gates": [
+    "offer-positioning",
+    "brand-claim",
+    "budget",
+    "launch-date",
+    "final-copy"
+  ],
+  "context_packet_requirements": [
+    "brand-brief",
+    "campaign-goal",
+    "audience",
+    "offer",
+    "channel",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "brand-fit",
+    "clarity",
+    "conversion-focus",
+    "claim-support",
+    "channel-fit",
+    "approval-respected"
+  ]
 }

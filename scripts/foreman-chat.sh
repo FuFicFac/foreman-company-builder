@@ -10,6 +10,8 @@ set -euo pipefail
 CONFIG_DIR="${FOREMAN_CONFIG_DIR:-$HOME/.foreman}"
 PROFILE_FILE="$CONFIG_DIR/profile.json"
 MODULES_DIR="$CONFIG_DIR/modules"
+REPO_ROOT="$(dirname "$0")/.."
+COMPOSE_SCRIPT="$REPO_ROOT/scripts/compose-company-from-departments.py"
 
 G='\033[0;32m' R='\033[0;31m' Y='\033[1;33m' B='\033[0;34m' CYAN='\033[0;36m' BOLD='\033[1m' DIM='\033[2m' NC='\033[0m'
 
@@ -62,35 +64,50 @@ if [[ "$FORCE_ONBOARD" == "--onboard" ]] || [[ "$HAS_TEMPLATE" == false ]]; then
   echo -e "  ${BOLD}4)${NC} YouTube / video production"
   echo -e "  ${BOLD}5)${NC} Marketing / content agency"
   echo -e "  ${BOLD}6)${NC} Physical product / e-commerce"
-  echo -e "  ${BOLD}7)${NC} Something else (describe it)"
+  echo -e "  ${BOLD}7)${NC} Local service business"
+  echo -e "  ${BOLD}8)${NC} Education / community"
+  echo -e "  ${BOLD}9)${NC} Something else (describe it)"
   echo ""
-  echo -e "${BOLD}Choose [1-7]:${NC} \c"
+  echo -e "${BOLD}Choose [1-9]:${NC} \c"
   read -r CHOICE
 
   TEMPLATE=""
+  COMPANY_TYPE=""
   case "$CHOICE" in
-    1) TEMPLATE="software" ;;
-    2) TEMPLATE="creative-writing" ;;
-    3) TEMPLATE="publishing" ;;
-    4) TEMPLATE="youtube" ;;
-    5) TEMPLATE="marketing" ;;
-    6) TEMPLATE="software" ;;  # Default to software for now
-    7) TEMPLATE="" ;;
+    1) TEMPLATE="software"; COMPANY_TYPE="software" ;;
+    2) TEMPLATE="creative-writing"; COMPANY_TYPE="creator" ;;
+    3) TEMPLATE="publishing"; COMPANY_TYPE="publishing" ;;
+    4) TEMPLATE="youtube"; COMPANY_TYPE="creator" ;;
+    5) TEMPLATE="marketing"; COMPANY_TYPE="local_service" ;;
+    6) TEMPLATE="software"; COMPANY_TYPE="physical_product" ;;
+    7) TEMPLATE="software"; COMPANY_TYPE="local_service" ;;
+    8) TEMPLATE="software"; COMPANY_TYPE="education_community" ;;
+    9) TEMPLATE="" ;;
     *) TEMPLATE="" ;;
   esac
 
-  # If "something else", ask the brain to figure it out
+  # If "something else", pick a company type from the FCB catalog
   if [[ -z "$TEMPLATE" ]]; then
     echo ""
-    echo -e "${B}Describe your company in a sentence or two:${NC}"
-    read -r DESCRIPTION
-    echo ""
-    echo -e "${DIM}Asking Foreman's brain to match your company to a template...${NC}"
-    # TODO: send description to brain model, get recommendation
-    # For now, default to software
-    TEMPLATE="software"
-    echo -e "${Y}⚠${NC} Custom template matching not yet implemented. Defaulting to software."
-    echo -e "${DIM}You can install additional modules with: foreman module add <name>${NC}"
+    echo -e "${B}What kind of company is it closest to?${NC}"
+    echo -e "  ${BOLD}1)${NC} Software / app"
+    echo -e "  ${BOLD}2)${NC} Physical product / e-commerce"
+    echo -e "  ${BOLD}3)${NC} Local service"
+    echo -e "  ${BOLD}4)${NC} Creator / media"
+    echo -e "  ${BOLD}5)${NC} Publishing"
+    echo -e "  ${BOLD}6)${NC} Education / community"
+    echo -e "${BOLD}Choose [1-6]:${NC} \c"
+    read -r CUSTOM_TYPE
+    case "$CUSTOM_TYPE" in
+      1) TEMPLATE="software"; COMPANY_TYPE="software" ;;
+      2) TEMPLATE="software"; COMPANY_TYPE="physical_product" ;;
+      3) TEMPLATE="marketing"; COMPANY_TYPE="local_service" ;;
+      4) TEMPLATE="youtube"; COMPANY_TYPE="creator" ;;
+      5) TEMPLATE="publishing"; COMPANY_TYPE="publishing" ;;
+      6) TEMPLATE="software"; COMPANY_TYPE="education_community" ;;
+      *) TEMPLATE="software"; COMPANY_TYPE="software" ;;
+    esac
+    echo -e "${DIM}Using company type ${BOLD}${COMPANY_TYPE}${NC}${DIM} with ${BOLD}${TEMPLATE}${NC}${DIM} swarm template.${NC}"
   fi
 
   # Install the template
@@ -215,8 +232,35 @@ EOF
       ;;
   esac
 
+  # Compose departments into project.json (FCB universal company builder)
+  PROJECT_NAME_VALUE="$(python3 -c "import json; d=json.load(open('$CONFIG_DIR/project.json')); print(d.get('name') or d.get('channel') or d.get('brand') or 'unnamed')" 2>/dev/null || echo "unnamed")"
+  if [[ -f "$COMPOSE_SCRIPT" ]] && [[ -n "$COMPANY_TYPE" ]]; then
+    COMPOSED="$(python3 "$COMPOSE_SCRIPT" --company-type "$COMPANY_TYPE" --template "$TEMPLATE" --name "$PROJECT_NAME_VALUE")"
+    python3 - <<'PY' "$CONFIG_DIR/project.json" "$COMPOSED"
+import json, sys
+from datetime import datetime, timezone
+
+path, composed_raw = sys.argv[1], sys.argv[2]
+composed = json.loads(composed_raw)
+existing = {}
+try:
+    with open(path) as fh:
+        existing = json.load(fh)
+except FileNotFoundError:
+    pass
+existing.update(composed)
+existing.setdefault("created", datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+with open(path, "w") as fh:
+    json.dump(existing, fh, indent=2)
+    fh.write("\n")
+PY
+    DEPT_COUNT="$(python3 -c "import json; print(len(json.load(open('$CONFIG_DIR/project.json')).get('departments',[])))")"
+    echo ""
+    echo -e "${G}✓${NC} Composed ${BOLD}${DEPT_COUNT}${NC} departments for company type ${BOLD}${COMPANY_TYPE}${NC}."
+  fi
+
   echo ""
-  echo -e "${G}✓${NC} Project saved. Foreman knows you're a ${BOLD}$TEMPLATE${NC} company."
+  echo -e "${G}✓${NC} Project saved. Foreman knows you're a ${BOLD}$TEMPLATE${NC} company (${BOLD}$COMPANY_TYPE${NC})."
   echo ""
 
   # Now send the project context to the brain for a welcome message

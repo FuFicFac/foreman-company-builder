@@ -8,6 +8,8 @@ The dispatch, verification, and operating-discipline layer for AI agent companie
 
 Foreman began as a standalone feedback loop that dispatches builders, inspects their work, and only accepts what passes verification. It runs on any machine with any CLI setup — Cursor, Claude, Codex, Ollama, Hermes, or just one of those.
 
+Foreman's architecture is now explicitly aligned with [12-Factor Agents](docs/foreman-12-factor-agents.md): natural language is translated into structured company actions; prompts, context, control flow, and state are owned by Foreman; role agents are small and focused; every run can pause/resume; human decisions are first-class events; and each agent call behaves like a stateless reducer over durable company state.
+
 That loop still matters. But the current product direction is broader: Foreman is growing into the shared discipline layer for specialized agent companies and Paperclip holding companies. Paperclip tracks companies, Hermes runs agents and scheduled work, each company gets a spawnable CEO/worker/inspector roster, and Foreman enforces builder → inspector → arbitration → escalation loops.
 
 The first front-facing company suite is **Little Publishing House**, a **Foreman Company** for writers and small publishers:

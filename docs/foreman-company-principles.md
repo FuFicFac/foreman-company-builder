@@ -14,6 +14,31 @@ Personal Publishing House = flagship Foreman Company for writers
 
 A Foreman Company should be able to launch around a domain-specific process without making the user become an operator first.
 
+## Operating spine
+
+Foreman incorporates the [12-Factor Agents](foreman-12-factor-agents.md) reliability doctrine as product architecture, not as decorative theory.
+
+A Foreman Company should behave like:
+
+```text
+Company state + incoming event + focused role context
+→ controlled agent step
+→ deterministic execution
+→ inspection
+→ updated company state + evidence
+```
+
+Core implications:
+
+1. **Company-shaped, not chatbot-shaped** — the company owns roles, stages, tools, state, approvals, and inspections.
+2. **Structured actions under natural language** — users speak normally; Foreman records explicit company operations.
+3. **Owned prompts and context** — role prompts and context packets are versioned product assets.
+4. **State is the source of truth** — chat transcripts are not project state.
+5. **Runs can pause and resume** — long-running company work needs stable run IDs and durable ledgers.
+6. **Humans are first-class participants** — approval, ambiguity, credentials, and judgment become explicit human-decision events.
+7. **Small role agents do clear jobs** — no giant generalist blob pretending to be a company.
+8. **Every action leaves evidence** — artifacts, verdicts, blockers, decisions, and tool status must be inspectable.
+
 ## The Drop-In Anywhere Principle
 
 A Foreman Company must not assume every user starts at step one.

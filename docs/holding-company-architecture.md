@@ -4,7 +4,7 @@
 
 **Goal:** Turn Foreman into the shared discipline layer for Paperclip-compatible companies: each company is a context with capabilities, tool manifests, one responsible operator, worker/inspector agents, Paperclip import compatibility, and Foreman verification/closeout loops.
 
-**Architecture:** Paperclip acts as the proven multi-company registry/control-plane model. Hermes provides the runtime and spawnable agents. Foreman provides company onboarding, Paperclip import/upgrade, role assignment, inspection loops, closeout mode, zombie-run cleanup, 3-strike escalation, and tool-manifest verification. Printing Press supplies agent-native CLI tools matched to company capabilities.
+**Architecture:** Paperclip acts as the proven multi-company registry/control-plane model. Hermes provides the runtime and spawnable agents. Foreman provides company onboarding, Paperclip import/upgrade, role assignment, inspection loops, closeout mode, zombie-run cleanup, 3-strike escalation, tool-manifest verification, and 12-Factor-style ownership of prompts, context, control flow, run state, human-decision events, and evidence. Printing Press supplies agent-native CLI tools matched to company capabilities.
 
 **Tech Stack:** zsh CLI scripts today, JSON module manifests, Hermes profiles/skills, Paperclip API adapter, Printing Press via `npx -y @mvanhorn/printing-press`.
 
@@ -291,6 +291,18 @@ wikipedia-pp-cli page get-summary 'Artificial intelligence' --agent --select tit
 - Create: `scripts/canary-printing-press.sh`
 
 **Verification:** Script installs/verifies `wikipedia-pp-cli` and performs a live summary query.
+
+### Task 7: Add 12-Factor run/state primitives
+
+**Objective:** Make Foreman runs behave like resumable reducers over durable company state.
+
+**Files:**
+
+- Create: `docs/foreman-12-factor-agents.md`
+- Add/extend schemas for `Company`, `Project`, `Run`, `Task`, `Role`, `Inspection`, `Escalation`, `HumanDecision`, `ToolManifest`, and `EventLog`
+- Extend module manifests with stages, role prompts, inspection standards, human approval gates, and context-packet requirements
+
+**Acceptance:** A Foreman run can be launched, inspected, paused, resumed, and compactly escalated from stored state without depending on a chat transcript.
 
 ## Product Rule
 

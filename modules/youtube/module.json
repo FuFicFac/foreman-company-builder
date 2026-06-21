@@ -3,8 +3,75 @@
   "version": "1.0.0",
   "description": "YouTube channel production — dispatches scripts, inspects for hooks, pacing, and retention",
   "domain": "youtube",
-  "inspectors": ["hook-check", "pacing-check", "retention-check", "thumbnail-check"],
-  "builders": ["script-draft", "title-options", "thumbnail-copy"],
+  "inspectors": [
+    "hook-check",
+    "pacing-check",
+    "retention-check",
+    "thumbnail-check"
+  ],
+  "builders": [
+    "script-draft",
+    "title-options",
+    "thumbnail-copy"
+  ],
   "loop_mode": "lean",
-  "source": "built-in"
+  "source": "built-in",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "idea",
+    "angle",
+    "outline",
+    "script",
+    "title-thumbnail",
+    "recording-plan",
+    "edit-notes",
+    "publish",
+    "analytics-review"
+  ],
+  "roles": [
+    "channel-ceo",
+    "researcher",
+    "scriptwriter",
+    "title-specialist",
+    "thumbnail-specialist",
+    "retention-inspector",
+    "analytics-analyst"
+  ],
+  "human_approval_gates": [
+    "video-angle",
+    "sponsor-claim",
+    "thumbnail-face-image",
+    "publish-title",
+    "final-script"
+  ],
+  "context_packet_requirements": [
+    "channel-brief",
+    "audience",
+    "active-video-stage",
+    "source-notes",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "hook-strength",
+    "audience-fit",
+    "retention-shape",
+    "claim-support",
+    "title-thumbnail-alignment"
+  ]
 }

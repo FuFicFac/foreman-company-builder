@@ -3,9 +3,77 @@
   "version": "1.0.0",
   "description": "Software development company — dispatches code, inspects for bugs, verifies builds",
   "domain": "software",
-  "inspectors": ["bug-detection", "security-review", "performance-check"],
-  "builders": ["feature-implementation", "bugfix", "refactor"],
+  "inspectors": [
+    "bug-detection",
+    "security-review",
+    "performance-check"
+  ],
+  "builders": [
+    "feature-implementation",
+    "bugfix",
+    "refactor"
+  ],
   "loop_mode": "lean",
   "high_stakes_loop": "deluxe",
-  "source": "built-in"
+  "source": "built-in",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "intake",
+    "reproduce",
+    "plan",
+    "implement",
+    "test",
+    "review",
+    "merge-ready",
+    "deploy",
+    "post-deploy-check"
+  ],
+  "roles": [
+    "software-ceo",
+    "feature-builder",
+    "bugfix-builder",
+    "refactor-builder",
+    "security-inspector",
+    "performance-inspector",
+    "test-inspector"
+  ],
+  "human_approval_gates": [
+    "destructive-change",
+    "production-deploy",
+    "credential-required",
+    "paid-service-change",
+    "architecture-change"
+  ],
+  "context_packet_requirements": [
+    "repo-brief",
+    "current-branch",
+    "active-task",
+    "reproduction-steps",
+    "relevant-files",
+    "test-command",
+    "constraints",
+    "prior-inspection-results",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "spec-compliance",
+    "test-pass",
+    "regression-risk",
+    "security-risk",
+    "maintainability",
+    "deployment-readiness"
+  ]
 }
