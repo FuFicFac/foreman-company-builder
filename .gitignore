@@ -4,3 +4,11 @@ dist/
 *.log
 .DS_Store
 ._*
+
+# Foreman state files
+profile.json
+issues.json
+runs/
+projects/
+*.state.json
+ledger.json

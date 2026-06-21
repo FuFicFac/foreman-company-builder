@@ -18,9 +18,9 @@ import textwrap
 import urllib.request
 from pathlib import Path
 
-REPO = Path('/Volumes/Expansion/Agent Builds/foreman-company-runner')
-DATA_DIR = '/Volumes/New Home/AI Tools/Paperclip/data'
-COMPANY_ID = '9c172ded-49d2-425a-b7f2-7bf6b7b3ef17'
+REPO = Path(__file__).resolve().parent.parent
+DATA_DIR = os.environ.get('PAPERCLIP_DATA_DIR', str(Path.home() / '.paperclip' / 'data'))
+COMPANY_ID = os.environ.get('PAPERCLIP_COMPANY_ID', '')
 MODEL = os.environ.get('OLLAMA_MODEL', 'glm-5.2:cloud')
 OLLAMA_URL = os.environ.get('OLLAMA_URL', 'http://127.0.0.1:11434/api/chat')
 PAPERCLIP = ['npm', 'exec', '--yes', 'paperclipai', '--']
