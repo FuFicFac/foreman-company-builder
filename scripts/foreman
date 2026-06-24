@@ -6,6 +6,9 @@ COMMAND="${1:-help}"
 shift || true
 
 case "$COMMAND" in
+  blast)
+    exec "$ROOT/scripts/foreman-blast.sh" "$@"
+    ;;
   press)
     exec python3 "$ROOT/scripts/foreman-press.py" "$@"
     ;;
@@ -55,6 +58,7 @@ case "$COMMAND" in
 Foreman CLI
 
 Usage:
+  foreman blast "<prompt>" [options]
   foreman init
   foreman chat
   foreman module [args]
@@ -66,6 +70,13 @@ Usage:
   foreman lph <command> [args]
   foreman company little-publishing-house <command> ...
   foreman press propose|validate|register|list|inspect [args]
+
+Blast Options:
+  --template <name>    Force a specific template
+  --provider <name>    Force a specific provider
+  --dir <path>         Output directory
+  --deluxe             Run Deluxe loop instead of Lean
+  --dry-run            Show what would fire without executing
 EOF
     ;;
   *)

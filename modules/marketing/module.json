@@ -37,6 +37,7 @@
     "copy-draft",
     "creative-direction",
     "campaign-build",
+    "qa",
     "launch",
     "performance-review"
   ],
@@ -74,5 +75,28 @@
     "claim-support",
     "channel-fit",
     "approval-respected"
-  ]
+  ],
+  "qa_roles": [
+    {
+      "name": "QA Reviewer",
+      "type": "qa",
+      "checklist": [
+        "Brand voice consistent across all assets",
+        "CTA present in every asset",
+        "Links valid and tracked",
+        "Copy length within channel limits",
+        "Audience match verified",
+        "Claim support documented"
+      ]
+    }
+  ],
+  "launch_phase": {
+    "enabled": true,
+    "assets": [
+      {"type": "ad-copy-variants", "description": "3-5 ad copy variants for A/B testing"},
+      {"type": "email-sequence", "description": "Email sequence for the campaign"},
+      {"type": "landing-page", "description": "Landing page copy and structure"},
+      {"type": "social-posts", "description": "Social media posts for launch"}
+    ]
+  }
 }

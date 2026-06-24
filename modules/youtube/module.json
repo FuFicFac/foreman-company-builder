@@ -39,7 +39,9 @@
     "recording-plan",
     "edit-notes",
     "publish",
-    "analytics-review"
+    "qa",
+    "analytics-review",
+    "launch"
   ],
   "roles": [
     "channel-ceo",
@@ -73,5 +75,29 @@
     "retention-shape",
     "claim-support",
     "title-thumbnail-alignment"
-  ]
+  ],
+  "qa_roles": [
+    {
+      "name": "QA Checker",
+      "type": "qa",
+      "checklist": [
+        "Hook present in first 15 seconds",
+        "CTA present and clear",
+        "Thumbnail text readable at small sizes",
+        "Description complete with links",
+        "Tags relevant to content",
+        "Retention shape planned"
+      ]
+    }
+  ],
+  "launch_phase": {
+    "enabled": true,
+    "assets": [
+      {"type": "description", "description": "Full video description with links and timestamps"},
+      {"type": "tags", "description": "SEO-optimized tags list"},
+      {"type": "thumbnail-text", "description": "Thumbnail text overlay"},
+      {"type": "community-post", "description": "Community tab post for engagement"},
+      {"type": "shorts-script", "description": "Shorts clip script from the video"}
+    ]
+  }
 }

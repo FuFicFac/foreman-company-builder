@@ -29,6 +29,32 @@ You are a YouTube title writer. Generate 5 title options for this video. Each ti
 ### Thumbnail Copy
 You are a YouTube thumbnail copywriter. Write 2-4 words of thumbnail text that creates curiosity without spoiling the answer. Must be readable at phone notification size.
 
+## QA Role
+
+After the inspector pass and before the foreman's final arbitration, a QA Checker reviews the work against a structured checklist. This is a quality gate — not an afterthought.
+
+The QA Checker checks:
+- Hook present in first 15 seconds
+- CTA present and clear
+- Thumbnail text readable at small sizes
+- Description complete with links
+- Tags relevant to content
+- Retention shape planned
+
+If QA finds issues, the work returns to the builder for targeted fixes. The foreman only proceeds to launch after QA passes.
+
+## Launch Phase
+
+After QA passes, the YouTube pipeline produces launch assets:
+
+- **Description** — Full video description with links and timestamps
+- **Tags** — SEO-optimized tags list
+- **Thumbnail text** — Thumbnail text overlay
+- **Community post** — Community tab post for engagement
+- **Shorts script** — Shorts clip script from the video
+
+These assets are generated as part of the `launch` stage, the final stage in the pipeline.
+
 ## Escalation Rules
 - Hook fails 3 revisions → escalate (this might be a content problem, not a writing problem)
 - Title can't pass retention check → try a different angle entirely

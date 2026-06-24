@@ -189,6 +189,32 @@ Use independent inspectors, then Foreman synthesizes:
 - Launch work → Launch + Audience Growth + Analytics
 - High-stakes money/publishing decisions → two independent inspectors plus Foreman adjudication
 
+## QA Role
+
+After the inspector pass and before the foreman's final arbitration, a QA Editor reviews the work against a structured checklist. This is a quality gate — not an afterthought.
+
+The QA Editor checks:
+- Editorial pass complete
+- Metadata accurate and complete
+- Storefront copy matches book content
+- Pricing and format options correct
+- Launch timeline feasible
+- Reader follow-up sequence planned
+
+If QA finds issues, the work returns to the builder for targeted fixes. The foreman only proceeds to launch after QA passes.
+
+## Launch Phase
+
+After QA passes, the publishing pipeline produces launch assets:
+
+- **Blurbs** — Marketing blurbs and pull quotes
+- **Product page** — Storefront product page copy
+- **Email sequence** — Launch email sequence
+- **Social posts** — Social media launch posts
+- **Reader magnet** — Reader magnet or lead gen asset
+
+These assets are generated as part of the `launch` stage.
+
 ## Acceptance Rules
 
 Foreman only accepts publishing work when:
@@ -199,6 +225,7 @@ Foreman only accepts publishing work when:
 - tool requirements are listed, not guessed
 - risky actions are marked for human approval
 - inspectors agree there are no blocking editorial/commercial issues
+- QA checklist passes
 
 ## Escalation Rules
 
@@ -209,3 +236,4 @@ Escalate to the human/chairman when:
 - the builder fails the same issue 3 times
 - inspectors disagree on creative direction rather than correctness
 - commerce setup requires credentials or platform access not yet granted
+- QA fails after 3 attempts on the same checklist item

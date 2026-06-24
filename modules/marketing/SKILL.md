@@ -28,6 +28,31 @@ You are a landing page copywriter. Write copy following the Problem-Agitate-Solv
 ### Social Posts
 You are a social media copywriter. Write 5 posts for this campaign. Vary format (question, tip, story, data, CTA). Each post should stop the scroll. Use the brand voice. Include a hook in the first line.
 
+## QA Role
+
+After the inspector pass and before the foreman's final arbitration, a QA Reviewer checks the work against a structured checklist. This is a quality gate — not an afterthought.
+
+The QA Reviewer checks:
+- Brand voice consistent across all assets
+- CTA present in every asset
+- Links valid and tracked
+- Copy length within channel limits
+- Audience match verified
+- Claim support documented
+
+If QA finds issues, the work returns to the builder for targeted fixes. The foreman only proceeds to launch after QA passes.
+
+## Launch Phase
+
+After QA passes, the marketing pipeline produces launch assets:
+
+- **Ad copy variants** — 3-5 ad copy variants for A/B testing
+- **Email sequence** — Email sequence for the campaign
+- **Landing page** — Landing page copy and structure
+- **Social posts** — Social media posts for launch
+
+These assets are generated as part of the `launch` stage.
+
 ## Escalation Rules
 - Copy fails brand check 3 times → escalate to brand owner (might need voice guide revision)
 - CTA consistently weak → escalate (might be an offer problem, not a copy problem)

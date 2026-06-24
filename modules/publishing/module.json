@@ -147,6 +147,7 @@
     "metadata-positioning",
     "cover-direction",
     "storefront-distribution",
+    "qa",
     "launch",
     "reader-follow-up",
     "analytics-relaunch"
@@ -190,5 +191,29 @@
     "audience-fit",
     "commercial-clarity",
     "human-approval-respected"
-  ]
+  ],
+  "qa_roles": [
+    {
+      "name": "QA Editor",
+      "type": "qa",
+      "checklist": [
+        "Editorial pass complete",
+        "Metadata accurate and complete",
+        "Storefront copy matches book content",
+        "Pricing and format options correct",
+        "Launch timeline feasible",
+        "Reader follow-up sequence planned"
+      ]
+    }
+  ],
+  "launch_phase": {
+    "enabled": true,
+    "assets": [
+      {"type": "blurbs", "description": "Marketing blurbs and pull quotes"},
+      {"type": "product-page", "description": "Storefront product page copy"},
+      {"type": "email-sequence", "description": "Launch email sequence"},
+      {"type": "social-posts", "description": "Social media launch posts"},
+      {"type": "reader-magnet", "description": "Reader magnet or lead gen asset"}
+    ]
+  }
 }

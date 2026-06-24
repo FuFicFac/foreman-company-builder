@@ -39,7 +39,9 @@
     "review",
     "merge-ready",
     "deploy",
-    "post-deploy-check"
+    "post-deploy-check",
+    "qa",
+    "launch"
   ],
   "roles": [
     "software-ceo",
@@ -75,5 +77,29 @@
     "security-risk",
     "maintainability",
     "deployment-readiness"
-  ]
+  ],
+  "qa_roles": [
+    {
+      "name": "QA Engineer",
+      "type": "qa",
+      "checklist": [
+        "All tests pass",
+        "No regressions in existing tests",
+        "Lint clean",
+        "Type checks pass",
+        "No dead code introduced",
+        "No untested code paths in changes"
+      ]
+    }
+  ],
+  "launch_phase": {
+    "enabled": true,
+    "assets": [
+      {"type": "release-notes", "description": "User-facing release notes"},
+      {"type": "changelog", "description": "Developer-facing changelog"},
+      {"type": "readme-update", "description": "Updated README with new features"},
+      {"type": "deploy-script", "description": "Deploy script or instructions"},
+      {"type": "migration-guide", "description": "Migration guide if breaking changes"}
+    ]
+  }
 }

@@ -148,6 +148,7 @@ def cmd_start():
         "roles": manifest.get("roles", []),
         "builders": manifest.get("builders", []),
         "inspectors": manifest.get("inspectors", []),
+        "qa_roles": manifest.get("qa_roles", []),
         "inspection_standards": manifest.get("inspection_standards", []),
         "attempts": [],
         "inspections": [],

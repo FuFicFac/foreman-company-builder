@@ -59,6 +59,32 @@ When speed matters (quick revisions, small changes), Foreman picks two editors:
 - **Revision** → The editor who flagged the issue + FINCH (continuity)
 - **Outline** → STORM (structure) + ZIGGY (market)
 
+## QA Role
+
+After the inspector pass and before the foreman's final arbitration, a QA Editor reviews the work against a structured checklist. This is a quality gate — not an afterthought.
+
+The QA Editor checks:
+- Voice consistency across all chapters
+- Character names consistent (no swaps)
+- Timeline continuity (no temporal errors)
+- Tone drift check (opening vs. closing)
+- Plot hole detection
+- Style guide adherence
+
+If QA finds issues, the work returns to the builder for targeted fixes. The foreman only proceeds to launch after QA passes.
+
+## Launch Phase
+
+After QA passes, the creative-writing pipeline produces launch assets:
+
+- **Blurb** — Back-cover blurb from the manuscript
+- **Hook** — First-line hook for social media
+- **Series callback** — Series closer that sets up the next book
+- **Funnel copy** — Landing page copy with CTA
+- **Author bio** — Updated author bio for this release
+
+These assets are generated as part of the `launch` stage, the final stage in the pipeline.
+
 ## Escalation Rules
 - Builder can't satisfy 3+ editors simultaneously → foreman arbitrates
 - Voice drift persists after 2 revisions → escalate to author (this is a creative decision, not a bug)
