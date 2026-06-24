@@ -1,0 +1,20 @@
+{
+  "dependencies": [
+    {
+      "name": "GBrain",
+      "repo": "garrytan/gbrain",
+      "check_cmd": "gbrain --version",
+      "install_cmd": "bun install -g github:garrytan/gbrain",
+      "required": false,
+      "description": "Knowledge brain — searchable memory with graph traversal, synthesis, and gap analysis"
+    },
+    {
+      "name": "GStack",
+      "repo": "garrytan/gstack",
+      "check_cmd": "test -d ~/.claude/skills/gstack && cd ~/.claude/skills/gstack && git rev-parse --short HEAD || echo 'not installed'",
+      "install_cmd": "git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack && cd ~/.claude/skills/gstack && ./setup",
+      "required": false,
+      "description": "Engineering process skills — think, plan, build, review, test, ship, reflect"
+    }
+  ]
+}

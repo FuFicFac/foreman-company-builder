@@ -1,10 +1,11 @@
 #!/usr/bin/env zsh
-# foreman update — Check for updates to Foreman itself and installed modules.
+# foreman update — Check for updates to Foreman itself, modules, and external dependencies.
 #
-# Usage: foreman update              # check all
-#        foreman update --apply      # apply available updates
-#        foreman update foreman      # check Foreman itself
-#        foreman update modules      # check modules only
+# Usage: foreman update                    # check all
+#        foreman update --apply            # apply available updates
+#        foreman update foreman            # check Foreman itself
+#        foreman update modules            # check modules only
+#        foreman update dependencies       # check external deps only
 
 set -euo pipefail
 
@@ -106,6 +107,68 @@ if [[ "$SCOPE" == "all" ]] || [[ "$SCOPE" == "modules" ]]; then
         fi
       fi
     done
+  fi
+  echo ""
+fi
+
+# ──────────────────────────────────────────────
+# Check external dependencies (GBrain, GStack, etc.)
+# ──────────────────────────────────────────────
+if [[ "$SCOPE" == "all" ]] || [[ "$SCOPE" == "dependencies" ]]; then
+  echo -e "${B}Dependencies${NC}"
+
+  DEPS_FILE="$(dirname "$0")/../config/dependencies.json"
+  if [[ ! -f "$DEPS_FILE" ]]; then
+    echo -e "  ${DIM}No dependencies config found.${NC}"
+  else
+    # Count dependencies
+    DEP_COUNT=$(python3 -c "import json; print(len(json.load(open('$DEPS_FILE'))['dependencies']))" 2>/dev/null || echo "0")
+
+    if [[ "$DEP_COUNT" == "0" ]]; then
+      echo -e "  ${DIM}No dependencies configured.${NC}"
+    else
+      for i in $(seq 0 $((DEP_COUNT - 1))); do
+        DEP_NAME=$(python3 -c "import json; print(json.load(open('$DEPS_FILE'))['dependencies'][$i]['name'])" 2>/dev/null || echo "unknown")
+        DEP_REPO=$(python3 -c "import json; print(json.load(open('$DEPS_FILE'))['dependencies'][$i]['repo'])" 2>/dev/null || echo "")
+        DEP_CHECK_CMD=$(python3 -c "import json; print(json.load(open('$DEPS_FILE'))['dependencies'][$i]['check_cmd'])" 2>/dev/null || echo "")
+        DEP_INSTALL_CMD=$(python3 -c "import json; print(json.load(open('$DEPS_FILE'))['dependencies'][$i].get('install_cmd',''))" 2>/dev/null || echo "")
+        DEP_REQUIRED=$(python3 -c "import json; print(json.load(open('$DEPS_FILE'))['dependencies'][$i].get('required', False))" 2>/dev/null || echo "False")
+
+        # Check if installed locally
+        LOCAL_VER=$(eval "$DEP_CHECK_CMD" 2>/dev/null || echo "not installed")
+
+        # Get latest GitHub release/tag
+        REMOTE_VER=$(curl -s "https://api.github.com/repos/${DEP_REPO}/releases/latest" 2>/dev/null | python3 -c "import json,sys; r=json.load(sys.stdin); print(r.get('tag_name',''))" 2>/dev/null || echo "")
+        # Fall back to latest commit if no releases
+        if [[ -z "$REMOTE_VER" ]] || [[ "$REMOTE_VER" == "null" ]]; then
+          REMOTE_COMMIT=$(curl -s "https://api.github.com/repos/${DEP_REPO}/commits/main" 2>/dev/null | python3 -c "import json,sys; print(json.load(sys.stdin).get('sha','')[:8])" 2>/dev/null || echo "")
+          REMOTE_VER="${REMOTE_COMMIT:-unknown}"
+        fi
+
+        # Format output
+        if [[ "$LOCAL_VER" == "not installed" ]]; then
+          if [[ "$DEP_REQUIRED" == "True" ]]; then
+            echo -e "  ${R}✗${NC} ${BOLD}$DEP_NAME${NC} ${DIM}— required, not installed${NC}"
+          else
+            echo -e "  ${DIM}○ $DEP_NAME — not installed (optional)${NC}"
+          fi
+          if [[ -n "$DEP_INSTALL_CMD" ]]; then
+            echo -e "    ${DIM}Install: $DEP_INSTALL_CMD${NC}"
+          fi
+        elif [[ "$REMOTE_VER" != "unknown" ]] && [[ "$LOCAL_VER" != "$REMOTE_VER" ]]; then
+          echo -e "  ${Y}↑${NC} ${BOLD}$DEP_NAME${NC} ${DIM}$LOCAL_VER → $REMOTE_VER${NC}"
+          if [[ "$APPLY" == "--apply" ]] && [[ -n "$DEP_INSTALL_CMD" ]]; then
+            echo -e "    ${B}Updating $DEP_NAME...${NC}"
+            eval "$DEP_INSTALL_CMD" 2>&1
+            echo -e "    ${G}✓${NC} $DEP_NAME updated"
+          else
+            echo -e "    ${DIM}Run: foreman update dependencies --apply${NC}"
+          fi
+        else
+          echo -e "  ${G}✓${NC} ${BOLD}$DEP_NAME${NC} ${DIM}$LOCAL_VER${NC}"
+        fi
+      done
+    fi
   fi
   echo ""
 fi
