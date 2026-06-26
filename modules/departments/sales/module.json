@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "sales",
   "version": "1.0.0",
-  "description": "Sales / Revenue — Handle leads, pipeline, qualification, proposals, pricing presentation, closing, CRM, and account expansion.",
+  "description": "Sales / Revenue \u2014 Handle leads, pipeline, qualification, proposals, pricing presentation, closing, CRM, and account expansion.",
   "purpose": "Handle leads, pipeline, qualification, proposals, pricing presentation, closing, CRM, and account expansion.",
   "domain": "sales",
   "capabilities": [
@@ -112,46 +112,40 @@
   ],
   "smoke_tests": [
     {
-      "id": "pipeline-stages",
-      "check": "pipeline stage definitions exist",
+      "id": "pipeline-stage-definitions-exist",
+      "check": "a documented pipeline schema with named stages and qualification criteria (`pipeline-schema` artifact).",
       "evidence": "pipeline-schema",
       "severity": "warning"
     },
     {
-      "id": "pipeline-stage-definitions-exist",
-      "check": "a documented pipeline schema with named stages and qualification criteria (`pipeline-schema` artifact).",
-      "evidence": "pipeline-stage-definitions-exist",
-      "severity": "info"
-    },
-    {
       "id": "crm-has-live-deals",
       "check": "at least one staged deal with an owner and current status in CRM.",
-      "evidence": "crm-has-live-deals",
-      "severity": "info"
+      "evidence": "crm-pipeline",
+      "severity": "warning"
     },
     {
       "id": "qualification-records-exist",
       "check": "recent deals have qualification records, not just stage moves.",
-      "evidence": "qualification-records-exist",
+      "evidence": "qualification-records",
       "severity": "info"
     },
     {
       "id": "proposal-template-exists",
       "check": "a current proposal template reflecting approved pricing.",
-      "evidence": "proposal-template-exists",
-      "severity": "info"
+      "evidence": "proposal-template",
+      "severity": "warning"
     },
     {
       "id": "handoff-checklist-exists",
       "check": "at least one completed handoff checklist for a closed deal.",
-      "evidence": "handoff-checklist-exists",
-      "severity": "info"
+      "evidence": "handoff-checklist",
+      "severity": "warning"
     },
     {
       "id": "approval-gates-are-explicit",
       "check": "\"what requires a human\" is listed and used for discounts, custom pricing, partnership terms, and signature.",
-      "evidence": "approval-gates-are-explicit",
-      "severity": "info"
+      "evidence": "approval-gates",
+      "severity": "warning"
     }
   ],
   "company_type_mappings": {

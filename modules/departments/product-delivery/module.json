@@ -163,26 +163,38 @@
   ],
   "smoke_tests": [
     {
-      "id": "intake-schema",
-      "check": "deliverable intake fields defined",
+      "id": "intake-schema-exists",
+      "check": "deliverable intake fields are defined and used.",
       "evidence": "intake-schema",
       "severity": "blocker"
     },
     {
-      "id": "acceptance-rules",
-      "check": "acceptance criteria template exists",
+      "id": "acceptance-template-exists",
+      "check": "a reusable acceptance + evidence checklist template exists.",
       "evidence": "acceptance-template",
       "severity": "warning"
     },
     {
-      "id": "handoff-packet",
-      "check": "delivery handoff checklist template exists",
+      "id": "stage-checklist-exists",
+      "check": "delivery stages are named with exit criteria for each stage.",
+      "evidence": "stage-checklist",
+      "severity": "warning"
+    },
+    {
+      "id": "handoff-checklist-exists",
+      "check": "delivery\u2192ops/support handoff packet template exists.",
       "evidence": "handoff-checklist",
       "severity": "warning"
     },
     {
+      "id": "rollback-repair-posture",
+      "check": "for high-stakes work, a rollback or repair plan is defined before ship.",
+      "evidence": "rollback-plan",
+      "severity": "warning"
+    },
+    {
       "id": "post-ship-verdict",
-      "check": "post-ship verdict memo exists for shipped deliverables",
+      "check": "every shipped deliverable produces a short verdict memo within a fixed window.",
       "evidence": "post-ship-verdict",
       "severity": "warning"
     }

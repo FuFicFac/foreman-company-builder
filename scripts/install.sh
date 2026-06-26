@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
-# Foreman installer — run with: curl -fsSL https://get.foreman.dev | zsh
-# Or: curl -fsSL https://raw.githubusercontent.com/FuFicFac/foreman-company-runner/main/scripts/install.sh | zsh
+# Foreman installer — run with: curl -fsSL https://raw.githubusercontent.com/FuFicFac/foreman-company-runner/main/scripts/install.sh | zsh
+# Vanity URL (get.foreman.dev) is coming soon — use the raw GitHub URL for now.
 
 set -euo pipefail
 
@@ -12,7 +12,7 @@ G='\033[0;32m' B='\033[0;34m' BOLD='\033[1m' DIM='\033[2m' NC='\033[0m'
 
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════════════╗${NC}"
-echo -e "${BOLD}║         Foreman — Installer                  ║${NC}"
+echo -e "${BOLD}║  Foreman Company Builder — Installer         ║${NC}"
 echo -e "${BOLD}║   Paperclip is the company.                  ║${NC}"
 echo -e "${BOLD}║   Foreman runs the crew.                      ║${NC}"
 echo -e "${BOLD}╚══════════════════════════════════════════════╝${NC}"

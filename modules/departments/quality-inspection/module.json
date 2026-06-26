@@ -3,8 +3,8 @@
   "kind": "department",
   "department_slug": "quality-inspection",
   "version": "1.0.0",
-  "description": "Quality / Foreman Inspection — Core Foreman discipline: builder → inspector → Foreman arbitration → fix loop → evidence.",
-  "purpose": "Core Foreman discipline: builder → inspector → Foreman arbitration → fix loop → evidence.",
+  "description": "Quality / Foreman Inspection \u2014 Core Foreman discipline: builder \u2192 inspector \u2192 Foreman arbitration \u2192 fix loop \u2192 evidence.",
+  "purpose": "Core Foreman discipline: builder \u2192 inspector \u2192 Foreman arbitration \u2192 fix loop \u2192 evidence.",
   "domain": "quality-inspection",
   "capabilities": [
     "quality-inspection"
@@ -96,46 +96,40 @@
   ],
   "smoke_tests": [
     {
-      "id": "inspection-standards",
-      "check": "inspection_standards defined on active module",
+      "id": "inspection-standards-defined",
+      "check": "every active module has `inspection_standards` declared in its `module.json`.",
       "evidence": "module.json",
       "severity": "blocker"
     },
     {
-      "id": "escalation-policy-linked",
-      "check": "three-strike policy referenced",
+      "id": "three-strike-policy-referenced",
+      "check": "the escalation-protocol is linked from the inspection loop and known to the Foreman.",
       "evidence": "escalation-protocol",
       "severity": "warning"
     },
     {
-      "id": "three-strike-policy-referenced",
-      "check": "the escalation-protocol is linked from the inspection loop and known to the Foreman.",
-      "evidence": "three-strike-policy-referenced",
-      "severity": "info"
-    },
-    {
       "id": "inspection-verdict-archived",
       "check": "at least one recent inspection-verdict with per-inspector results and (if any) arbitration record.",
-      "evidence": "inspection-verdict-archived",
+      "evidence": "inspection-verdict",
       "severity": "info"
     },
     {
       "id": "artifact-index-current",
       "check": "the artifact-index has entries for recently accepted deliverables.",
-      "evidence": "artifact-index-current",
-      "severity": "info"
+      "evidence": "artifact-index",
+      "severity": "warning"
     },
     {
       "id": "closeout-sweep-run",
       "check": "recent done-work has a closeout-sweep record confirming all inspectors passed.",
-      "evidence": "closeout-sweep-run",
-      "severity": "info"
+      "evidence": "closeout-sweep",
+      "severity": "warning"
     },
     {
       "id": "approval-gates-are-explicit",
       "check": "three-strike-escalation, force-close, and waive-inspection gates are listed and used.",
-      "evidence": "approval-gates-are-explicit",
-      "severity": "info"
+      "evidence": "approval-gates",
+      "severity": "warning"
     }
   ],
   "company_type_mappings": {

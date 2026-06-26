@@ -1,18 +1,16 @@
-# Foreman
+# Foreman Company Builder
 
-> Repository rename note: the current repo is `foreman-company-runner`, but the product direction now points toward `foreman-company-builder` as the clearer name.
-
-The dispatch, verification, and operating-discipline layer for AI agent companies.
+> **Foreman** is the dispatch, verification, and operating-discipline layer for AI agent companies.
 
 **Foreman keeps agent companies honest. Paperclip shows the work. Hermes runs the crew.**
 
 Foreman began as a standalone feedback loop that dispatches builders, inspects their work, and only accepts what passes verification. It runs on any machine with any CLI setup — Cursor, Claude, Codex, Ollama, Hermes, or just one of those.
 
-Foreman's architecture is now explicitly aligned with [12-Factor Agents](docs/foreman-12-factor-agents.md): natural language is translated into structured company actions; prompts, context, control flow, and state are owned by Foreman; role agents are small and focused; every run can pause/resume; human decisions are first-class events; and each agent call behaves like a stateless reducer over durable company state.
+Foreman's architecture is aligned with [12-Factor Agents](docs/foreman-12-factor-agents.md): natural language is translated into structured company actions; prompts, context, control flow, and state are owned by Foreman; role agents are small and focused; every run can pause/resume; human decisions are first-class events; and each agent call behaves like a stateless reducer over durable company state.
 
-That loop still matters. But the current product direction is broader: Foreman is growing into the shared discipline layer for specialized agent companies and Paperclip holding companies. Paperclip tracks companies, Hermes runs agents and scheduled work, each company gets a spawnable CEO/worker/inspector roster, and Foreman enforces builder → inspector → arbitration → escalation loops.
+The current product direction is broader: Foreman is the shared discipline layer for specialized agent companies and Paperclip holding companies. Paperclip tracks companies, Hermes runs agents and scheduled work, each company gets a spawnable CEO/worker/inspector roster, and Foreman enforces builder → inspector → arbitration → escalation loops.
 
-The first front-facing company suite is **Little Publishing House**, a **Foreman Company** for writers and small publishers:
+The first front-facing company suite is **Little Publishing House**, a Foreman Company for writers and small publishers:
 
 > **Start where you are. Build the publishing company around the book you already have.**
 
@@ -32,9 +30,8 @@ For this direction:
 - **Little Publishing House** is the publishing company package: it bundles the roles, workflows, workspace template, approval gates, and reporting style for writers/publishers.
 - **Printing Press** gives the company agent-native external tools when a workflow needs them.
 - Each book gets a simple local workspace and living wiki. A full Second Brain is optional, not required.
-- **OpenClaw** can be an advanced alternate runtime path, but Hermes is the recommended default.
 
-Foreman should therefore offer two clear operating modes:
+Foreman offers two clear operating modes:
 
 ```text
 Hermes-only mode:     README/workspace + Hermes skills/cron/tools + Foreman closeout
@@ -43,47 +40,72 @@ Paperclip-board mode: Strong README + Paperclip Kanban/org chart + Hermes runtim
 
 People who already built Paperclip companies should be able to import them, preserve the useful company structure, and let Foreman upgrade the operating discipline instead of starting over. People who do not want Paperclip should still be able to run the whole Foreman loop inside Hermes from a strong README and local workspace.
 
-## Company Packages
-
-### Little Publishing House
-
-Little Publishing House is now the first physical Foreman Company package.
+## Quick Start
 
 ```bash
-./scripts/foreman lph new /tmp/my-book \
-  --title "My Book" \
-  --stage "partial draft" \
-  --mode hermes \
-  --goal "book project map"
+# 1. Clone
+git clone https://github.com/FuFicFac/foreman-company-runner.git
+cd foreman-company-runner
 
-./scripts/foreman lph doctor /tmp/my-book
-./scripts/foreman lph heartbeat /tmp/my-book
+# 2. Install (adds foreman to your PATH)
+./scripts/install.sh
+source ~/.zshrc   # or ~/.bashrc — or just restart your terminal
+
+# 3. Initialize — discover your CLIs and API keys, assign roles
+foreman init
+
+# 4. Blast a task — Foreman auto-detects the template and fires the pipeline
+foreman blast "Fix the dropdown z-index using createPortal"
 ```
 
-Use `--mode hermes` when the README/workspace is enough and Hermes will run the work. Use `--mode paperclip` when Paperclip should act as the visible external Kanban/company board.
+That's it. `foreman blast` is the main entry point. You give it a prompt, it auto-detects the right capability template (software, creative-writing, publishing, marketing, youtube), loads roles from your fleet, and fires the builder → inspector → arbitration loop.
 
-See [`companies/little-publishing-house/`](companies/little-publishing-house/) and [`companies/little-publishing-house/LIVESTREAM_DEMO.md`](companies/little-publishing-house/LIVESTREAM_DEMO.md).
+### One-line install (coming soon)
 
-## Resolution Heartbeat
-
-Foreman should not just show that work is stuck. Foreman should drain the review queue.
-
-Paperclip is optional visibility: the cockpit, dashboard, and manual override surface. Foreman is the accountability layer that keeps checking review, approval, blocked, failed, stale, and waiting-on-human queues until each item is resolved, retried, escalated, or deliberately deferred.
-
-```text
-Paperclip shows the queue.
-Foreman drains the queue.
-Office hours protect the person.
+```bash
+curl -fsSL https://raw.githubusercontent.com/FuFicFac/foreman-company-runner/main/scripts/install.sh | zsh
 ```
 
-With Hermes cron, Foreman can run a resolution heartbeat without requiring Paperclip at all:
+A vanity URL (`get.foreman.dev`) is planned but not yet wired. Use the raw GitHub URL above for now.
 
-- during office hours, inspect queues frequently and resolve safe blockers;
-- after hours, suppress noncritical interruptions and batch reports;
-- wake the human only for critical events such as paid customer access failures, public launch breakage, data exposure, runaway spend, or security incidents;
-- support optional escalation channels such as Telegram, SMS, webhooks, or smart-home signals.
+## CLI Commands
 
-See [`docs/resolution-heartbeat-office-hours.md`](docs/resolution-heartbeat-office-hours.md) for the full policy model.
+The `foreman` wrapper (`scripts/foreman`) routes these subcommands:
+
+| Command | What it does |
+|---------|-------------|
+| `foreman blast "<prompt>"` | **Main entry point.** Auto-detect template, load roles, fire the builder → inspector → arbitration pipeline. |
+| `foreman init` | First-run setup: discover CLIs, scan API keys, assign roles, save profile to `~/.foreman/`. |
+| `foreman press propose\|validate\|register\|list\|inspect` | Printing Press: draft and register safe JSON CLI tool manifests. |
+| `foreman tools doctor\|list\|search\|install\|manifest` | Tool supply: check, find, install, and manifest agent-native CLIs. |
+| `foreman module [args]` | Manage capability module templates. |
+| `foreman issues` | Work with the Foreman issues queue. |
+| `foreman chat` | Talk to the Foreman brain (orchestration LLM). |
+| `foreman run <command> [args]` | Run lifecycle: start, status, advance runs. |
+| `foreman update` | Update Foreman and check external dependencies. |
+| `foreman fleet` | Re-scan your CLI fleet. |
+| `foreman lph <command> [args]` | Little Publishing House company package. |
+
+### Blast Options
+
+```
+  --template <name>    Force a specific template (creative-writing, software, marketing, youtube, publishing)
+  --provider <name>    Force a specific provider
+  --dir <path>         Output directory (default: temp dir)
+  --deluxe             Run Deluxe loop instead of Lean
+  --dry-run            Show what would fire without executing
+```
+
+Keyword matching is automatic when no `--template` is given:
+
+```
+write/story/book/chapter/novel → creative-writing
+code/build/fix/app/deploy      → software
+market/ad/copy/campaign/email  → marketing
+video/youtube/script/thumbnail → youtube
+publish/launch/metadata/store  → publishing
+Default: software
+```
 
 ## How Foreman Works (Headless / Standalone)
 
@@ -91,7 +113,7 @@ This is the default mode. No dashboard. No org chart. Just the feedback loop.
 
 ```bash
 # Tell Foreman what to do
-foreman dispatch --task "Fix the dropdown z-index issue"
+foreman blast "Fix the dropdown z-index issue"
 
 # Foreman does this:
 # 1. Builder (Composer 2.5) implements the fix
@@ -139,11 +161,30 @@ Foreman auto-discovers your CLIs and adapts. You don't need a full fleet.
 
 One provider is enough. The feedback loop uses different model tiers for different roles — Opus inspects, Sonnet builds, Haiku plans fixes. Same loop, whatever you've got.
 
+## Company Packages
+
+### Little Publishing House
+
+Little Publishing House is the first physical Foreman Company package.
+
+```bash
+foreman lph new /tmp/my-book \
+  --title "My Book" \
+  --stage "partial draft" \
+  --mode hermes \
+  --goal "book project map"
+
+foreman lph doctor /tmp/my-book
+foreman lph heartbeat /tmp/my-book
+```
+
+Use `--mode hermes` when the README/workspace is enough and Hermes will run the work. Use `--mode paperclip` when Paperclip should act as the visible external Kanban/company board.
+
 ## Capability Templates + Tool Supply
 
 Foreman templates are capability bundles, not stereotypes. A publishing company is not only a writing room — if it sells ePubs directly, it may need Shopify, Stripe, Gumroad, email marketing, launch operations, support, and analytics.
 
-Built-in templates now include:
+Built-in templates:
 
 - `software`
 - `creative-writing`
@@ -154,18 +195,18 @@ Built-in templates now include:
 Printing Press can supply agent-native CLIs for those capabilities:
 
 ```bash
-./scripts/foreman-tools.sh doctor
-./scripts/foreman-tools.sh search wikipedia
-./scripts/foreman-tools.sh install wikipedia
-./scripts/foreman-tools.sh manifest publishing
+foreman tools doctor
+foreman tools search wikipedia
+foreman tools install wikipedia
+foreman tools manifest publishing
 ```
 
 ### Foreman Press V0 demo
 
-Foreman Press V0 can now draft and locally register safe JSON CLI manifests:
+Foreman Press V0 can draft and locally register safe JSON CLI manifests:
 
 ```bash
-./scripts/foreman press propose \
+foreman press propose \
   --id com.printingpress.demo-json-tool \
   --name "Demo JSON Tool" \
   --description "Safe read-only demo CLI that emits JSON." \
@@ -177,13 +218,34 @@ Foreman Press V0 can now draft and locally register safe JSON CLI manifests:
   --tag read-only \
   > /tmp/demo.manifest.json
 
-./scripts/foreman press validate /tmp/demo.manifest.json
-./scripts/foreman press register /tmp/demo.manifest.json
-./scripts/foreman press list
-./scripts/foreman press inspect com.printingpress.demo-json-tool
+foreman press validate /tmp/demo.manifest.json
+foreman press register /tmp/demo.manifest.json
+foreman press list
+foreman press inspect com.printingpress.demo-json-tool
 ```
 
 See [`docs/foreman-press-demo.md`](docs/foreman-press-demo.md) for copy/paste-safe demo commands using a temporary `FOREMAN_CONFIG_DIR`.
+
+## Resolution Heartbeat
+
+Foreman should not just show that work is stuck. Foreman should drain the review queue.
+
+Paperclip is optional visibility: the cockpit, dashboard, and manual override surface. Foreman is the accountability layer that keeps checking review, approval, blocked, failed, stale, and waiting-on-human queues until each item is resolved, retried, escalated, or deliberately deferred.
+
+```text
+Paperclip shows the queue.
+Foreman drains the queue.
+Office hours protect the person.
+```
+
+With Hermes cron, Foreman can run a resolution heartbeat without requiring Paperclip at all:
+
+- during office hours, inspect queues frequently and resolve safe blockers;
+- after hours, suppress noncritical interruptions and batch reports;
+- wake the human only for critical events such as paid customer access failures, public launch breakage, data exposure, runaway spend, or security incidents;
+- support optional escalation channels such as Telegram, SMS, webhooks, or smart-home signals.
+
+See [`docs/resolution-heartbeat-office-hours.md`](docs/resolution-heartbeat-office-hours.md) for the full policy model.
 
 ## Paperclip Import and Upgrade
 
@@ -207,16 +269,9 @@ See [`docs/paperclip-import-and-upgrade.md`](docs/paperclip-import-and-upgrade.m
 
 Running headless is fine. But if you want the full visual stack — Kanban boards, org charts, agent management, worktree coordination — plug Foreman into Paperclip.
 
-```bash
-# Connect to your Paperclip company
-foreman dispatch --paperclip --company <id> --issue FOL-15
-```
-
-Foreman reads issues from Paperclip, dispatches and verifies the work, then writes status back. Through the API. Not a plugin. Paperclip updates won't break Foreman — if the API changes, you update one adapter.
-
 **Without Paperclip:** Foreman is headless. You give it tasks, it gets them done, verified.
 
-**With Paperclip:** Same Foreman, plus the visual dashboard and company model.
+**With Paperclip:** Same Foreman, plus the visual dashboard and company model. Foreman reads issues from Paperclip, dispatches and verifies the work, then writes status back. Through the API. Not a plugin. Paperclip updates won't break Foreman — if the API changes, you update one adapter.
 
 **With an existing Paperclip company:** Foreman imports it, classifies stale/zombie/live work, produces a migration report, and offers a closeout pass before resuming operations.
 
@@ -234,23 +289,6 @@ AI agent companies assign tasks and mark them done. But nothing checks if the wo
 
 Foreman is the missing quality layer. It doesn't trust builders to grade their own work. It doesn't let agents spiral. It inspects, escalates, and only accepts verified results.
 
-## Quick Start
-
-```bash
-# Clone
-git clone https://github.com/FuFicFac/foreman-company-runner.git
-cd foreman-company-runner
-
-# Check your fleet
-./scripts/fleet-check.sh
-
-# Run headless (standalone)
-foreman dispatch --task "Fix the dropdown z-index using createPortal"
-
-# Run with Paperclip (supercharged)
-foreman dispatch --paperclip --company <company-id> --issue FOL-15
-```
-
 ## The Model Currency Rule
 
 Foreman never hardcodes model names. They go stale in months. Before dispatching, it checks what's latest:
@@ -261,6 +299,18 @@ Foreman never hardcodes model names. They go stale in months. Before dispatching
 - Codex: `codex --help` → current flags
 
 Self-correcting by design.
+
+## Troubleshooting
+
+See [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) for common issues: PATH not sourced, no CLIs found, API key/auth problems.
+
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md).
 
 ## License
 

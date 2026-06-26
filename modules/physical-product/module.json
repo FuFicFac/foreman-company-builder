@@ -1,0 +1,112 @@
+{
+  "name": "physical-product",
+  "version": "1.0.0",
+  "description": "Physical product company — designs, sources, manufactures, and ships tangible goods with QC and fulfillment",
+  "domain": "physical-product",
+  "inspectors": [
+    "spec-compliance",
+    "quality-check",
+    "safety-review",
+    "packaging-check"
+  ],
+  "builders": [
+    "product-design",
+    "spec-package",
+    "supplier-order",
+    "listing-build"
+  ],
+  "loop_mode": "deluxe",
+  "high_stakes_loop": "deluxe",
+  "source": "built-in",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "concept",
+    "design",
+    "spec",
+    "supplier-sourcing",
+    "sample",
+    "production-order",
+    "manufacturing",
+    "qc",
+    "packaging",
+    "listing",
+    "qa",
+    "launch",
+    "fulfillment",
+    "post-launch-review"
+  ],
+  "roles": [
+    "product-ceo",
+    "product-designer",
+    "spec-engineer",
+    "sourcing-manager",
+    "qc-inspector",
+    "listing-builder",
+    "fulfillment-coordinator"
+  ],
+  "human_approval_gates": [
+    "design-final",
+    "supplier-commit",
+    "production-order",
+    "pricing",
+    "safety-claim",
+    "launch-date"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "product-stage",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "tool-status",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "spec-compliance",
+    "quality-pass",
+    "safety-compliance",
+    "labeling-accuracy",
+    "fulfillment-readiness",
+    "human-approval-respected"
+  ],
+  "qa_roles": [
+    {
+      "name": "QA Inspector",
+      "type": "qa",
+      "checklist": [
+        "Product spec matches approved design",
+        "QC sample passed inspection",
+        "Packaging and labeling compliant",
+        "Product listing accurate and complete",
+        "Fulfillment chain confirmed",
+        "No outstanding safety or regulatory issues"
+      ]
+    }
+  ],
+  "launch_phase": {
+    "enabled": true,
+    "assets": [
+      {"type": "product-page", "description": "E-commerce product page copy and images"},
+      {"type": "launch-announcement", "description": "Launch announcement for email and social"},
+      {"type": "fulfillment-plan", "description": "Fulfillment and shipping plan"},
+      {"type": "inventory-check", "description": "Inventory readiness confirmation"},
+      {"type": "customer-support-prep", "description": "Support FAQ and return policy ready"}
+    ]
+  }
+}

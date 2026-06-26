@@ -1,0 +1,106 @@
+{
+  "name": "local-service",
+  "version": "1.0.0",
+  "description": "Local service company — books, dispatches, and delivers on-site or regional services with scheduling and quality checks",
+  "domain": "local-service",
+  "inspectors": [
+    "service-quality",
+    "scheduling-check",
+    "customer-promise-fit",
+    "coverage-check"
+  ],
+  "builders": [
+    "service-package",
+    "booking-schedule",
+    "dispatch-plan",
+    "quote-builder"
+  ],
+  "loop_mode": "lean",
+  "high_stakes_loop": "deluxe",
+  "source": "built-in",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "intake",
+    "quote",
+    "schedule",
+    "assign",
+    "pre-arrival-check",
+    "service-delivery",
+    "post-service-check",
+    "customer-follow-up",
+    "qa",
+    "launch",
+    "review-and-rebook"
+  ],
+  "roles": [
+    "service-ceo",
+    "booking-coordinator",
+    "dispatcher",
+    "field-specialist",
+    "quality-inspector",
+    "customer-follow-up-analyst"
+  ],
+  "human_approval_gates": [
+    "pricing-change",
+    "service-area-expansion",
+    "hiring-or-subcontractor",
+    "customer-complaint-escalation",
+    "refund-approval"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "service-stage",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "tool-status",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "service-quality",
+    "customer-promise-fit",
+    "scheduling-accuracy",
+    "coverage-fit",
+    "human-approval-respected"
+  ],
+  "qa_roles": [
+    {
+      "name": "QA Coordinator",
+      "type": "qa",
+      "checklist": [
+        "Service delivered per spec and schedule",
+        "Customer promise met or exceeded",
+        "No open complaints or safety issues",
+        "Follow-up communication sent",
+        "Field staff checklist complete",
+        "Rebooking opportunity identified"
+      ]
+    }
+  ],
+  "launch_phase": {
+    "enabled": true,
+    "assets": [
+      {"type": "service-menu", "description": "Published service menu with pricing"},
+      {"type": "booking-page", "description": "Online booking or contact page"},
+      {"type": "local-seo", "description": "Local SEO and directory listings"},
+      {"type": "announcement", "description": "Launch announcement for local channels"},
+      {"type": "review-plan", "description": "Customer review collection plan"}
+    ]
+  }
+}

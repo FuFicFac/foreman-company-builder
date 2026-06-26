@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  com.foreman.heartbeat.plist — launchd template for periodic Foreman heartbeats
+
+  INSTALL:
+    1. Copy this file to ~/Library/LaunchAgents/com.foreman.heartbeat.plist
+    2. Edit the path in ProgramArguments below to point at your foreman-heartbeat.sh
+       (default: /Users/ekelloharrid/Projects/foreman-company-runner/scripts/foreman-heartbeat.sh)
+    3. Adjust StartInterval (seconds between runs) or replace with a calendar schedule
+       (see https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html)
+    4. Edit log paths if desired (default: ~/Library/Logs/foreman-heartbeat.log)
+    5. Load:   launchctl load ~/Library/LaunchAgents/com.foreman.heartbeat.plist
+    6. Unload: launchctl unload ~/Library/LaunchAgents/com.foreman.heartbeat.plist
+    7. Check:  launchctl list | grep foreman
+    8. Tail:   tail -f ~/Library/Logs/foreman-heartbeat.log
+
+  ENVIRONMENT:
+    Set FOREMAN_CONFIG_DIR in the EnvironmentVariables dict below if your run
+    ledger lives somewhere other than ~/.foreman.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.foreman.heartbeat</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <!-- EDIT THIS PATH to match your checkout -->
+        <string>/Users/ekelloharrid/Projects/foreman-company-runner/scripts/foreman-heartbeat.sh</string>
+    </array>
+
+    <!-- Run every hour (3600 seconds). Adjust as needed. -->
+    <key>StartInterval</key>
+    <integer>3600</integer>
+
+    <!-- Also run once when loaded -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Optional: override config dir (defaults to ~/.foreman if omitted) -->
+    <!--
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>FOREMAN_CONFIG_DIR</key>
+        <string>/Users/ekelloharrid/.foreman</string>
+    </dict>
+    -->
+
+    <key>StandardOutPath</key>
+    <string>/Users/ekelloharrid/Library/Logs/foreman-heartbeat.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/ekelloharrid/Library/Logs/foreman-heartbeat.log</string>
+</dict>
+</plist>

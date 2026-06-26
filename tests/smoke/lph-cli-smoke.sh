@@ -29,7 +29,7 @@ grep -q "Little Publishing House doctor: OK" "$TMPDIR/doctor.out"
 grep -q "Patreon Pilot" "$TMPDIR/doctor.out"
 
 "$ROOT/scripts/foreman" company little-publishing-house heartbeat "$PROJECT" > "$TMPDIR/heartbeat.out"
-grep -q "Little Publishing House Heartbeat" "$TMPDIR/heartbeat.out"
+grep -q "Foreman Heartbeat" "$TMPDIR/heartbeat.out"
 grep -q "book project map" "$TMPDIR/heartbeat.out"
 
 printf 'lph cli smoke: ok\n'

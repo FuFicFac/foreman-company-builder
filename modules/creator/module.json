@@ -1,0 +1,105 @@
+{
+  "name": "creator",
+  "version": "1.0.0",
+  "description": "Creator company — produces content across platforms, inspects for brand fit, audience growth, and monetization",
+  "domain": "creator",
+  "inspectors": [
+    "brand-check",
+    "audience-fit",
+    "monetization-check",
+    "platform-compliance"
+  ],
+  "builders": [
+    "content-draft",
+    "post-package",
+    "sponsor-pitch",
+    "funnel-page"
+  ],
+  "loop_mode": "lean",
+  "high_stakes_loop": "deluxe",
+  "source": "built-in",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "idea",
+    "angle",
+    "content-draft",
+    "edit",
+    "platform-package",
+    "publish",
+    "qa",
+    "analytics-review",
+    "launch",
+    "monetization-review",
+    "audience-follow-up"
+  ],
+  "roles": [
+    "creator-ceo",
+    "content-producer",
+    "brand-strategist",
+    "monetization-analyst",
+    "platform-inspector",
+    "audience-analyst"
+  ],
+  "human_approval_gates": [
+    "brand-direction",
+    "sponsor-claim",
+    "monetization-partnership",
+    "platform-policy-risk",
+    "public-post"
+  ],
+  "context_packet_requirements": [
+    "creator-brief",
+    "audience",
+    "active-content-stage",
+    "platform-constraints",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "tool-status",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "brand-fit",
+    "audience-fit",
+    "monetization-alignment",
+    "platform-compliance",
+    "claim-support"
+  ],
+  "qa_roles": [
+    {
+      "name": "QA Checker",
+      "type": "qa",
+      "checklist": [
+        "Brand voice consistent across content",
+        "Platform format and spec compliant",
+        "Monetization disclosures present where required",
+        "Audience CTA clear and present",
+        "No unsupported claims",
+        "Analytics tracking in place"
+      ]
+    }
+  ],
+  "launch_phase": {
+    "enabled": true,
+    "assets": [
+      {"type": "post-package", "description": "Cross-platform post package with captions"},
+      {"type": "email-sequence", "description": "Email or newsletter sequence for launch"},
+      {"type": "social-posts", "description": "Social media launch posts"},
+      {"type": "sponsor-pitch", "description": "Sponsor or partnership pitch deck"},
+      {"type": "analytics-baseline", "description": "Pre-launch analytics baseline snapshot"}
+    ]
+  }
+}

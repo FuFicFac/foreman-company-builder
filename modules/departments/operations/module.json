@@ -116,10 +116,34 @@
   ],
   "smoke_tests": [
     {
-      "id": "core-sops",
-      "check": "at least one SOP per recurring workflow",
+      "id": "core-sops-exist",
+      "check": "at least one SOP per recurring workflow (or per high-volume workflow).",
       "evidence": "sop-index",
       "severity": "warning"
+    },
+    {
+      "id": "handoff-checklists-exist",
+      "check": "at least one handoff checklist used between major departments.",
+      "evidence": "handoff-checklist",
+      "severity": "warning"
+    },
+    {
+      "id": "recurring-schedule-exists",
+      "check": "a schedule record with owner + cadence for recurring work.",
+      "evidence": "recurring-schedule",
+      "severity": "warning"
+    },
+    {
+      "id": "escalation-rules-exist",
+      "check": "blocked-work threshold and escalation owner routing is documented and used.",
+      "evidence": "escalation-policy",
+      "severity": "warning"
+    },
+    {
+      "id": "refresh-dates-set",
+      "check": "SOPs have owners and review dates (staleness doesn't silently accumulate).",
+      "evidence": "sop-index",
+      "severity": "info"
     }
   ],
   "company_type_mappings": {

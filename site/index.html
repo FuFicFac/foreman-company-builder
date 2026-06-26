@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personal Publishing House — A Foreman Company</title>
+  <title>Foreman Company Builder — Start where you are.</title>
   <style>
     :root {
       --paper: #fbf3e6;
@@ -115,7 +115,7 @@
 <body>
   <div class="wrap">
     <nav>
-      <div class="brand">Foreman</div>
+      <div class="brand">Foreman Company Builder</div>
       <div class="nav-links">
         <a href="#workflow">Workflow</a>
         <a href="#paperclip">Paperclip</a>
@@ -128,11 +128,11 @@
     <main>
       <section class="hero">
         <div>
-          <div class="eyebrow">Personal Publishing House · A Foreman Company</div>
+          <div class="eyebrow">Little Publishing House · A Foreman Company</div>
           <h1>Start where you are.</h1>
-          <p class="lead">Personal Publishing House is a Foreman Company for writers. Whether you have an idea, a rough draft, a finished manuscript, or a launch already in motion, it finds your stage and builds the next publishing workflow around it.</p>
+          <p class="lead">Little Publishing House is a Foreman Company for writers. Whether you have an idea, a rough draft, a finished manuscript, or a launch already in motion, it finds your stage and builds the next publishing workflow around it.</p>
           <div class="cta-row">
-            <a class="btn btn-primary" href="#install">Start with Hermes</a>
+            <a class="btn btn-primary" href="#install">Get started</a>
             <a class="btn btn-secondary" href="#workflow">See the manuscript workflow</a>
           </div>
         </div>
@@ -153,14 +153,14 @@
       <section>
         <div class="section-head">
           <h2>You wrote the book. Now comes the machine.</h2>
-          <p>Editing, metadata, launch planning, reader follow-up, storefront details, decisions, blockers — the work around the writing can swallow the writer. Personal Publishing House gives that work a visible place to live.</p>
+          <p>Editing, metadata, launch planning, reader follow-up, storefront details, decisions, blockers — the work around the writing can swallow the writer. Little Publishing House gives that work a visible place to live.</p>
         </div>
       </section>
 
       <section id="workflow">
         <div class="section-head">
           <h2>A publishing workflow that meets you where you are.</h2>
-          <p>You do not have to start by dropping in a draft. Bring an idea, an outline, a partial manuscript, a finished book, completed edits, or a launch already in motion. Hermes and Foreman infer the current stage, confirm it with you, and start from there.</p>
+          <p>You do not have to start by dropping in a draft. Bring an idea, an outline, a partial manuscript, a finished book, completed edits, or a launch already in motion. Foreman infers the current stage, confirms it with you, and starts from there.</p>
         </div>
         <div class="workflow">
           <div class="stage"><strong>Idea</strong><small>Start with a premise, notes, or nothing but the book you mean to write.</small></div>
@@ -177,7 +177,7 @@
         <div class="two-col">
           <div class="panel">
             <h3>Paperclip shows the company.</h3>
-            <p>Paperclip is where you see inside your Personal Publishing House: which agents are working, which tasks are blocked, what stage your manuscript is in, and what needs your decision.</p>
+            <p>Paperclip is where you see inside your Little Publishing House: which agents are working, which tasks are blocked, what stage your manuscript is in, and what needs your decision.</p>
             <ul>
               <li>agents and roles</li>
               <li>queues and approvals</li>
@@ -221,23 +221,26 @@
 
       <section id="install">
         <div class="section-head">
-          <h2>Choose your runtime.</h2>
-          <p>Personal Publishing House uses an agent runtime to do real work. The recommended path is Hermes.</p>
+          <h2>Get started in 60 seconds.</h2>
+          <p>Foreman runs on any machine with at least one AI CLI. Install Foreman, initialize your fleet, and blast your first task.</p>
         </div>
         <div class="install-grid">
           <div class="panel install recommended">
-            <span class="badge">Recommended</span>
-            <h3>Install with Hermes</h3>
-            <p>Hermes runs the agents, tools, skills, scheduled checks, and follow-up that make Personal Publishing House feel alive.</p>
-            <code>Install with Hermes</code>
+            <span class="badge">Quick Install</span>
+            <h3>Install Foreman</h3>
+            <p>Clones Foreman to <code style="display:inline;background:none;color:inherit;padding:0;margin:0">~/.foreman</code> and adds it to your PATH. Works on macOS and Linux.</p>
+            <code>curl -fsSL https://raw.githubusercontent.com/FuFicFac/foreman-company-runner/main/scripts/install.sh | zsh</code>
           </div>
           <div class="panel install">
-            <span class="badge">Advanced / DIY</span>
-            <h3>Install with OpenClaw</h3>
-            <p>OpenClaw is supported as an alternate path, but it may require more assembly. Choose this if you already know OpenClaw and are comfortable adding missing tools or connectors yourself.</p>
-            <code>Install with OpenClaw</code>
+            <span class="badge">Then</span>
+            <h3>Initialize &amp; Blast</h3>
+            <p>After install, source your shell config (or restart your terminal), then run init and your first task.</p>
+            <code>source ~/.zshrc
+foreman init
+foreman blast "Write a launch plan for my book"</code>
           </div>
         </div>
+        <p style="margin-top:20px;color:var(--muted);font-size:0.92rem">A vanity URL (<code style="display:inline;background:none;color:inherit;padding:0;margin:0">get.foreman.dev</code>) is coming soon. For now, use the raw GitHub URL above. Foreman works with Cursor Agent, Claude Code, Codex, Ollama, and Hermes — install at least one.</p>
       </section>
     </main>
 

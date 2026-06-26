@@ -52,10 +52,19 @@ COMPOSER="" COMPOSER_FAST="" CLAUDE_PATH="" OLLAMA_STRONGEST=""
 if command -v agent >/dev/null 2>&1; then
   AGENT_PATH=$(command -v agent)
   AGENT_MODELS=$(agent models 2>/dev/null || true)
-  COMPOSER=$(echo "$AGENT_MODELS" | grep -oiE 'composer-[0-9]+(\.[0-9]+)*(-[a-z0-9]+)?' | sort -V | tail -1 || true)
-  COMPOSER_FAST="${COMPOSER%-fast}-fast"
+  # Extract all composer model identifiers, preserving any provider prefix (e.g. grok-)
+  COMPOSER_ALL=$(echo "$AGENT_MODELS" | grep -oiE '[a-z0-9._-]*composer-[0-9]+(\.[0-9]+)*(-[a-z0-9]+)*' | sort -V || true)
+  # Builder (COMPOSER): prefer the highest non-fast version; fall back to highest fast if only fast exists
+  COMPOSER=$(echo "$COMPOSER_ALL" | grep -viE -- '-fast$' | tail -1 || true)
+  if [[ -z "$COMPOSER" ]]; then
+    COMPOSER=$(echo "$COMPOSER_ALL" | tail -1 || true)
+    COMPOSER_FAST=""
+  else
+    # Cheap (COMPOSER_FAST): the distinct -fast variant of the chosen base model, if it exists
+    COMPOSER_FAST=$(echo "$COMPOSER_ALL" | grep -iFx "${COMPOSER}-fast" || true)
+  fi
   echo -e "  ${G}✓${NC} ${BOLD}Cursor Agent${NC} ${DIM}($AGENT_PATH)${NC}"
-  [[ -n "$COMPOSER" ]] && echo -e "    ${G}✓${NC} Models: ${DIM}$COMPOSER${NC}"
+  [[ -n "$COMPOSER" ]] && echo -e "    ${G}✓${NC} Models: ${DIM}$COMPOSER${NC}${COMPOSER_FAST:+ / $COMPOSER_FAST}"
   FOUND=$((FOUND + 1))
 else
   echo -e "  ${R}✗${NC} Cursor Agent ${DIM}(not found)${NC}"
@@ -114,6 +123,50 @@ else
 fi
 
 # ──────────────────────────────────────────────
+# Dynamic Model Discovery (Model Currency Rule)
+# Never hardcode model names. Query each provider's CLI,
+# then check env vars, then config/dependencies.json.
+# ──────────────────────────────────────────────
+SCRIPT_DIR="${0:A:h}"
+REPO_ROOT="${SCRIPT_DIR:h}"
+
+# Helper: read model from config/dependencies.json models section.
+# NOTE: dependencies.json currently has no 'models' key (only 'dependencies'),
+# so this fallback is aspirational — it returns empty until a models section is added.
+_config_model() {
+  local provider="$1"
+  [[ -f "$REPO_ROOT/config/dependencies.json" ]] || return 0
+  python3 -c "import json; d=json.load(open('$REPO_ROOT/config/dependencies.json')); print(d.get('models',{}).get('$provider',''))" 2>/dev/null || true
+}
+
+# OpenAI: codex --help → FOREMAN_OPENAI_MODEL → config
+OPENAI_MODEL=""
+if [[ -n "$CODEX_PATH" ]]; then
+  OPENAI_MODEL=$(codex --help 2>&1 | grep -oiE '(--model|--default-model)[[:space:]]+[a-zA-Z0-9._-]+' | tail -1 | awk '{print $NF}' || true)
+  if [[ -z "$OPENAI_MODEL" ]]; then
+    OPENAI_MODEL=$(codex --help 2>&1 | grep -oiE 'default[: ]+[a-zA-Z0-9._-]+' | head -1 | awk '{print $NF}' || true)
+  fi
+fi
+[[ -z "$OPENAI_MODEL" ]] && [[ -n "${FOREMAN_OPENAI_MODEL:-}" ]] && OPENAI_MODEL="$FOREMAN_OPENAI_MODEL"
+[[ -z "$OPENAI_MODEL" ]] && OPENAI_MODEL=$(_config_model openai)
+
+# xAI: FOREMAN_XAI_MODEL → config (no CLI available)
+XAI_MODEL="${FOREMAN_XAI_MODEL:-}"
+[[ -z "$XAI_MODEL" ]] && XAI_MODEL=$(_config_model xai)
+
+# Google: FOREMAN_GOOGLE_MODEL → config (no CLI available)
+GOOGLE_MODEL="${FOREMAN_GOOGLE_MODEL:-}"
+[[ -z "$GOOGLE_MODEL" ]] && GOOGLE_MODEL=$(_config_model google)
+
+# Anthropic: claude default → FOREMAN_ANTHROPIC_MODEL → config
+ANTHROPIC_MODEL=""
+if [[ -n "$CLAUDE_PATH" ]]; then
+  ANTHROPIC_MODEL=$(claude default 2>/dev/null | grep -oE '[a-zA-Z0-9._-]+' | tail -1 || true)
+fi
+[[ -z "$ANTHROPIC_MODEL" ]] && [[ -n "${FOREMAN_ANTHROPIC_MODEL:-}" ]] && ANTHROPIC_MODEL="$FOREMAN_ANTHROPIC_MODEL"
+[[ -z "$ANTHROPIC_MODEL" ]] && ANTHROPIC_MODEL=$(_config_model anthropic)
+
+# ──────────────────────────────────────────────
 # STEP 3: API Keys & Brain Selection
 # ──────────────────────────────────────────────
 echo -e "${B}Step 3: API Keys & Brain${NC} ${DIM}(Foreman needs a brain for orchestration and chat)${NC}"
@@ -125,14 +178,14 @@ OPENAI_KEY_VAL="" XAI_KEY_VAL="" GOOGLE_KEY_VAL="" ANTHROPIC_KEY_VAL=""
 
 if [[ -n "${OPENAI_API_KEY:-}" ]]; then
   HAS_OPENAI=true; OPENAI_KEY_VAL="${OPENAI_API_KEY:0:8}...${OPENAI_API_KEY: -4}"
-  echo -e "  ${G}✓${NC} ${BOLD}OpenAI${NC} ${DIM}(GPT-4o, GPT-5, o3 — key: $OPENAI_KEY_VAL)${NC}"
+  echo -e "  ${G}✓${NC} ${BOLD}OpenAI${NC} ${DIM}(key: $OPENAI_KEY_VAL)${NC}"
 else
   echo -e "  ${DIM}  ○ OpenAI (not found — set OPENAI_API_KEY or paste below)${NC}"
 fi
 
 if [[ -n "${XAI_API_KEY:-}" ]]; then
   HAS_XAI=true; XAI_KEY_VAL="${XAI_API_KEY:0:8}...${XAI_API_KEY: -4}"
-  echo -e "  ${G}✓${NC} ${BOLD}xAI / Grok${NC} ${DIM}(Grok 3 — key: $XAI_KEY_VAL)${NC}"
+  echo -e "  ${G}✓${NC} ${BOLD}xAI / Grok${NC} ${DIM}(key: $XAI_KEY_VAL)${NC}"
 else
   echo -e "  ${DIM}  ○ xAI / Grok (not found — set XAI_API_KEY or paste below)${NC}"
 fi
@@ -195,18 +248,25 @@ if [[ "$SKIP_PROMPTS" != "--yes" ]]; then
   echo -e "${B}Choose Foreman's brain${NC} ${DIM}(used for orchestration, planning, and chat)${NC}"
   echo ""
 
+  # Provider availability = key present AND model discoverable
+  OPENAI_AVAILABLE=false; XAI_AVAILABLE=false; GOOGLE_AVAILABLE=false; ANTHROPIC_AVAILABLE=false
+  [[ "$HAS_OPENAI" == true ]] && [[ -n "$OPENAI_MODEL" ]] && OPENAI_AVAILABLE=true
+  [[ "$HAS_XAI" == true ]] && [[ -n "$XAI_MODEL" ]] && XAI_AVAILABLE=true
+  [[ "$HAS_GOOGLE" == true ]] && [[ -n "$GOOGLE_MODEL" ]] && GOOGLE_AVAILABLE=true
+  [[ "$HAS_ANTHROPIC" == true ]] && [[ -n "$ANTHROPIC_MODEL" ]] && ANTHROPIC_AVAILABLE=true
+
   OPTIONS=()
-  if [[ "$HAS_OPENAI" == true ]]; then
-    OPTIONS+=("OpenAI (GPT-5.4 Mini — cheap, fast, great for orchestration)")
+  if [[ "$OPENAI_AVAILABLE" == true ]]; then
+    OPTIONS+=("OpenAI ($OPENAI_MODEL — cheap, fast, great for orchestration)")
   fi
-  if [[ "$HAS_XAI" == true ]]; then
-    OPTIONS+=("xAI / Grok (Grok 3 — strong reasoning, good for planning)")
+  if [[ "$XAI_AVAILABLE" == true ]]; then
+    OPTIONS+=("xAI / Grok ($XAI_MODEL — strong reasoning, good for planning)")
   fi
-  if [[ "$HAS_GOOGLE" == true ]]; then
-    OPTIONS+=("Google / Gemini (Gemini 2.5 Pro — strong reasoning)")
+  if [[ "$GOOGLE_AVAILABLE" == true ]]; then
+    OPTIONS+=("Google / Gemini ($GOOGLE_MODEL — strong reasoning)")
   fi
-  if [[ "$HAS_ANTHROPIC" == true ]]; then
-    OPTIONS+=("Anthropic / Claude (expensive — best for judgment only)")
+  if [[ "$ANTHROPIC_AVAILABLE" == true ]]; then
+    OPTIONS+=("Anthropic / Claude ($ANTHROPIC_MODEL — expensive — best for judgment only)")
   fi
   if [[ -n "$OLLAMA_STRONGEST" ]]; then
     OPTIONS+=("Ollama local ($OLLAMA_STRONGEST — free, private, no API key)")
@@ -215,6 +275,9 @@ if [[ "$SKIP_PROMPTS" != "--yes" ]]; then
   if [[ ${#OPTIONS[@]} -eq 0 ]]; then
     echo -e "  ${Y}⚠${NC} No API keys found and no local models available."
     echo -e "  ${DIM}Foreman will run in headless mode (no conversational brain).${NC}"
+    if [[ "$HAS_OPENAI" == true ]] || [[ "$HAS_XAI" == true ]] || [[ "$HAS_GOOGLE" == true ]] || [[ "$HAS_ANTHROPIC" == true ]]; then
+      echo -e "  ${DIM}Tip: set FOREMAN_OPENAI_MODEL / FOREMAN_XAI_MODEL / FOREMAN_GOOGLE_MODEL / FOREMAN_ANTHROPIC_MODEL to enable brain${NC}"
+    fi
     BRAIN_PROVIDER="none"
   else
     for i in "${!OPTIONS[@]}"; do
@@ -225,34 +288,34 @@ if [[ "$SKIP_PROMPTS" != "--yes" ]]; then
     read -r BRAIN_CHOICE
     BRAIN_IDX=$((BRAIN_CHOICE - 1))
 
-    if [[ "$HAS_OPENAI" == true ]] && [[ $BRAIN_IDX -eq 0 ]] 2>/dev/null; then
-      BRAIN_PROVIDER="openai"; BRAIN_MODEL="gpt-5.4-mini"; BRAIN_KEY_ENV="OPENAI_API_KEY"
-    elif [[ "$HAS_XAI" == true ]]; then
+    if [[ "$OPENAI_AVAILABLE" == true ]] && [[ $BRAIN_IDX -eq 0 ]] 2>/dev/null; then
+      BRAIN_PROVIDER="openai"; BRAIN_MODEL="$OPENAI_MODEL"; BRAIN_KEY_ENV="OPENAI_API_KEY"
+    elif [[ "$XAI_AVAILABLE" == true ]]; then
       # Calculate xAI index
       XAI_IDX=0
-      [[ "$HAS_OPENAI" == true ]] && XAI_IDX=$((XAI_IDX + 1))
+      [[ "$OPENAI_AVAILABLE" == true ]] && XAI_IDX=$((XAI_IDX + 1))
       if [[ $BRAIN_IDX -eq $XAI_IDX ]] 2>/dev/null; then
-        BRAIN_PROVIDER="xai"; BRAIN_MODEL="grok-3"; BRAIN_KEY_ENV="XAI_API_KEY"
+        BRAIN_PROVIDER="xai"; BRAIN_MODEL="$XAI_MODEL"; BRAIN_KEY_ENV="XAI_API_KEY"
       fi
-    elif [[ "$HAS_GOOGLE" == true ]]; then
+    elif [[ "$GOOGLE_AVAILABLE" == true ]]; then
       GOO_IDX=0
-      [[ "$HAS_OPENAI" == true ]] && GOO_IDX=$((GOO_IDX + 1))
-      [[ "$HAS_XAI" == true ]] && GOO_IDX=$((GOO_IDX + 1))
+      [[ "$OPENAI_AVAILABLE" == true ]] && GOO_IDX=$((GOO_IDX + 1))
+      [[ "$XAI_AVAILABLE" == true ]] && GOO_IDX=$((GOO_IDX + 1))
       if [[ $BRAIN_IDX -eq $GOO_IDX ]] 2>/dev/null; then
-        BRAIN_PROVIDER="google"; BRAIN_MODEL="gemini-2.5-pro"; BRAIN_KEY_ENV="GOOGLE_API_KEY"
+        BRAIN_PROVIDER="google"; BRAIN_MODEL="$GOOGLE_MODEL"; BRAIN_KEY_ENV="GOOGLE_API_KEY"
       fi
     fi
 
     # Default fallback
     if [[ -z "$BRAIN_PROVIDER" ]]; then
-      if [[ "$HAS_OPENAI" == true ]]; then
-        BRAIN_PROVIDER="openai"; BRAIN_MODEL="gpt-5.4-mini"; BRAIN_KEY_ENV="OPENAI_API_KEY"
-      elif [[ "$HAS_XAI" == true ]]; then
-        BRAIN_PROVIDER="xai"; BRAIN_MODEL="grok-3"; BRAIN_KEY_ENV="XAI_API_KEY"
-      elif [[ "$HAS_GOOGLE" == true ]]; then
-        BRAIN_PROVIDER="google"; BRAIN_MODEL="gemini-2.5-pro"; BRAIN_KEY_ENV="GOOGLE_API_KEY"
-      elif [[ "$HAS_ANTHROPIC" == true ]]; then
-        BRAIN_PROVIDER="anthropic"; BRAIN_MODEL="claude-sonnet-4-20250514"; BRAIN_KEY_ENV="ANTHROPIC_API_KEY"
+      if [[ "$OPENAI_AVAILABLE" == true ]]; then
+        BRAIN_PROVIDER="openai"; BRAIN_MODEL="$OPENAI_MODEL"; BRAIN_KEY_ENV="OPENAI_API_KEY"
+      elif [[ "$XAI_AVAILABLE" == true ]]; then
+        BRAIN_PROVIDER="xai"; BRAIN_MODEL="$XAI_MODEL"; BRAIN_KEY_ENV="XAI_API_KEY"
+      elif [[ "$GOOGLE_AVAILABLE" == true ]]; then
+        BRAIN_PROVIDER="google"; BRAIN_MODEL="$GOOGLE_MODEL"; BRAIN_KEY_ENV="GOOGLE_API_KEY"
+      elif [[ "$ANTHROPIC_AVAILABLE" == true ]]; then
+        BRAIN_PROVIDER="anthropic"; BRAIN_MODEL="$ANTHROPIC_MODEL"; BRAIN_KEY_ENV="ANTHROPIC_API_KEY"
       elif [[ -n "$OLLAMA_STRONGEST" ]]; then
         BRAIN_PROVIDER="ollama"; BRAIN_MODEL="$OLLAMA_STRONGEST"; BRAIN_KEY_ENV=""
       else
@@ -269,12 +332,17 @@ if [[ "$SKIP_PROMPTS" != "--yes" ]]; then
   fi
 else
   # --yes mode: pick best available automatically
-  if [[ "$HAS_OPENAI" == true ]]; then
-    BRAIN_PROVIDER="openai"; BRAIN_MODEL="gpt-5.4-mini"; BRAIN_KEY_ENV="OPENAI_API_KEY"
-  elif [[ "$HAS_XAI" == true ]]; then
-    BRAIN_PROVIDER="xai"; BRAIN_MODEL="grok-3"; BRAIN_KEY_ENV="XAI_API_KEY"
-  elif [[ "$HAS_GOOGLE" == true ]]; then
-    BRAIN_PROVIDER="google"; BRAIN_MODEL="gemini-2.5-pro"; BRAIN_KEY_ENV="GOOGLE_API_KEY"
+  OPENAI_AVAILABLE=false; XAI_AVAILABLE=false; GOOGLE_AVAILABLE=false; ANTHROPIC_AVAILABLE=false
+  [[ "$HAS_OPENAI" == true ]] && [[ -n "$OPENAI_MODEL" ]] && OPENAI_AVAILABLE=true
+  [[ "$HAS_XAI" == true ]] && [[ -n "$XAI_MODEL" ]] && XAI_AVAILABLE=true
+  [[ "$HAS_GOOGLE" == true ]] && [[ -n "$GOOGLE_MODEL" ]] && GOOGLE_AVAILABLE=true
+  [[ "$HAS_ANTHROPIC" == true ]] && [[ -n "$ANTHROPIC_MODEL" ]] && ANTHROPIC_AVAILABLE=true
+  if [[ "$OPENAI_AVAILABLE" == true ]]; then
+    BRAIN_PROVIDER="openai"; BRAIN_MODEL="$OPENAI_MODEL"; BRAIN_KEY_ENV="OPENAI_API_KEY"
+  elif [[ "$XAI_AVAILABLE" == true ]]; then
+    BRAIN_PROVIDER="xai"; BRAIN_MODEL="$XAI_MODEL"; BRAIN_KEY_ENV="XAI_API_KEY"
+  elif [[ "$GOOGLE_AVAILABLE" == true ]]; then
+    BRAIN_PROVIDER="google"; BRAIN_MODEL="$GOOGLE_MODEL"; BRAIN_KEY_ENV="GOOGLE_API_KEY"
   elif [[ -n "$OLLAMA_STRONGEST" ]]; then
     BRAIN_PROVIDER="ollama"; BRAIN_MODEL="$OLLAMA_STRONGEST"; BRAIN_KEY_ENV=""
   else
@@ -498,6 +566,7 @@ echo -e "  Brain:      ${CYAN}${BRAIN_PROVIDER:-none}/${BRAIN_MODEL:-none}${NC}"
 echo -e "  Mode:       ${G}${FLEET_MODE}${NC}"
 echo ""
 echo -e "  ${DIM}foreman dispatch --task \"Fix the bug\"${NC}"
+echo -e "  ${DIM}foreman blast \"Fix the bug\"${NC}  ${DIM}# zero-friction entry${NC}"
 echo -e "  ${DIM}foreman fleet${NC}  ${DIM}# re-scan${NC}"
 echo -e "  ${DIM}foreman init${NC}  ${DIM}# reconfigure${NC}"
 echo -e "  ${DIM}foreman chat${NC}  ${DIM}# talk to the brain${NC}"

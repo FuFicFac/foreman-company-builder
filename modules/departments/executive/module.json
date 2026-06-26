@@ -115,15 +115,39 @@
   ],
   "smoke_tests": [
     {
-      "id": "mission-defined",
-      "check": "company-brief.mission is non-empty",
+      "id": "mission-exists",
+      "check": "a single paragraph mission + target customer + promise.",
       "evidence": "company-brief",
       "severity": "blocker"
     },
     {
-      "id": "escalation-policy",
-      "check": "escalation rules documented",
-      "evidence": "escalation-policy artifact",
+      "id": "operating-cadence-exists",
+      "check": "a weekly review note and a quarterly strategy memo template.",
+      "evidence": "operating-cadence",
+      "severity": "warning"
+    },
+    {
+      "id": "decision-log-exists",
+      "check": "at least 3 recent decisions with owners and review dates.",
+      "evidence": "decision-log",
+      "severity": "warning"
+    },
+    {
+      "id": "priority-list-exists",
+      "check": "top priorities with success metrics and stop conditions.",
+      "evidence": "priority-list",
+      "severity": "warning"
+    },
+    {
+      "id": "risk-register-exists",
+      "check": "top risks with severity, mitigations, and escalation owners.",
+      "evidence": "risk-register",
+      "severity": "warning"
+    },
+    {
+      "id": "approval-gates-are-explicit",
+      "check": "\"what requires a human\" is listed and used.",
+      "evidence": "approval-gates",
       "severity": "warning"
     }
   ],

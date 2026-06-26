@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -139,29 +140,149 @@ def cmd_doctor(args: argparse.Namespace) -> int:
 
 
 def cmd_heartbeat(args: argparse.Namespace) -> int:
-    project_dir = Path(args.project_dir).expanduser().resolve()
-    data = read_manifest(project_dir)
+    config_dir = Path(os.environ.get("FOREMAN_CONFIG_DIR", str(Path.home() / ".foreman")))
+    runs_file = config_dir / "runs.json"
     today = dt.date.today().isoformat()
-    print(f"# Little Publishing House Heartbeat — {today}")
+
+    print(f"# Foreman Heartbeat — {today}")
     print()
-    print("Status: YELLOW — first-pass workspace created; human confirmation still needed.")
-    print(f"Project: {data.get('title', project_dir.name)}")
-    print(f"Stage: {data.get('stage', 'unknown')}")
-    print(f"Mode: {data.get('mode', 'unknown')}")
-    print(f"Goal: {data.get('goal', 'unknown')}")
+
+    # Optional project context (kept for backward compatibility with the original CLI path)
+    if args.project_dir:
+        project_dir = Path(args.project_dir).expanduser().resolve()
+        data = read_manifest(project_dir)
+        print(f"Project: {data.get('title', project_dir.name)}")
+        print(f"Stage: {data.get('stage', 'unknown')}")
+        print(f"Mode: {data.get('mode', 'unknown')}")
+        print(f"Goal: {data.get('goal', 'unknown')}")
+        print()
+
+    # --- Read real state from the run ledger ---
+    if not runs_file.exists():
+        print(f"Status: UNKNOWN — no run ledger found at {runs_file}")
+        print()
+        print("## Next")
+        print("- Start a run: foreman-run.sh start <module> --project <name> --stage <stage>")
+        return 0
+
+    try:
+        state = json.loads(runs_file.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"Status: UNKNOWN — could not parse run ledger: {exc}")
+        return 1
+
+    runs = state.get("runs", [])
+    if not runs:
+        print("Status: GREEN — no runs recorded yet.")
+        print()
+        print("## Next")
+        print("- Start a run: foreman-run.sh start <module> --project <name> --stage <stage>")
+        return 0
+
+    # Tally by status
+    passed = [r for r in runs if r.get("status") == "completed"]
+    ready = [r for r in runs if r.get("status") in ("running", "paused")]
+    blocked = [r for r in runs if r.get("status") == "blocked" and r.get("escalation", {}).get("status") != "escalated"]
+    escalated = [r for r in runs if r.get("escalation", {}).get("status") == "escalated"]
+    needs_human = [r for r in runs if r.get("status") == "needs_human"]
+    failed = [r for r in runs if r.get("status") == "failed"]
+    cancelled = [r for r in runs if r.get("status") == "cancelled"]
+
+    # Derive status colour from real state
+    if escalated:
+        colour = "RED"
+        reason = f"{len(escalated)} run(s) escalated"
+    elif blocked or needs_human:
+        colour = "YELLOW"
+        parts = []
+        if blocked:
+            parts.append(f"{len(blocked)} blocked")
+        if needs_human:
+            parts.append(f"{len(needs_human)} needs-human")
+        reason = ", ".join(parts)
+    elif failed:
+        colour = "YELLOW"
+        reason = f"{len(failed)} run(s) failed (retryable)"
+    else:
+        colour = "GREEN"
+        reason = "all clear"
+
+    print(f"Status: {colour} — {reason}")
     print()
+
+    # Summary counts
+    print("## Run Summary")
+    print(f"- Passed (completed): {len(passed)}")
+    print(f"- Ready (running/paused): {len(ready)}")
+    print(f"- Blocked: {len(blocked)}")
+    print(f"- Escalated: {len(escalated)}")
+    print(f"- Needs human: {len(needs_human)}")
+    if failed:
+        print(f"- Failed (retryable): {len(failed)}")
+    if cancelled:
+        print(f"- Cancelled: {len(cancelled)}")
+    print()
+
+    # Moved (completed runs)
     print("## Moved")
-    print("- Workspace exists and has a strong README.")
+    if passed:
+        for r in passed:
+            print(f"- {r['id']}: {r.get('task', 'untitled')} ({r.get('module', '?')}/{r.get('project', '?')}) — completed")
+    else:
+        print("- No runs completed yet.")
     print()
+
+    # Blocked / Needs human
     print("## Blocked / Needs human")
-    print("- Confirm the stage and choose one focused deliverable.")
+    issues: list[str] = []
+    for r in blocked:
+        blockers = r.get("blockers", [])
+        last_note = blockers[-1].get("notes", "no detail") if blockers else "no detail"
+        issues.append(f"- {r['id']}: BLOCKED — {last_note}")
+    for r in escalated:
+        esc_reason = r.get("escalation", {}).get("reason") or "no reason recorded"
+        issues.append(f"- {r['id']}: ESCALATED — {esc_reason}")
+    for r in needs_human:
+        decisions = r.get("human_decisions", [])
+        last_prompt = decisions[-1].get("prompt", "needs human input") if decisions else "needs human input"
+        issues.append(f"- {r['id']}: NEEDS HUMAN — {last_prompt}")
+    if issues:
+        for line in issues:
+            print(line)
+    else:
+        print("- Nothing blocked or waiting on human.")
     print()
+
+    # Single next action
     print("## Next")
-    print("- Add manuscript/notes/assets, then run one focused Little Publishing House pass.")
+    if escalated:
+        r = escalated[0]
+        esc_reason = r.get("escalation", {}).get("reason") or "review escalation"
+        print(f"- Address escalated {r['id']} ({r.get('task', '?')}): {esc_reason}")
+    elif blocked:
+        r = blocked[0]
+        blockers = r.get("blockers", [])
+        last_note = blockers[-1].get("notes", "remove blocker") if blockers else "remove blocker"
+        print(f"- Unblock {r['id']} ({r.get('task', '?')}): {last_note}")
+    elif needs_human:
+        r = needs_human[0]
+        decisions = r.get("human_decisions", [])
+        last_prompt = decisions[-1].get("prompt", "provide human decision") if decisions else "provide human decision"
+        print(f"- Decide on {r['id']} ({r.get('task', '?')}): {last_prompt}")
+    elif failed:
+        r = failed[0]
+        print(f"- Retry {r['id']} ({r.get('task', '?')}) — foreman-run.sh resume {r['id']}")
+    elif ready:
+        r = ready[0]
+        print(f"- Inspect {r['id']} ({r.get('task', '?')}) — foreman-run.sh inspect {r['id']}")
+    else:
+        print("- All runs complete. Start the next task.")
     print()
+
+    # Evidence
     print("## Evidence")
-    print(f"- {project_dir / 'README.md'}")
-    print(f"- {project_dir / 'foreman-lph.json'}")
+    print(f"- Run ledger: {runs_file}")
+    print(f"- Total runs: {len(runs)}")
     return 0
 
 
@@ -181,8 +302,8 @@ def build_parser() -> argparse.ArgumentParser:
     doctor.add_argument("project_dir")
     doctor.set_defaults(func=cmd_doctor)
 
-    heartbeat = sub.add_parser("heartbeat", help="print a first-pass heartbeat report")
-    heartbeat.add_argument("project_dir")
+    heartbeat = sub.add_parser("heartbeat", help="print a heartbeat report from the run ledger")
+    heartbeat.add_argument("project_dir", nargs="?", default=None)
     heartbeat.set_defaults(func=cmd_heartbeat)
     return parser
 

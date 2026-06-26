@@ -385,6 +385,7 @@ PY
 
   echo ""
   echo -e "${DIM}foreman dispatch --task \"Your task here\"${NC}"
+  echo -e "${DIM}foreman blast \"Your task here\"${NC}  # zero-friction entry${NC}"
   echo -e "${DIM}foreman issues add \"Something to track\"${NC}"
   echo ""
 

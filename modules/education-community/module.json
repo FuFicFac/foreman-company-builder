@@ -1,0 +1,108 @@
+{
+  "name": "education-community",
+  "version": "1.0.0",
+  "description": "Education and community company — builds and delivers courses, curricula, and community programs with learning-outcome inspection",
+  "domain": "education-community",
+  "inspectors": [
+    "curriculum-quality",
+    "accuracy-check",
+    "outcome-fit",
+    "community-health"
+  ],
+  "builders": [
+    "curriculum-draft",
+    "lesson-build",
+    "assessment-build",
+    "community-guide"
+  ],
+  "loop_mode": "deluxe",
+  "high_stakes_loop": "deluxe",
+  "source": "built-in",
+  "twelve_factor_profile": {
+    "natural_language_to_structured_actions": true,
+    "owned_prompts": true,
+    "owned_context_packets": true,
+    "tools_as_structured_outputs": true,
+    "unified_execution_and_business_state": true,
+    "pause_resume_runs": true,
+    "human_decision_events": true,
+    "owned_control_flow": true,
+    "compact_failure_packets": true,
+    "small_focused_role_agents": true,
+    "trigger_from_anywhere": true,
+    "stateless_reducer_loop": true
+  },
+  "stages": [
+    "learner-needs",
+    "curriculum-design",
+    "lesson-draft",
+    "assessment-draft",
+    "review",
+    "revision",
+    "platform-setup",
+    "cohort-or-evergreen",
+    "qa",
+    "launch",
+    "engagement-follow-up",
+    "outcome-review"
+  ],
+  "roles": [
+    "education-ceo",
+    "curriculum-designer",
+    "lesson-builder",
+    "assessment-author",
+    "community-manager",
+    "outcome-analyst"
+  ],
+  "human_approval_gates": [
+    "curriculum-scope",
+    "pricing",
+    "certification-claim",
+    "moderation-policy",
+    "launch-date"
+  ],
+  "context_packet_requirements": [
+    "company-brief",
+    "program-stage",
+    "active-task",
+    "role-instructions",
+    "relevant-artifacts",
+    "constraints",
+    "prior-inspection-results",
+    "human-decisions",
+    "tool-status",
+    "expected-output-schema"
+  ],
+  "inspection_standards": [
+    "curriculum-quality",
+    "accuracy",
+    "outcome-alignment",
+    "community-health",
+    "accessibility",
+    "human-approval-respected"
+  ],
+  "qa_roles": [
+    {
+      "name": "QA Reviewer",
+      "type": "qa",
+      "checklist": [
+        "Curriculum matches learning objectives",
+        "Lessons and assessments accurate",
+        "Platform and enrollment ready",
+        "Community guidelines published",
+        "No unverified certification or outcome claims",
+        "Accessibility and readability checked"
+      ]
+    }
+  ],
+  "launch_phase": {
+    "enabled": true,
+    "assets": [
+      {"type": "course-page", "description": "Course or program sales page"},
+      {"type": "enrollment-guide", "description": "Enrollment and onboarding guide"},
+      {"type": "community-welcome", "description": "Community welcome and guidelines post"},
+      {"type": "email-sequence", "description": "Launch email sequence"},
+      {"type": "social-posts", "description": "Social media launch posts"}
+    ]
+  }
+}

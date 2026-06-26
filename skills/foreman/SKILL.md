@@ -73,6 +73,21 @@ If someone only has one provider, they still get the full feedback loop:
 6. **Repeat until done.** Spawn → harvest → reassign → integrate until finish line or blocker.
 7. **Synthesize.** Decision, changes, verification, risks, agents' material findings.
 
+### Automated Execution Engine
+
+`foreman dispatch` and `foreman blast` run the loop automatically — no manual `--verdict` needed:
+
+1. **Start** a run via `foreman-run.sh start` (creates the state machine entry).
+2. **Invoke the builder CLI** (from `profile.json` roles.builder.command) with the task prompt.
+3. **Invoke the inspector CLI** (from `profile.json` roles.inspector.command) to review builder output.
+4. **Parse the inspector's verdict** (`VERDICT: pass|fail|blocked` on the last line).
+5. **Feed the verdict** into `foreman-run.sh inspect --verdict <verdict>` — the existing 3-strike state machine drives termination.
+6. **Loop** on fail (up to `--max-attempts`, default 3). At 3 strikes, `foreman-run.sh` escalates to `blocked`.
+7. **QA gate** (if module manifest defines `qa_roles`): each QA role reviews against its checklist.
+8. **Launch phase** (if manifest `launch_phase.enabled`): generates shipping assets via `foreman-brain.py`.
+
+Use `--dry-run` to see the execution plan without invoking any agents.
+
 ## Builder / Inspector Hierarchy
 
 ```
@@ -120,11 +135,14 @@ Foreman composes with Paperclip through the API. Not a plugin.
 **Foreman's role:** dispatch, inspect, verify, escalate, model routing
 
 ```bash
-# Foreman reads issues from Paperclip
-foreman dispatch --paperclip --company <id> --issue FOL-15
-
-# Or standalone
+# Standalone dispatch — runs the real builder→inspector→verdict loop
 foreman dispatch --task "Fix dropdown z-index using createPortal"
+
+# Zero-friction entry — auto-detects template, then dispatches
+foreman blast "Fix dropdown z-index using createPortal"
+
+# Dry run — show the execution plan without invoking agents
+foreman dispatch --task "Fix the bug" --dry-run
 ```
 
 ## Escalation Rule

@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# Colors
+G='\033[0;32m' R='\033[0;31m' Y='\033[1;33m' B='\033[0;34m' CYAN='\033[0;36m' BOLD='\033[1m' DIM='\033[2m' NC='\033[0m'
+
 # ─── Usage ───────────────────────────────────────────────────────────────────
 
 usage() {
@@ -259,17 +262,42 @@ if $DRY_RUN; then
   exit 0
 fi
 
+# ─── Guard: zero providers ────────────────────────────────────────────────────
+#
+# If no agent CLIs were discovered AND no --provider was forced, we cannot
+# run the execution loop. Error out instead of falsely reporting success.
+
+if [[ ${#PROVIDERS[@]} -eq 0 ]]; then
+  echo ""
+  echo -e "  ${R}✗ No agent providers discovered.${NC}" >&2
+  echo -e "  ${DIM}Install at least one agent CLI (cursor agent, claude, codex, ollama, or hermes)${NC}" >&2
+  echo -e "  ${DIM}or pass --provider <name> to force one.${NC}" >&2
+  echo -e "  ${DIM}Then run: foreman init to update your profile.${NC}" >&2
+  echo ""
+  exit 1
+fi
+
 # ─── Execute ─────────────────────────────────────────────────────────────────
+#
+# Blast is the zero-friction wrapper around dispatch. It auto-detects the
+# template, then hands off to foreman-dispatch.sh which runs the real
+# builder→inspector→verdict execution loop.
 
 PROJECT_NAME="blast-$(date +%s)"
 
 echo "  ▶ Starting pipeline..."
 echo ""
 
-if "$SCRIPT_DIR/foreman-run.sh" start "$CHOSEN_TEMPLATE" \
-  --project "$PROJECT_NAME" \
-  --stage "$FIRST_STAGE" \
-  --task "$PROMPT"; then
+# Build dispatch arguments
+DISPATCH_ARGS=(--task "$PROMPT" --template "$CHOSEN_TEMPLATE" --project "$PROJECT_NAME" --workspace "$WORKSPACE")
+
+# Pass --launch through to dispatch if launch is enabled
+if [[ "$HAS_LAUNCH" == "yes" ]]; then
+  DISPATCH_ARGS+=(--launch)
+fi
+
+# Hand off to the dispatch engine
+if "$SCRIPT_DIR/foreman-dispatch.sh" "${DISPATCH_ARGS[@]}"; then
   echo ""
   echo "╔══════════════════════════════════════════╗"
   echo "║         Blast Complete                   ║"
@@ -289,6 +317,6 @@ if "$SCRIPT_DIR/foreman-run.sh" start "$CHOSEN_TEMPLATE" \
   echo "  Run 'foreman run status' to check progress."
 else
   echo ""
-  echo "  ✗ Pipeline start failed." >&2
+  echo "  ✗ Pipeline failed." >&2
   exit 1
 fi

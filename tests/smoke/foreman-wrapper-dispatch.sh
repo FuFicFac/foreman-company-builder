@@ -64,8 +64,10 @@ assert_contains "press route dispatches via wrapper" "$PRESS_OUT" "usage:"
 
 # tools: list subcommand (via wrapper)
 TOOLS_OUT=$("$FOREMAN" tools list 2>&1 || true)
-# tools list produces a table header or tool entries — either proves dispatch
-if echo "$TOOLS_OUT" | grep -qiE "^Name|tool|module|No modules|profile|foreman" 2>/dev/null; then
+# tools list produces a table header, tool entries, or the 'No Printing Press
+# CLIs installed' message when Printing Press is absent — all prove dispatch
+# routed correctly to foreman-tools.sh.
+if echo "$TOOLS_OUT" | grep -qiE "^Name|tool|module|No modules|profile|foreman|No Printing Press CLIs" 2>/dev/null; then
   echo "  ✓ tools route dispatches via wrapper"
   PASS=$((PASS + 1))
 else
