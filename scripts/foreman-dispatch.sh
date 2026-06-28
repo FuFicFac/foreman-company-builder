@@ -151,7 +151,12 @@ provider_command() {
       # via `cat prompt | eval "$CMD"`, so we MUST use the non-interactive
       # `codex exec` form, which reads the prompt from stdin when none is given
       # as an argument (per `codex exec --help`).
-      command -v codex >/dev/null 2>&1 && echo "codex exec" || echo ""
+      #
+      # `--skip-git-repo-check` is required because the inspector/builder run
+      # inside a throwaway workspace dir that is not a git repo; without it
+      # codex refuses with "Not inside a trusted directory". (The Cursor builder
+      # has the equivalent via `agent --trust`.)
+      command -v codex >/dev/null 2>&1 && echo "codex exec --skip-git-repo-check" || echo ""
       ;;
     hermes)
       # TODO(hermes-stdin): hermes has no confirmed stdin-friendly non-interactive
