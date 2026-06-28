@@ -44,8 +44,8 @@ People who already built Paperclip companies should be able to import them, pres
 
 ```bash
 # 1. Clone
-git clone https://github.com/FuFicFac/foreman-company-runner.git
-cd foreman-company-runner
+git clone https://github.com/FuFicFac/foreman-company-builder.git
+cd foreman-company-builder
 
 # 2. Install (adds foreman to your PATH)
 ./scripts/install.sh
@@ -63,7 +63,7 @@ That's it. `foreman blast` is the main entry point. You give it a prompt, it aut
 ### One-line install (coming soon)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/FuFicFac/foreman-company-runner/main/scripts/install.sh | zsh
+curl -fsSL https://raw.githubusercontent.com/FuFicFac/foreman-company-builder/main/scripts/install.sh | zsh
 ```
 
 A vanity URL (`get.foreman.dev`) is planned but not yet wired. Use the raw GitHub URL above for now.

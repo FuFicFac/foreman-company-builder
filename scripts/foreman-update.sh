@@ -12,7 +12,7 @@ set -euo pipefail
 CONFIG_DIR="${FOREMAN_CONFIG_DIR:-$HOME/.foreman}"
 PROFILE_FILE="$CONFIG_DIR/profile.json"
 MODULES_DIR="$CONFIG_DIR/modules"
-REPO="FuFicFac/foreman-company-runner"
+REPO="FuFicFac/foreman-company-builder"
 BRANCH="main"
 
 G='\033[0;32m' R='\033[0;31m' Y='\033[1;33m' B='\033[0;34m' BOLD='\033[1m' DIM='\033[2m' NC='\033[0m'

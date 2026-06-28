@@ -5,8 +5,8 @@ Thanks for your interest in contributing. Foreman is a shell-first project — m
 ## Getting Started
 
 ```bash
-git clone https://github.com/FuFicFac/foreman-company-runner.git
-cd foreman-company-runner
+git clone https://github.com/FuFicFac/foreman-company-builder.git
+cd foreman-company-builder
 ./scripts/install.sh
 source ~/.zshrc   # or restart your terminal
 foreman init
