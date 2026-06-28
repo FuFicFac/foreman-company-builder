@@ -146,10 +146,24 @@ provider_command() {
       command -v claude >/dev/null 2>&1 && echo "claude -p --model sonnet" || echo ""
       ;;
     codex)
-      command -v codex >/dev/null 2>&1 && echo "codex" || echo ""
+      # Bare `codex` launches the interactive TUI and dies on piped stdin
+      # ("stdin is not a terminal"). The dispatch invocation pipes the prompt
+      # via `cat prompt | eval "$CMD"`, so we MUST use the non-interactive
+      # `codex exec` form, which reads the prompt from stdin when none is given
+      # as an argument (per `codex exec --help`).
+      command -v codex >/dev/null 2>&1 && echo "codex exec" || echo ""
       ;;
     hermes)
-      command -v hermes >/dev/null 2>&1 && echo "hermes" || echo ""
+      # TODO(hermes-stdin): hermes has no confirmed stdin-friendly non-interactive
+      # mode. Bare `hermes` launches the interactive agent (TUI), and its
+      # non-interactive forms (`hermes -z/--oneshot PROMPT`, `hermes chat -q QUERY`)
+      # take the prompt as a command-line ARGUMENT, not via piped stdin. Since the
+      # builder/inspector invocation pipes the prompt to stdin (`cat file | eval CMD`)
+      # and passes no prompt argument, none of these would receive the prompt.
+      # Until a stdin-safe invocation is verified, treat hermes as unusable as a
+      # builder/inspector here (return empty) rather than mapping it to a TUI or an
+      # argless command that would hang. Never map a provider to an interactive TUI.
+      echo ""
       ;;
     ollama)
       command -v ollama >/dev/null 2>&1 && echo "ollama run <mid-tier-model>" || echo ""

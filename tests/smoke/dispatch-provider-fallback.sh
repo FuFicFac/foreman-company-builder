@@ -154,6 +154,46 @@ else
   check "dispatch --provider codex resolves builder command" "no"; echo "$DISP_OUT"
 fi
 
+# ── BUG 4: codex must resolve to the stdin-safe `codex exec` form ──
+# The builder/inspector invocation pipes the prompt to the command's stdin
+# (`cat prompt | eval "$CMD"`). Bare `codex` launches an interactive TUI and
+# dies with "stdin is not a terminal", so the resolver MUST emit `codex exec`,
+# which reads a piped prompt from stdin. Assert the BUILDER command (which goes
+# through the same stdin pipe) resolves to `codex exec ...`, never bare `codex`.
+if echo "$DISP_BUILDER_LINE" | grep -qE "codex[[:space:]]+exec"; then
+  check "codex resolves to stdin-safe 'codex exec' form" "ok"
+else
+  check "codex resolves to stdin-safe 'codex exec' form" "no"; echo "$DISP_BUILDER_LINE"
+fi
+# Guard against a regression to bare `codex` (no exec) as the whole command.
+if echo "$DISP_BUILDER_LINE" | grep -qE "Command:[[:space:]]+codex([[:space:]]*$|[[:space:]]+--)"; then
+  check "codex does not resolve to the bare interactive TUI command" "no"; echo "$DISP_BUILDER_LINE"
+else
+  check "codex does not resolve to the bare interactive TUI command" "ok"
+fi
+
+# ── BUG 4 (hermes): no confirmed stdin-safe invocation → treated as unusable ──
+# hermes has no verified stdin-friendly non-interactive mode (its -z/--oneshot
+# and `chat -q` forms take the prompt as an argument, not via stdin), and bare
+# `hermes` is a TUI. The resolver must therefore return an EMPTY command for
+# hermes so the fleet-fallback skips it and --provider hermes refuses cleanly
+# rather than piping into a TUI. Prove it via a hermes stub on PATH.
+cat > "$STUB_BIN/hermes" <<'EOF'
+#!/usr/bin/env bash
+echo "stub-hermes $*"
+EOF
+chmod +x "$STUB_BIN/hermes"
+HERMES_OUT=$("$FOREMAN" dispatch --task "Fix the broken build" \
+  --provider hermes --dry-run 2>&1)
+# --provider hermes must NOT switch the builder onto a hermes command; it should
+# warn that hermes is not usable and keep the configured (stub agent) builder.
+if echo "$HERMES_OUT" | grep -qE "Builder:.*[Hh]ermes" \
+   || echo "$HERMES_OUT" | grep -A1 "Builder:" | grep "Command:" | grep -qw "hermes"; then
+  check "hermes is not selected as a builder command (no stdin-safe form)" "no"; echo "$HERMES_OUT"
+else
+  check "hermes is not selected as a builder command (no stdin-safe form)" "ok"
+fi
+
 echo ""
 if [[ "$FAIL" -eq 0 ]]; then
   echo "dispatch provider + inspector-fallback smoke passed"
