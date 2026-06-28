@@ -291,6 +291,13 @@ echo ""
 # Build dispatch arguments
 DISPATCH_ARGS=(--task "$PROMPT" --template "$CHOSEN_TEMPLATE" --project "$PROJECT_NAME" --workspace "$WORKSPACE")
 
+# Forward an explicit --provider to the dispatch engine so the builder the
+# engine actually runs uses that provider — not just the displayed PROVIDERS
+# array. Without this, `foreman blast "..." --provider <name>` is cosmetic.
+if [[ -n "$PROVIDER" ]]; then
+  DISPATCH_ARGS+=(--provider "$PROVIDER")
+fi
+
 # Pass --launch through to dispatch if launch is enabled
 if [[ "$HAS_LAUNCH" == "yes" ]]; then
   DISPATCH_ARGS+=(--launch)
