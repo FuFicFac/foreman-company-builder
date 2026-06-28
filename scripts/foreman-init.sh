@@ -352,48 +352,152 @@ fi
 echo ""
 
 # ──────────────────────────────────────────────
-# STEP 4: Role Assignments
+# STEP 3.5: Capability Probe — does each CLI actually WORK?
+# Discovery (Step 2) only proves a CLI exists. The probe proves it RUNS a job
+# the way dispatch needs: non-interactive, reads a piped prompt, survives a
+# non-git workspace, and exits clean. Deterministic — a fixed prompt goes in, a
+# string match comes out. The LLM answers; bash grades. Only CERTIFIED providers
+# (probe passed) are eligible for roles. Set FOREMAN_SKIP_PROBE=1 to trust
+# discovery without live calls (used by CI/tests with no real providers).
 # ──────────────────────────────────────────────
-echo -e "${B}Step 4: Role assignments${NC} ${DIM}(based on your fleet)${NC}"
+echo -e "${B}Step 3.5: Verify CLIs work${NC} ${DIM}(one tiny job each)${NC}"
 echo ""
 
-# Inspector: strongest available
-if [[ -n "$CLAUDE_PATH" ]]; then
-  INSPECTOR="Claude Opus"; INSPECTOR_CMD="claude -p --model opus"
-elif [[ -n "$COMPOSER" ]]; then
-  INSPECTOR="Cursor $COMPOSER"; INSPECTOR_CMD="agent --trust --model $COMPOSER"
-elif [[ -n "$OLLAMA_STRONGEST" ]]; then
-  INSPECTOR="Ollama $OLLAMA_STRONGEST"; INSPECTOR_CMD="ollama run $OLLAMA_STRONGEST"
+CURSOR_OK=false CLAUDE_OK=false CODEX_OK=false OLLAMA_OK=false
+CERTIFIED=()
+PROBE_PROMPT='Reply with the single word READY and nothing else.'
+
+_with_timeout() {
+  local secs="$1"; shift
+  if command -v timeout >/dev/null 2>&1; then timeout "$secs" "$@"
+  elif command -v gtimeout >/dev/null 2>&1; then gtimeout "$secs" "$@"
+  else "$@"; fi
+}
+
+# Pipe the probe prompt into a provider command inside a throwaway non-git dir.
+# Pass = exit 0 AND output contains READY (case-insensitive).
+_probe() {
+  local cmd="$1" dir out rc
+  dir="$(mktemp -d)"
+  out=$( cd "$dir" && printf '%s' "$PROBE_PROMPT" | _with_timeout 90 sh -c "$cmd" 2>&1 )
+  rc=$?
+  rm -rf "$dir"
+  [[ $rc -eq 0 ]] && printf '%s' "$out" | grep -qiE 'ready'
+}
+
+_report_probe() {  # $1 label  $2 ok(true/false)
+  if [[ "$2" == true ]]; then
+    echo -e "  ${G}✓${NC} ${BOLD}$1${NC} ${DIM}— works${NC}"
+  else
+    echo -e "  ${R}✗${NC} $1 ${DIM}— installed but did not run a job (skipped)${NC}"
+  fi
+}
+
+if [[ "${FOREMAN_SKIP_PROBE:-}" == "1" ]]; then
+  echo -e "  ${DIM}FOREMAN_SKIP_PROBE=1 — trusting discovery, no live calls${NC}"
+  [[ -n "$COMPOSER" ]]         && { CURSOR_OK=true; CERTIFIED+=("cursor"); }
+  [[ -n "$CLAUDE_PATH" ]]      && { CLAUDE_OK=true; CERTIFIED+=("claude"); }
+  [[ -n "$CODEX_PATH" ]]       && { CODEX_OK=true;  CERTIFIED+=("codex"); }
+  [[ -n "$OLLAMA_STRONGEST" ]] && { OLLAMA_OK=true; CERTIFIED+=("ollama"); }
+else
+  if [[ -n "$COMPOSER" ]]; then
+    _probe "agent --trust --model $COMPOSER" && { CURSOR_OK=true; CERTIFIED+=("cursor"); }
+    _report_probe "Cursor Agent" "$CURSOR_OK"
+  fi
+  if [[ -n "$CLAUDE_PATH" ]]; then
+    _probe "claude -p --model sonnet" && { CLAUDE_OK=true; CERTIFIED+=("claude"); }
+    _report_probe "Claude Code" "$CLAUDE_OK"
+  fi
+  if [[ -n "$CODEX_PATH" ]]; then
+    _probe "codex exec --skip-git-repo-check" && { CODEX_OK=true; CERTIFIED+=("codex"); }
+    _report_probe "Codex" "$CODEX_OK"
+  fi
+  if [[ -n "$OLLAMA_STRONGEST" ]]; then
+    _probe "ollama run $OLLAMA_STRONGEST" && { OLLAMA_OK=true; CERTIFIED+=("ollama"); }
+    _report_probe "Ollama" "$OLLAMA_OK"
+  fi
+  # Hermes has no verified stdin-friendly non-interactive mode (see
+  # provider_command in foreman-dispatch.sh); never certified as builder/inspector.
+  [[ -n "${HERMES_PATH:-}" ]] && echo -e "  ${DIM}  ○ Hermes — no stdin mode, not eligible as builder/inspector${NC}"
 fi
 
-# Builder: Cursor Composer preferred, then Claude Sonnet, then Ollama mid
-if [[ -n "$COMPOSER" ]]; then
-  BUILDER="Cursor $COMPOSER"; BUILDER_CMD="agent --trust --model $COMPOSER"
-elif [[ -n "$CLAUDE_PATH" ]]; then
-  BUILDER="Claude Sonnet"; BUILDER_CMD="claude -p --model sonnet"
-elif [[ -n "$OLLAMA_STRONGEST" ]]; then
-  BUILDER="Ollama (mid-tier)"; BUILDER_CMD="ollama run <mid-tier-model>"
+CERTIFIED_COUNT=${#CERTIFIED[@]}
+# Effective fleet mode reflects what actually WORKS, not just what's installed.
+if   [[ $CERTIFIED_COUNT -ge 2 ]]; then FLEET_MODE="multi-provider"
+elif [[ $CERTIFIED_COUNT -eq 1 ]]; then FLEET_MODE="single-provider"
+else FLEET_MODE="none"; fi
+echo ""
+
+# ──────────────────────────────────────────────
+# STEP 4: Role Assignments
+# ──────────────────────────────────────────────
+echo -e "${B}Step 4: Role assignments${NC} ${DIM}(certified providers only)${NC}"
+echo ""
+
+# Builder: best CERTIFIED provider (cursor > claude > codex > ollama).
+BUILDER="" BUILDER_CMD="" BUILDER_BIN=""
+if   [[ "$CURSOR_OK" == true ]]; then BUILDER="Cursor $COMPOSER"; BUILDER_CMD="agent --trust --model $COMPOSER"; BUILDER_BIN="agent"
+elif [[ "$CLAUDE_OK" == true ]]; then BUILDER="Claude Sonnet";    BUILDER_CMD="claude -p --model sonnet";         BUILDER_BIN="claude"
+elif [[ "$CODEX_OK"  == true ]]; then BUILDER="Codex";            BUILDER_CMD="codex exec --skip-git-repo-check"; BUILDER_BIN="codex"
+elif [[ "$OLLAMA_OK" == true ]]; then BUILDER="Ollama (mid-tier)"; BUILDER_CMD="ollama run <mid-tier-model>";      BUILDER_BIN="ollama"
 fi
 
-# Cheap: Ollama cheapest, then Composer-fast, then Claude Haiku
-if [[ -n "$OLLAMA_STRONGEST" ]]; then
-  CHEAP="Ollama (cheapest)"; CHEAP_CMD="ollama run <cheapest-model>"
-elif [[ -n "$COMPOSER_FAST" ]]; then
-  CHEAP="Cursor $COMPOSER_FAST"; CHEAP_CMD="agent --trust --model $COMPOSER_FAST"
-elif [[ -n "$CLAUDE_PATH" ]]; then
-  CHEAP="Claude Haiku"; CHEAP_CMD="claude -p --model haiku"
+# Inspector: best CERTIFIED provider whose binary DIFFERS from the builder, so
+# verification stays independent (no self-grading). Only collapses to the same
+# provider when it is the single certified one.
+_pick_inspector() {  # $1 = allow_same (true/false)
+  local allow_same="$1" key name cmd bin
+  for key in cursor claude codex ollama; do
+    case "$key" in
+      cursor) [[ "$CURSOR_OK" == true ]] || continue; name="Cursor $COMPOSER";        cmd="agent --trust --model $COMPOSER"; bin="agent" ;;
+      claude) [[ "$CLAUDE_OK" == true ]] || continue; name="Claude Opus";             cmd="claude -p --model opus";          bin="claude" ;;
+      codex)  [[ "$CODEX_OK"  == true ]] || continue; name="Codex";                   cmd="codex exec --skip-git-repo-check"; bin="codex" ;;
+      ollama) [[ "$OLLAMA_OK" == true ]] || continue; name="Ollama $OLLAMA_STRONGEST"; cmd="ollama run $OLLAMA_STRONGEST";    bin="ollama" ;;
+    esac
+    if [[ "$allow_same" == true || "$bin" != "$BUILDER_BIN" ]]; then
+      INSPECTOR="$name"; INSPECTOR_CMD="$cmd"; INSPECTOR_BIN="$bin"; return 0
+    fi
+  done
+  return 1
+}
+INSPECTOR="" INSPECTOR_CMD="" INSPECTOR_BIN=""
+_pick_inspector false || _pick_inspector true
+
+# Cheap: prefer certified Ollama, then Cursor-fast, then Claude Haiku.
+CHEAP="" CHEAP_CMD=""
+if   [[ "$OLLAMA_OK" == true ]]; then CHEAP="Ollama (cheapest)"; CHEAP_CMD="ollama run <cheapest-model>"
+elif [[ "$CURSOR_OK" == true && -n "$COMPOSER_FAST" ]]; then CHEAP="Cursor $COMPOSER_FAST"; CHEAP_CMD="agent --trust --model $COMPOSER_FAST"
+elif [[ "$CLAUDE_OK" == true ]]; then CHEAP="Claude Haiku"; CHEAP_CMD="claude -p --model haiku"
+fi
+
+# Independence flag: did the inspector land on a different provider than builder?
+if [[ -n "$INSPECTOR_BIN" && "$INSPECTOR_BIN" != "$BUILDER_BIN" ]]; then
+  INDEPENDENT_INSPECTION=true
+else
+  INDEPENDENT_INSPECTION=false
 fi
 
 echo -e "  ${BOLD}Inspector${NC}  (review, judgment):  ${G}${INSPECTOR:-none}${NC}"
 echo -e "  ${BOLD}Builder${NC}    (code, implement):  ${G}${BUILDER:-none}${NC}"
 echo -e "  ${BOLD}Cheap${NC}      (classify, brainstorm): ${G}${CHEAP:-none}${NC}"
 echo -e "  ${BOLD}Brain${NC}      (orchestration, chat): ${CYAN}${BRAIN_PROVIDER:-none}/${BRAIN_MODEL:-none}${NC}"
-echo -e "  ${BOLD}Fleet${NC}      (mode):             ${G}${FLEET_MODE}${NC} (${FOUND} provider(s))"
+echo -e "  ${BOLD}Fleet${NC}      (mode):             ${G}${FLEET_MODE}${NC} (${CERTIFIED_COUNT} certified / ${FOUND} found)"
+if [[ "$INDEPENDENT_INSPECTION" == true ]]; then
+  echo -e "  ${G}✓${NC} ${DIM}Independent inspection: builder and inspector are different providers${NC}"
+elif [[ -n "$BUILDER" ]]; then
+  echo -e "  ${Y}⚠${NC} ${DIM}Only one certified provider — inspector reviews the builder's own work (no independent check)${NC}"
+fi
 echo ""
 
-if [[ "$FLEET_MODE" == "none" ]]; then
-  echo -e "${R}⚠ No CLIs found. Install at least one to use Foreman.${NC}"
-  echo -e "${DIM}  Recommended: Cursor Agent (https://cursor.com) or Claude Code (https://claude.ai/code)${NC}"
+# Gate on what actually WORKS, not what's merely installed.
+if [[ "$FLEET_MODE" == "none" || "$CERTIFIED_COUNT" -eq 0 ]]; then
+  if [[ "$FOUND" -gt 0 ]]; then
+    echo -e "${R}⚠ Found $FOUND CLI(s), but none passed the capability probe.${NC}"
+    echo -e "${DIM}  They are installed but could not run a job (check auth/login, or run a manual test).${NC}"
+  else
+    echo -e "${R}⚠ No CLIs found. Install at least one to use Foreman.${NC}"
+    echo -e "${DIM}  Recommended: Cursor Agent (https://cursor.com) or Claude Code (https://claude.ai/code)${NC}"
+  fi
   exit 1
 fi
 
@@ -519,11 +623,16 @@ else
   BRAIN_JSON="{ \"provider\": \"$BRAIN_PROVIDER\", \"model\": \"$BRAIN_MODEL\", \"key_env\": \"${BRAIN_KEY_ENV:-}\" }"
 fi
 
+# Certified providers (passed the live capability probe) as a JSON array.
+CERTIFIED_JSON=$(printf '%s\n' "${CERTIFIED[@]:-}" | python3 -c "import sys,json; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))" 2>/dev/null || echo "[]")
+
 cat > "$PROFILE_FILE" << EOF
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "created": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
   "fleet_mode": "$FLEET_MODE",
+  "certified": $CERTIFIED_JSON,
+  "independent_inspection": $INDEPENDENT_INSPECTION,
   "roles": {
     "inspector": { "name": "${INSPECTOR:-none}", "command": "${INSPECTOR_CMD:-}" },
     "builder":   { "name": "${BUILDER:-none}",   "command": "${BUILDER_CMD:-}" },
