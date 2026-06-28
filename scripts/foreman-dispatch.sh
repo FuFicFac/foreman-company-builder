@@ -8,7 +8,7 @@
 #   foreman dispatch --task "<prompt>" [--template <name>] [--stage <name>]
 #                     [--project <name>] [--dry-run] [--max-attempts <n>]
 #                     [--builder-cmd "<cmd>"] [--inspector-cmd "<cmd>"]
-#                     [--workspace <dir>]
+#                     [--provider <name>] [--workspace <dir>]
 #
 # When --dry-run is set, plans the dispatch but does not invoke any agents.
 
@@ -34,6 +34,7 @@ DRY_RUN=false
 MAX_ATTEMPTS=3
 BUILDER_CMD_OVERRIDE=""
 INSPECTOR_CMD_OVERRIDE=""
+PROVIDER=""
 WORKSPACE=""
 LAUNCH=false
 
@@ -52,6 +53,8 @@ Options:
   --max-attempts <n>       Max builder attempts before giving up (default: 3)
   --builder-cmd "<cmd>"    Override builder CLI command from profile
   --inspector-cmd "<cmd>"  Override inspector CLI command from profile
+  --provider <name>        Force the builder onto a specific provider
+                           (agent/cursor/claude/codex/ollama/hermes)
   --workspace <dir>        Working directory for agent output
   --launch                 Run launch phase after successful completion
   -h, --help               Show this help
@@ -68,6 +71,7 @@ while [[ $# -gt 0 ]]; do
     --max-attempts) MAX_ATTEMPTS="$2"; shift 2 ;;
     --builder-cmd)  BUILDER_CMD_OVERRIDE="$2"; shift 2 ;;
     --inspector-cmd) INSPECTOR_CMD_OVERRIDE="$2"; shift 2 ;;
+    --provider)     PROVIDER="$2";   shift 2 ;;
     --workspace)    WORKSPACE="$2";  shift 2 ;;
     --launch)       LAUNCH=true;     shift   ;;
     -h|--help)      usage; exit 0    ;;
@@ -102,9 +106,93 @@ CHEAP_CMD=$(python3 -c "import json; d=json.load(open('$PROFILE_FILE')); print(d
 BUILDER_NAME=$(python3 -c "import json; d=json.load(open('$PROFILE_FILE')); print(d.get('roles',{}).get('builder',{}).get('name','unknown'))" 2>/dev/null || echo "unknown")
 INSPECTOR_NAME=$(python3 -c "import json; d=json.load(open('$PROFILE_FILE')); print(d.get('roles',{}).get('inspector',{}).get('name','unknown'))" 2>/dev/null || echo "unknown")
 
+# ─── Fleet discovery + provider→command resolution ───────────────────────────
+#
+# Mirrors the discovery order used by the builder (foreman-blast.sh) and the
+# role-assignment logic in foreman-init.sh, so dispatch can resolve a runnable
+# command for a provider name without a re-init. Used by:
+#   - the --provider passthrough (BUG 2): force the builder onto a provider
+#   - the inspector fleet-fallback (BUG 1): pick a reachable inspector when the
+#     configured one (e.g. 'claude') is not installed.
+
+discover_providers() {
+  local found=()
+  for c in agent cursor-agent cursor claude codex hermes ollama; do
+    if command -v "$c" >/dev/null 2>&1; then
+      found+=("$c")
+    fi
+  done
+  echo "${found[*]}"
+}
+
+# Resolve a runnable CLI command for a provider name. Returns empty if the
+# provider's binary is not reachable on PATH. Model names are queried from the
+# live CLI (never hardcoded); Ollama uses the placeholder tokens that
+# resolve_command() expands later.
+provider_command() {
+  local provider="$1"
+  case "$provider" in
+    agent|cursor|cursor-agent)
+      command -v agent >/dev/null 2>&1 || { echo ""; return; }
+      local composer
+      composer=$(agent models 2>/dev/null | grep -oiE 'composer[a-zA-Z0-9._-]*' | head -1 || true)
+      if [[ -n "$composer" ]]; then
+        echo "agent --trust --model $composer"
+      else
+        echo "agent --trust"
+      fi
+      ;;
+    claude)
+      command -v claude >/dev/null 2>&1 && echo "claude -p --model sonnet" || echo ""
+      ;;
+    codex)
+      command -v codex >/dev/null 2>&1 && echo "codex" || echo ""
+      ;;
+    hermes)
+      command -v hermes >/dev/null 2>&1 && echo "hermes" || echo ""
+      ;;
+    ollama)
+      command -v ollama >/dev/null 2>&1 && echo "ollama run <mid-tier-model>" || echo ""
+      ;;
+    *)
+      # Unknown name — if it happens to be a binary on PATH, run it bare.
+      command -v "$provider" >/dev/null 2>&1 && echo "$provider" || echo ""
+      ;;
+  esac
+}
+
+# The bare binary name a provider resolves to (for "different provider" checks).
+provider_bin() {
+  provider_command "$1" | awk '{print $1}'
+}
+
 # Apply overrides
 [[ -n "$BUILDER_CMD_OVERRIDE" ]]   && BUILDER_CMD="$BUILDER_CMD_OVERRIDE"
 [[ -n "$INSPECTOR_CMD_OVERRIDE" ]] && INSPECTOR_CMD="$INSPECTOR_CMD_OVERRIDE"
+
+# ─── BUG 2: --provider forwarding ─────────────────────────────────────────────
+# When --provider is set (and the builder command wasn't explicitly overridden),
+# resolve that provider's builder command so the engine actually runs on it.
+if [[ -n "$PROVIDER" ]] && [[ -z "$BUILDER_CMD_OVERRIDE" ]]; then
+  PROVIDER_BUILDER_CMD="$(provider_command "$PROVIDER")"
+  if [[ -n "$PROVIDER_BUILDER_CMD" ]]; then
+    BUILDER_CMD="$PROVIDER_BUILDER_CMD"
+    BUILDER_NAME="$PROVIDER"
+  else
+    echo -e "${Y}⚠ --provider '$PROVIDER' is not reachable on PATH; keeping configured builder.${NC}" >&2
+  fi
+fi
+
+# ─── BUG 3: keep the displayed name honest when a command is overridden ───────
+# If the inspector/builder command was overridden directly, the profile name no
+# longer describes what actually runs. Relabel from the resolved binary so the
+# printed label never lies. (The fleet-fallback below relabels too.)
+if [[ -n "$INSPECTOR_CMD_OVERRIDE" ]]; then
+  INSPECTOR_NAME="$(echo "$INSPECTOR_CMD_OVERRIDE" | awk '{print $1}')"
+fi
+if [[ -n "$BUILDER_CMD_OVERRIDE" ]]; then
+  BUILDER_NAME="$(echo "$BUILDER_CMD_OVERRIDE" | awk '{print $1}')"
+fi
 
 # ─── Resolve template ─────────────────────────────────────────────────────────
 
@@ -201,6 +289,48 @@ INSPECTOR_CMD_RESOLVED=$(resolve_command "$INSPECTOR_CMD")
 # Extract the executable name (first token) for availability check
 builder_bin=$(echo "$BUILDER_CMD_RESOLVED" | awk '{print $1}')
 inspector_bin=$(echo "$INSPECTOR_CMD_RESOLVED" | awk '{print $1}')
+
+# ─── BUG 1: inspector fleet-fallback ──────────────────────────────────────────
+# The configured/default inspector resolves to a CLI (often 'claude') that may
+# not be installed. If that binary is NOT on PATH — and the user did not pass an
+# explicit --inspector-cmd — pick a reachable inspector from the actual fleet
+# instead of dying in preflight. Prefer a provider DIFFERENT from the builder so
+# verification stays independent; fall back to any reachable CLI.
+if [[ -z "$INSPECTOR_CMD_OVERRIDE" ]] && ! command -v "$inspector_bin" >/dev/null 2>&1; then
+  FLEET="$(discover_providers)"
+  if [[ -n "$FLEET" ]]; then
+    # shellcheck disable=SC2206
+    FLEET_ARR=($FLEET)
+    FALLBACK_CMD=""
+    FALLBACK_NAME=""
+    # First pass: prefer a provider whose binary differs from the builder's.
+    for p in "${FLEET_ARR[@]}"; do
+      cand="$(provider_command "$p")"
+      [[ -z "$cand" ]] && continue
+      cand_bin="$(echo "$cand" | awk '{print $1}')"
+      if [[ "$cand_bin" != "$builder_bin" ]]; then
+        FALLBACK_CMD="$cand"; FALLBACK_NAME="$p"; break
+      fi
+    done
+    # Second pass: accept any reachable provider (even same as builder).
+    if [[ -z "$FALLBACK_CMD" ]]; then
+      for p in "${FLEET_ARR[@]}"; do
+        cand="$(provider_command "$p")"
+        if [[ -n "$cand" ]]; then
+          FALLBACK_CMD="$cand"; FALLBACK_NAME="$p"; break
+        fi
+      done
+    fi
+    if [[ -n "$FALLBACK_CMD" ]]; then
+      echo -e "${Y}⚠ Inspector CLI '$inspector_bin' not found on PATH — falling back to '$FALLBACK_NAME'.${NC}" >&2
+      INSPECTOR_CMD="$FALLBACK_CMD"
+      INSPECTOR_CMD_RESOLVED="$(resolve_command "$INSPECTOR_CMD")"
+      inspector_bin=$(echo "$INSPECTOR_CMD_RESOLVED" | awk '{print $1}')
+      # BUG 3: relabel so the displayed name reflects what truly runs.
+      INSPECTOR_NAME="$FALLBACK_NAME"
+    fi
+  fi
+fi
 
 # ─── Print dispatch summary ───────────────────────────────────────────────────
 
