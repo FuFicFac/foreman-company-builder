@@ -6,7 +6,7 @@
   INSTALL:
     1. Copy this file to ~/Library/LaunchAgents/com.foreman.heartbeat.plist
     2. Edit the path in ProgramArguments below to point at your foreman-heartbeat.sh
-       (default: /Users/ekelloharrid/Projects/foreman-company-runner/scripts/foreman-heartbeat.sh)
+       (default: /Users/ekelloharrid/Projects/foreman-company-builder/scripts/foreman-heartbeat.sh)
     3. Adjust StartInterval (seconds between runs) or replace with a calendar schedule
        (see https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html)
     4. Edit log paths if desired (default: ~/Library/Logs/foreman-heartbeat.log)
@@ -28,7 +28,7 @@
     <array>
         <string>/bin/zsh</string>
         <!-- EDIT THIS PATH to match your checkout -->
-        <string>/Users/ekelloharrid/Projects/foreman-company-runner/scripts/foreman-heartbeat.sh</string>
+        <string>/Users/ekelloharrid/Projects/foreman-company-builder/scripts/foreman-heartbeat.sh</string>
     </array>
 
     <!-- Run every hour (3600 seconds). Adjust as needed. -->

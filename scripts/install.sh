@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
-# Foreman installer — run with: curl -fsSL https://raw.githubusercontent.com/FuFicFac/foreman-company-runner/main/scripts/install.sh | zsh
+# Foreman installer — run with: curl -fsSL https://raw.githubusercontent.com/FuFicFac/foreman-company-builder/main/scripts/install.sh | zsh
 # Vanity URL (get.foreman.dev) is coming soon — use the raw GitHub URL for now.
 
 set -euo pipefail
 
-REPO="FuFicFac/foreman-company-runner"
+REPO="FuFicFac/foreman-company-builder"
 BRANCH="main"
 INSTALL_DIR="${FOREMAN_INSTALL_DIR:-$HOME/.foreman}"
 
