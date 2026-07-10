@@ -415,6 +415,70 @@ if ! command -v "$inspector_bin" >/dev/null 2>&1; then
   exit 1
 fi
 
+# ─── Inspector liveness preflight ─────────────────────────────────────────────
+# PATH presence is not health: a CLI can exist but be unable to run a job (e.g.
+# claude installed but logged out for headless use). Without this probe the
+# builder burns a full attempt before the dead inspector is discovered. Probe
+# with one tiny job; on failure, fall back to a live provider from the fleet
+# (prefer one whose binary differs from the builder's, so verification stays
+# independent). FOREMAN_SKIP_PROBE=1 skips live calls (CI/tests, stub CLIs).
+
+_preflight_timeout() {
+  local secs="$1"; shift
+  if command -v timeout >/dev/null 2>&1; then timeout "$secs" "$@"
+  elif command -v gtimeout >/dev/null 2>&1; then gtimeout "$secs" "$@"
+  else "$@"; fi
+}
+
+# Pass = exit 0 AND output contains READY (same contract as init's Step 3.5).
+_preflight_probe() {
+  local cmd="$1" dir out rc=0
+  dir="$(mktemp -d)"
+  out=$( cd "$dir" && printf 'Reply with the single word READY and nothing else.' | _preflight_timeout 90 sh -c "$cmd" 2>&1 ) || rc=$?
+  rm -rf "$dir"
+  [[ $rc -eq 0 ]] && printf '%s' "$out" | grep -qiE 'ready'
+}
+
+if [[ "${FOREMAN_SKIP_PROBE:-}" != "1" ]]; then
+  if ! _preflight_probe "$INSPECTOR_CMD_RESOLVED"; then
+    echo -e "${Y}⚠ Inspector '$INSPECTOR_NAME' is on PATH but failed a live probe (not logged in, or cannot run headless).${NC}" >&2
+    PROBE_FALLBACK_CMD=""
+    PROBE_FALLBACK_NAME=""
+    FLEET="$(discover_providers)"
+    if [[ -n "$FLEET" ]]; then
+      # shellcheck disable=SC2206
+      FLEET_ARR=($FLEET)
+      # Two passes: first prefer a provider whose binary differs from both the
+      # dead inspector and the builder; then accept any live provider.
+      for pass in independent any; do
+        [[ -n "$PROBE_FALLBACK_CMD" ]] && break
+        for p in "${FLEET_ARR[@]}"; do
+          cand="$(provider_command "$p")"
+          [[ -z "$cand" ]] && continue
+          cand_resolved="$(resolve_command "$cand")"
+          cand_bin="$(echo "$cand_resolved" | awk '{print $1}')"
+          [[ "$cand_bin" == "$inspector_bin" ]] && continue
+          if [[ "$pass" == "independent" ]] && [[ "$cand_bin" == "$builder_bin" ]]; then continue; fi
+          if _preflight_probe "$cand_resolved"; then
+            PROBE_FALLBACK_CMD="$cand_resolved"; PROBE_FALLBACK_NAME="$p"; break
+          fi
+        done
+      done
+    fi
+    if [[ -n "$PROBE_FALLBACK_CMD" ]]; then
+      echo -e "${Y}⚠ Falling back to live inspector '$PROBE_FALLBACK_NAME'.${NC}" >&2
+      INSPECTOR_CMD_RESOLVED="$PROBE_FALLBACK_CMD"
+      inspector_bin=$(echo "$INSPECTOR_CMD_RESOLVED" | awk '{print $1}')
+      INSPECTOR_NAME="$PROBE_FALLBACK_NAME"
+    else
+      echo -e "${R}Error: no live inspector available — refusing to dispatch a builder with no working reviewer.${NC}" >&2
+      echo -e "${DIM}Fix the inspector CLI (e.g. log in), run: foreman init, or pass --inspector-cmd.${NC}" >&2
+      echo -e "${DIM}Set FOREMAN_SKIP_PROBE=1 to bypass this check.${NC}" >&2
+      exit 1
+    fi
+  fi
+fi
+
 # ─── Start the run ────────────────────────────────────────────────────────────
 
 echo -e "${B}▶ Starting run...${NC}"
@@ -605,7 +669,10 @@ PROMPT
   # Never keyword-infer 'pass' from body text (e.g. prompt echoes like
   # "use pass if correct"). When no explicit VERDICT line is found, default
   # to 'fail' — never assume pass.
-  VERDICT=$(echo "$INSPECTOR_OUTPUT" | grep -oiE 'VERDICT:[[:space:]]*(pass|fail|blocked)' | tail -1 | sed -E 's/VERDICT:[[:space:]]*//' | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
+  # '|| true' is load-bearing: under set -euo pipefail a no-match grep exits 1,
+  # which would kill the script here and never reach the default-to-fail branch
+  # below (a missing verdict must count as a strike, not end the pipeline).
+  VERDICT=$(echo "$INSPECTOR_OUTPUT" | grep -oiE 'VERDICT:[[:space:]]*(pass|fail|blocked)' | tail -1 | sed -E 's/VERDICT:[[:space:]]*//' | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]' || true)
 
   if [[ -z "$VERDICT" ]]; then
     # No explicit VERDICT line found — default to fail, never keyword-infer pass.
@@ -722,7 +789,9 @@ On the LAST line, emit: VERDICT: pass  or  VERDICT: fail"
     QA_EXIT=$?
     set -e
 
-    QA_VERDICT=$(grep -oiE 'VERDICT:[[:space:]]*(pass|fail)' "$QA_OUT_FILE" | tail -1 | sed -E 's/VERDICT:[[:space:]]*//' | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
+    # Same set -e landmine as the main verdict parse: no-match grep must not
+    # kill the QA gate before its own missing-verdict handling runs.
+    QA_VERDICT=$(grep -oiE 'VERDICT:[[:space:]]*(pass|fail)' "$QA_OUT_FILE" | tail -1 | sed -E 's/VERDICT:[[:space:]]*//' | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]' || true)
     [[ -z "$QA_VERDICT" ]] && QA_VERDICT="fail"
 
     if [[ "$QA_VERDICT" == "pass" ]]; then
