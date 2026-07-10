@@ -870,12 +870,15 @@ Generate the $asset_type now. Be concise and practical."
       ASSET_HISTORY="$LAUNCH_DIR/${asset_type}_history.json"
 
       set +e
+      # '< /dev/null' is load-bearing: this runs inside a piped while-read
+      # loop, and without it python inherits the pipe as stdin and eats the
+      # remaining asset lines — only the first asset ever generates.
       python3 "$BRAIN_SCRIPT" \
         --provider "$BRAIN_PROVIDER" \
         --model "$BRAIN_MODEL" \
         --system-prompt "You are a shipping asset generator. Produce clean, ready-to-use content." \
         --history "$ASSET_HISTORY" \
-        --user-msg "$ASSET_PROMPT" > "$ASSET_FILE" 2>&1
+        --user-msg "$ASSET_PROMPT" < /dev/null > "$ASSET_FILE" 2>&1
       BRAIN_EXIT=$?
       set -e
 
