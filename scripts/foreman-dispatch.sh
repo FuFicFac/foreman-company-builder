@@ -790,9 +790,13 @@ On the LAST line, emit: VERDICT: pass  or  VERDICT: fail"
     QA_EXIT=$?
     set -e
 
-    # Same set -e landmine as the main verdict parse: no-match grep must not
-    # kill the QA gate before its own missing-verdict handling runs.
-    QA_VERDICT=$(grep -oiE 'VERDICT:[[:space:]]*(pass|fail)' "$QA_OUT_FILE" | tail -1 | sed -E 's/VERDICT:[[:space:]]*//' | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]' || true)
+    # Strip ANSI/control noise BEFORE parsing, same as the main verdict parse —
+    # TTY CLIs (ollama) emit cursor codes that can split 'VERDICT' mid-word
+    # (VERDI\e[?25l\e[?25hCT), silently turning a pass into a default fail.
+    QA_OUTPUT_CLEAN=$(sed -E "s/$(printf '\033')\[[0-9;?]*[A-Za-z]//g" "$QA_OUT_FILE" | tr -d '\r')
+    # '|| true': same set -e landmine as the main parse — no-match grep must
+    # not kill the QA gate before its own missing-verdict handling runs.
+    QA_VERDICT=$(echo "$QA_OUTPUT_CLEAN" | grep -oiE 'VERDICT:[[:space:]]*(pass|fail)' | tail -1 | sed -E 's/VERDICT:[[:space:]]*//' | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]' || true)
     [[ -z "$QA_VERDICT" ]] && QA_VERDICT="fail"
 
     if [[ "$QA_VERDICT" == "pass" ]]; then

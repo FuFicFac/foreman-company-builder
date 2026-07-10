@@ -49,6 +49,21 @@ printf 'Assessment: correct and complete.\n'
 printf '\033[1mVERDICT: pass\033[0m\n'
 EOF
 
+# Inspector stub 4: passes everywhere, but the QA verdict word is split
+# mid-word by cursor-control sequences the way ollama's TTY output does
+# (VERDI\e[?25l\e[?25hCT: pass). Must still parse as a QA pass.
+cat > "$STUB_BIN/stub-inspector-qa-mangled-pass" <<'EOF'
+#!/usr/bin/env bash
+PROMPT=$(cat)
+if printf '%s' "$PROMPT" | grep -q 'You are a QA reviewer'; then
+  printf 'All checks passed.\n'
+  printf 'VERDI\033[?25l\033[?25hCT:\033[?25l\033[?25h pass\n'
+else
+  printf 'Assessment: correct and complete.\n'
+  printf 'VERDICT: pass\n'
+fi
+EOF
+
 # Inspector stub 3: passes the main inspection loop but fails the QA gate.
 # The QA prompt is distinguishable by its "You are a QA reviewer" header.
 cat > "$STUB_BIN/stub-inspector-qa-fail" <<'EOF'
@@ -154,6 +169,22 @@ if [[ ! -d "$WS3/launch" ]] && echo "$OUT3" | grep -q "Launch phase will be skip
 else
   echo "  ✗ launch phase ran (or skip message missing) despite QA failure"
   echo "$OUT3"; exit 1
+fi
+
+# ── Case 4: QA verdict split mid-word by TTY cursor codes → still a QA pass ──
+write_profile "$STUB_BIN/stub-inspector-qa-mangled-pass"
+WS4="$TMP/ws4"; mkdir -p "$WS4"
+set +e
+OUT4=$("$FOREMAN" dispatch --task "smoke: qa mangled pass" --template software \
+  --project verdict-smoke-4 --workspace "$WS4" 2>&1)
+RC4=$?
+set -e
+
+if [[ $RC4 -eq 0 ]] && echo "$OUT4" | grep -q "QA gate passed"; then
+  echo "  ✓ cursor-code-mangled QA verdict parsed as pass (rc=0)"
+else
+  echo "  ✗ mangled QA pass verdict misread (rc=$RC4) — ANSI strip missing in QA parse"
+  echo "$OUT4"; exit 1
 fi
 
 echo "verdict-parsing smoke passed"
