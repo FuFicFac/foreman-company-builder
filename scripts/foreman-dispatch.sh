@@ -746,6 +746,7 @@ echo ""
 
 # ─── QA Roles gate (P1) ──
 # If the module manifest defines qa_roles, run them as an additional inspection step
+QA_GATE_FAILED=false
 QA_COUNT=$(echo "$QA_ROLES_JSON" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))' 2>/dev/null || echo "0")
 
 if [[ "$QA_COUNT" -gt 0 ]] && [[ "$RUN_STATUS" == "completed" ]]; then
@@ -803,13 +804,18 @@ On the LAST line, emit: VERDICT: pass  or  VERDICT: fail"
   done
 
   if [[ -f "$WORKSPACE/qa_failed.flag" ]]; then
+    # The run is already in the terminal 'completed' state, so the ledger
+    # cannot take a fail verdict here (invalid transition). Do not pretend
+    # otherwise: report the QA failure honestly, skip the launch phase, and
+    # exit non-zero at the end. QA output files in the workspace hold the
+    # reviewers' reasons.
+    QA_GATE_FAILED=true
     echo ""
-    echo -e "  ${R}QA gate failed. Feeding fail verdict to run state machine.${NC}"
-    "$RUNS_SCRIPT" inspect "$RUN_ID" --verdict fail --notes "QA gate failed" 2>&1 || true
-    RUN_STATUS=$("$RUNS_SCRIPT" status "$RUN_ID" 2>&1 | head -1 | awk -F': ' '{print $2}')
-    echo ""
-    echo "  Status:     $RUN_STATUS (updated after QA gate)"
+    echo -e "  ${R}✗ QA gate FAILED. Work completed the loop but did not pass QA review.${NC}"
+    echo -e "  ${DIM}See qa_*.txt in: $WORKSPACE${NC}"
+    echo -e "  ${DIM}Launch phase will be skipped.${NC}"
   else
+    QA_GATE_FAILED=false
     echo -e "  ${G}✓ QA gate passed${NC}"
   fi
   echo ""
@@ -818,7 +824,7 @@ fi
 # ─── Launch phase (P1) ──
 # If launch is enabled in the manifest (or --launch flag set) and run completed,
 # generate shipping assets using foreman-brain.py
-if [[ "$RUN_STATUS" == "completed" ]] && { [[ "$LAUNCH_ENABLED" == "yes" ]] || $LAUNCH; }; then
+if [[ "$RUN_STATUS" == "completed" ]] && [[ "$QA_GATE_FAILED" == false ]] && { [[ "$LAUNCH_ENABLED" == "yes" ]] || $LAUNCH; }; then
   echo -e "${B}▶ Launch Phase: generating shipping assets${NC}"
   echo ""
 
@@ -886,7 +892,10 @@ fi
 echo "  Run 'foreman run status $RUN_ID' for full run details."
 echo ""
 
-if [[ "$RUN_STATUS" == "completed" ]]; then
+if [[ "$RUN_STATUS" == "completed" ]] && [[ "$QA_GATE_FAILED" == true ]]; then
+  echo -e "${R}✗ Dispatch finished the loop but FAILED the QA gate.${NC}"
+  exit 1
+elif [[ "$RUN_STATUS" == "completed" ]]; then
   echo -e "${G}✓ Dispatch complete: task passed.${NC}"
   exit 0
 elif [[ "$RUN_STATUS" == "blocked" ]]; then

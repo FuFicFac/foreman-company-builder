@@ -49,6 +49,20 @@ printf 'Assessment: correct and complete.\n'
 printf '\033[1mVERDICT: pass\033[0m\n'
 EOF
 
+# Inspector stub 3: passes the main inspection loop but fails the QA gate.
+# The QA prompt is distinguishable by its "You are a QA reviewer" header.
+cat > "$STUB_BIN/stub-inspector-qa-fail" <<'EOF'
+#!/usr/bin/env bash
+PROMPT=$(cat)
+if printf '%s' "$PROMPT" | grep -q 'You are a QA reviewer'; then
+  printf 'Checklist review: voice drifts badly in paragraph two.\n'
+  printf 'VERDICT: fail\n'
+else
+  printf 'Assessment: correct and complete.\n'
+  printf 'VERDICT: pass\n'
+fi
+EOF
+
 chmod +x "$STUB_BIN"/stub-*
 
 write_profile() { # $1 = inspector command
@@ -111,6 +125,35 @@ if [[ $RC2 -eq 0 ]] && echo "$OUT2" | grep -q "Verdict: pass"; then
 else
   echo "  ✗ noisy pass verdict did not parse cleanly (rc=$RC2)"
   echo "$OUT2"; exit 1
+fi
+
+# ── Case 3: main loop passes but QA gate fails → no launch, exit non-zero ──
+write_profile "$STUB_BIN/stub-inspector-qa-fail"
+WS3="$TMP/ws3"; mkdir -p "$WS3"
+set +e
+OUT3=$("$FOREMAN" dispatch --task "smoke: qa gate failure" --template software \
+  --project verdict-smoke-3 --workspace "$WS3" 2>&1)
+RC3=$?
+set -e
+
+if [[ $RC3 -ne 0 ]]; then
+  echo "  ✓ QA-gate failure exits non-zero (rc=$RC3)"
+else
+  echo "  ✗ QA gate failed but dispatch exited 0 — QA is decorative again"
+  echo "$OUT3"; exit 1
+fi
+
+if echo "$OUT3" | grep -q "FAILED the QA gate"; then
+  echo "  ✓ QA failure reported honestly in final result"
+else
+  echo "  ✗ missing honest QA-failure final message"; echo "$OUT3"; exit 1
+fi
+
+if [[ ! -d "$WS3/launch" ]] && echo "$OUT3" | grep -q "Launch phase will be skipped"; then
+  echo "  ✓ launch phase skipped after QA failure"
+else
+  echo "  ✗ launch phase ran (or skip message missing) despite QA failure"
+  echo "$OUT3"; exit 1
 fi
 
 echo "verdict-parsing smoke passed"
