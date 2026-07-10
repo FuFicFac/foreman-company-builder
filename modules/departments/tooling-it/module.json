@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "tooling-it",
   "version": "1.0.0",
-  "description": "Tooling / IT / Security — Accounts, tools, integrations, credentials, environments, automations, access control, and smoke tests.",
+  "description": "Tooling / IT / Security \u2014 Accounts, tools, integrations, credentials, environments, automations, access control, and smoke tests.",
   "purpose": "Accounts, tools, integrations, credentials, environments, automations, access control, and smoke tests.",
   "domain": "tooling-it",
   "capabilities": [
@@ -17,12 +17,7 @@
     "Process credential and access requests",
     "Run tool readiness and integration health checks",
     "Enforce access scope and backup policies",
-    "Own shared tool manifest standard for all departments",
-    "Credential + access requests",
-    "Tool readiness + integration health",
-    "Access scope + backup policies",
-    "Shared tool-manifest standard",
-    "Smoke tests"
+    "Own shared tool manifest standard for all departments"
   ],
   "workflows": [
     {
@@ -110,36 +105,6 @@
       "check": "foreman tools doctor passes for composed manifest",
       "evidence": "doctor-output",
       "severity": "blocker"
-    },
-    {
-      "id": "tool-manifest-exists",
-      "check": "a current tool manifest with entries for tools in active use.",
-      "evidence": "tool-manifest-exists",
-      "severity": "info"
-    },
-    {
-      "id": "access-requests-are-tracked",
-      "check": "recent access requests have approval records, not ad-hoc grants.",
-      "evidence": "access-requests-are-tracked",
-      "severity": "info"
-    },
-    {
-      "id": "smoke-test-results-exist",
-      "check": "at least one recent smoke-test result for an onboarded tool.",
-      "evidence": "smoke-test-results-exist",
-      "severity": "info"
-    },
-    {
-      "id": "backup-checklists-exist",
-      "check": "backup checklists are documented for recoverable tooling state.",
-      "evidence": "backup-checklists-exist",
-      "severity": "info"
-    },
-    {
-      "id": "approval-gates-are-explicit",
-      "check": "\"what requires a human\" is listed and used for credential-grant, production-access, and new-integration.",
-      "evidence": "approval-gates-are-explicit",
-      "severity": "info"
     }
   ],
   "company_type_mappings": {

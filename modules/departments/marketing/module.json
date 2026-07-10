@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "marketing",
   "version": "1.0.0",
-  "description": "Marketing — Research market, position offer, produce copy and campaigns across SEO, email, social, ads, launch, and CRO.",
+  "description": "Marketing \u2014 Research market, position offer, produce copy and campaigns across SEO, email, social, ads, launch, and CRO.",
   "purpose": "Research market, position offer, produce copy and campaigns across SEO, email, social, ads, launch, and CRO.",
   "domain": "marketing",
   "capabilities": [
@@ -115,36 +115,6 @@
       "check": "brand brief or positioning doc exists",
       "evidence": "brand-brief",
       "severity": "blocker"
-    },
-    {
-      "id": "campaign-brief-exists",
-      "check": "at least one recent campaign-brief with objective, audience, offer, budget, and success metric.",
-      "evidence": "campaign-brief-exists",
-      "severity": "info"
-    },
-    {
-      "id": "inspector-verdicts-logged",
-      "check": "recent brand-check / clarity-check / conversion-check / compliance-check / channel-fit verdicts archived.",
-      "evidence": "inspector-verdicts-logged",
-      "severity": "info"
-    },
-    {
-      "id": "performance-memo-exists",
-      "check": "at least one performance-review memo with results vs goal and a kill/hold/scale decision.",
-      "evidence": "performance-memo-exists",
-      "severity": "info"
-    },
-    {
-      "id": "approval-gates-are-explicit",
-      "check": "offer-positioning, brand-claim, budget, launch-date, and final-copy gates are listed and used.",
-      "evidence": "approval-gates-are-explicit",
-      "severity": "info"
-    },
-    {
-      "id": "launch-artifacts-archived",
-      "check": "published copy, creative, and channel links are stored against each campaign.",
-      "evidence": "launch-artifacts-archived",
-      "severity": "info"
     }
   ],
   "company_type_mappings": {
