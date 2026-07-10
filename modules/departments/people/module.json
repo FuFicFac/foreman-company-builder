@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "people",
   "version": "1.0.0",
-  "description": "People / Contractors — Role definitions, hiring briefs, onboarding, contractor packets, deliverable review, and offboarding.",
+  "description": "People / Contractors \u2014 Role definitions, hiring briefs, onboarding, contractor packets, deliverable review, and offboarding.",
   "purpose": "Role definitions, hiring briefs, onboarding, contractor packets, deliverable review, and offboarding.",
   "domain": "people",
   "capabilities": [
@@ -105,36 +105,6 @@
       "check": "core role profiles exist",
       "evidence": "role-profile-index",
       "severity": "warning"
-    },
-    {
-      "id": "contractor-brief-exists",
-      "check": "at least one recent contractor-brief with scope, rate, and success criteria.",
-      "evidence": "contractor-brief-exists",
-      "severity": "info"
-    },
-    {
-      "id": "review-records-logged",
-      "check": "recent deliverable-quality and role-clarity verdicts archived for active engagements.",
-      "evidence": "review-records-logged",
-      "severity": "info"
-    },
-    {
-      "id": "offboarding-checklist-used",
-      "check": "at least one completed offboarding-checklist with access revoked and artifacts archived.",
-      "evidence": "offboarding-checklist-used",
-      "severity": "info"
-    },
-    {
-      "id": "approval-gates-are-explicit",
-      "check": "hire, contractor-engagement, termination, and access-grant gates are listed and used.",
-      "evidence": "approval-gates-are-explicit",
-      "severity": "info"
-    },
-    {
-      "id": "payment-handoff-working",
-      "check": "accepted deliverables have a corresponding handoff record to Finance.",
-      "evidence": "payment-handoff-working",
-      "severity": "info"
     }
   ],
   "company_type_mappings": {

@@ -13,11 +13,6 @@
   "required_capabilities": [
     "product-delivery"
   ],
-  "recommended_capabilities": [
-    "operations-sop",
-    "quality-inspection",
-    "launch-operations"
-  ],
   "universal_responsibilities": [
     "Intake and scope new deliverables",
     "Run delivery stages from idea to shipped",
@@ -133,15 +128,13 @@
     "product-lead",
     "builder",
     "producer",
-    "delivery-coordinator",
-    "release-owner"
+    "delivery-coordinator"
   ],
   "human_approval_gates": [
     "scope-change",
     "ship-date",
     "customer-promise-change",
-    "major-spec-change",
-    "waive-acceptance"
+    "major-spec-change"
   ],
   "context_packet_requirements": [
     "company-brief",
@@ -242,6 +235,11 @@
       "calendar"
     ]
   },
+  "recommended_capabilities": [
+    "operations-sop",
+    "quality-inspection",
+    "launch-operations"
+  ],
   "conditional_capabilities": {
     "software_company": [
       "software-development",

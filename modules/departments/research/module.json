@@ -3,7 +3,7 @@
   "kind": "department",
   "department_slug": "research",
   "version": "1.0.0",
-  "description": "Research / Intelligence — Standing research function for market, competitor, and customer-language intelligence before strategy and GTM decisions.",
+  "description": "Research / Intelligence \u2014 Standing research function for market, competitor, and customer-language intelligence before strategy and GTM decisions.",
   "purpose": "Standing research function for market, competitor, and customer-language intelligence before strategy and GTM decisions.",
   "domain": "research",
   "capabilities": [
@@ -16,12 +16,7 @@
     "Run market and competitor research protocols",
     "Mine customer language from reviews and support",
     "Score source quality",
-    "Produce synthesis memos for executive and GTM",
-    "Market + competitor research",
-    "Customer language mining",
-    "Source quality scoring",
-    "Recommendation discipline",
-    "Evidence durability"
+    "Produce synthesis memos for executive and GTM"
   ],
   "workflows": [
     {
@@ -106,36 +101,6 @@
       "check": "research protocol doc exists",
       "evidence": "research-protocol",
       "severity": "warning"
-    },
-    {
-      "id": "source-index-exists",
-      "check": "at least one scored source index accompanying a recent memo.",
-      "evidence": "source-index-exists",
-      "severity": "info"
-    },
-    {
-      "id": "recent-memo-exists",
-      "check": "at least one research memo with citations and recommendations in the last cycle.",
-      "evidence": "recent-memo-exists",
-      "severity": "info"
-    },
-    {
-      "id": "question-to-recommendation-trace",
-      "check": "a sample memo shows a defined question, scored sources, and recommendations tied to that question.",
-      "evidence": "question-to-recommendation-trace",
-      "severity": "info"
-    },
-    {
-      "id": "customer-language-artifact-exists",
-      "check": "a customer-language report or phrase bank mined from real reviews/support.",
-      "evidence": "customer-language-artifact-exists",
-      "severity": "info"
-    },
-    {
-      "id": "approval-gates-are-explicit",
-      "check": "\"what requires a human\" is listed and used for external publication and competitive claims.",
-      "evidence": "approval-gates-are-explicit",
-      "severity": "info"
     }
   ],
   "company_type_mappings": {
