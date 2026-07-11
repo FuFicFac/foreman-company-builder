@@ -159,16 +159,12 @@ provider_command() {
       command -v codex >/dev/null 2>&1 && echo "codex exec --skip-git-repo-check" || echo ""
       ;;
     hermes)
-      # TODO(hermes-stdin): hermes has no confirmed stdin-friendly non-interactive
-      # mode. Bare `hermes` launches the interactive agent (TUI), and its
-      # non-interactive forms (`hermes -z/--oneshot PROMPT`, `hermes chat -q QUERY`)
-      # take the prompt as a command-line ARGUMENT, not via piped stdin. Since the
-      # builder/inspector invocation pipes the prompt to stdin (`cat file | eval CMD`)
-      # and passes no prompt argument, none of these would receive the prompt.
-      # Until a stdin-safe invocation is verified, treat hermes as unusable as a
-      # builder/inspector here (return empty) rather than mapping it to a TUI or an
-      # argless command that would hang. Never map a provider to an interactive TUI.
-      echo ""
+      # hermes -z/--oneshot takes the prompt as an ARGUMENT, not stdin, while
+      # builder/inspector invocations pipe the prompt ('cat file | eval CMD').
+      # The '$(cat)' wrapper bridges the two: it reads the piped prompt and
+      # hands it to -z as the argument. Verified stdin-safe 2026-07-10
+      # (printf 'READY probe' | sh -c 'hermes -z "$(cat)"' → answers).
+      command -v hermes >/dev/null 2>&1 && echo 'hermes -z "$(cat)"' || echo ""
       ;;
     ollama)
       command -v ollama >/dev/null 2>&1 && echo "ollama run <mid-tier-model>" || echo ""
