@@ -280,8 +280,14 @@ if [[ "$SKIP_PROMPTS" != "--yes" ]]; then
     fi
     BRAIN_PROVIDER="none"
   else
-    for i in "${!OPTIONS[@]}"; do
-      echo -e "  ${BOLD}$((i+1)))${NC} ${OPTIONS[$i]}"
+    # NOTE: no "${!OPTIONS[@]}" here — that's bash-only and this is a zsh
+    # script ('bad substitution' at the first real beta install, 2026-07-11).
+    # Iterate values with a manual counter: valid in zsh AND bash, and
+    # immune to zsh's 1-based vs bash's 0-based array indexing.
+    i=0
+    for opt in "${OPTIONS[@]}"; do
+      i=$((i+1))
+      echo -e "  ${BOLD}$i)${NC} $opt"
     done
     echo ""
     echo -e "${BOLD}Which should Foreman use as its brain?${NC} [1-${#OPTIONS[@]}] \c"
