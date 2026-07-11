@@ -172,12 +172,11 @@ else
   check "codex does not resolve to the bare interactive TUI command" "ok"
 fi
 
-# ── BUG 4 (hermes): no confirmed stdin-safe invocation → treated as unusable ──
-# hermes has no verified stdin-friendly non-interactive mode (its -z/--oneshot
-# and `chat -q` forms take the prompt as an argument, not via stdin), and bare
-# `hermes` is a TUI. The resolver must therefore return an EMPTY command for
-# hermes so the fleet-fallback skips it and --provider hermes refuses cleanly
-# rather than piping into a TUI. Prove it via a hermes stub on PATH.
+# ── hermes: resolves to the stdin-safe oneshot wrapper, never the bare TUI ──
+# hermes -z/--oneshot takes the prompt as an ARGUMENT while dispatch pipes
+# prompts via stdin; the resolver bridges with 'hermes -z "$(cat)"' (verified
+# stdin-safe 2026-07-10). --provider hermes must resolve the builder onto that
+# wrapper form — and never onto bare interactive 'hermes'.
 cat > "$STUB_BIN/hermes" <<'EOF'
 #!/usr/bin/env bash
 echo "stub-hermes $*"
@@ -185,13 +184,16 @@ EOF
 chmod +x "$STUB_BIN/hermes"
 HERMES_OUT=$("$FOREMAN" dispatch --task "Fix the broken build" \
   --provider hermes --dry-run 2>&1)
-# --provider hermes must NOT switch the builder onto a hermes command; it should
-# warn that hermes is not usable and keep the configured (stub agent) builder.
-if echo "$HERMES_OUT" | grep -qE "Builder:.*[Hh]ermes" \
-   || echo "$HERMES_OUT" | grep -A1 "Builder:" | grep "Command:" | grep -qw "hermes"; then
-  check "hermes is not selected as a builder command (no stdin-safe form)" "no"; echo "$HERMES_OUT"
+HERMES_BUILDER_CMD=$(echo "$HERMES_OUT" | grep -A1 "Builder:" | grep "Command:" | head -1 || true)
+if echo "$HERMES_BUILDER_CMD" | grep -qF 'hermes -z "$(cat)"'; then
+  check "hermes resolves to stdin-safe 'hermes -z \"\$(cat)\"' form" "ok"
 else
-  check "hermes is not selected as a builder command (no stdin-safe form)" "ok"
+  check "hermes resolves to stdin-safe 'hermes -z \"\$(cat)\"' form" "no"; echo "$HERMES_OUT"
+fi
+if echo "$HERMES_BUILDER_CMD" | grep -qE 'Command:[[:space:]]*hermes[[:space:]]*$'; then
+  check "hermes does not resolve to the bare interactive TUI command" "no"; echo "$HERMES_BUILDER_CMD"
+else
+  check "hermes does not resolve to the bare interactive TUI command" "ok"
 fi
 
 echo ""
