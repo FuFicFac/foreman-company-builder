@@ -34,12 +34,10 @@ You are a YouTube thumbnail copywriter. Write 2-4 words of thumbnail text that c
 After the inspector pass and before the foreman's final arbitration, a QA Checker reviews the work against a structured checklist. This is a quality gate — not an afterthought.
 
 The QA Checker checks:
-- Hook present in first 15 seconds
-- CTA present and clear
-- Thumbnail text readable at small sizes
-- Description complete with links
-- Tags relevant to content
-- Retention shape planned
+- Hook strength
+- Retention structure
+- Metadata completeness
+- Thumbnail/title match
 
 If QA finds issues, the work returns to the builder for targeted fixes. The foreman only proceeds to launch after QA passes.
 

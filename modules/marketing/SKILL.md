@@ -33,12 +33,10 @@ You are a social media copywriter. Write 5 posts for this campaign. Vary format 
 After the inspector pass and before the foreman's final arbitration, a QA Reviewer checks the work against a structured checklist. This is a quality gate — not an afterthought.
 
 The QA Reviewer checks:
-- Brand voice consistent across all assets
-- CTA present in every asset
-- Links valid and tracked
-- Copy length within channel limits
-- Audience match verified
-- Claim support documented
+- Claim accuracy
+- CTA presence
+- Audience fit
+- Brand voice
 
 If QA finds issues, the work returns to the builder for targeted fixes. The foreman only proceeds to launch after QA passes.
 

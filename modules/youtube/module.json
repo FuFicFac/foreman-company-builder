@@ -81,12 +81,10 @@
       "name": "QA Checker",
       "type": "qa",
       "checklist": [
-        "Hook present in first 15 seconds",
-        "CTA present and clear",
-        "Thumbnail text readable at small sizes",
-        "Description complete with links",
-        "Tags relevant to content",
-        "Retention shape planned"
+        "Hook strength",
+        "Retention structure",
+        "Metadata completeness",
+        "Thumbnail/title match"
       ]
     }
   ],

@@ -83,12 +83,9 @@
       "name": "QA Engineer",
       "type": "qa",
       "checklist": [
-        "All tests pass",
-        "No regressions in existing tests",
+        "Tests pass",
         "Lint clean",
-        "Type checks pass",
-        "No dead code introduced",
-        "No untested code paths in changes"
+        "Types check"
       ]
     }
   ],

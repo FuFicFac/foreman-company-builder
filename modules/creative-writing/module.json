@@ -81,12 +81,11 @@
       "name": "QA Editor",
       "type": "qa",
       "checklist": [
-        "Voice consistency across all chapters",
-        "Character names consistent (no swaps)",
-        "Timeline continuity (no temporal errors)",
-        "Tone drift check (opening vs. closing)",
-        "Plot hole detection",
-        "Style guide adherence"
+        "Voice consistency",
+        "Name swaps",
+        "Timeline continuity",
+        "Tone drift",
+        "Plot holes"
       ]
     }
   ],

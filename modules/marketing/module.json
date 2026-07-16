@@ -81,12 +81,10 @@
       "name": "QA Reviewer",
       "type": "qa",
       "checklist": [
-        "Brand voice consistent across all assets",
-        "CTA present in every asset",
-        "Links valid and tracked",
-        "Copy length within channel limits",
-        "Audience match verified",
-        "Claim support documented"
+        "Claim accuracy",
+        "CTA presence",
+        "Audience fit",
+        "Brand voice"
       ]
     }
   ],

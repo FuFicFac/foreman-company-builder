@@ -166,6 +166,7 @@ ROLES="$(echo "$MANIFEST_JSON" | python3 -c 'import json,sys; d=json.load(sys.st
 BUILDERS="$(echo "$MANIFEST_JSON" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(", ".join(d.get("builders",[])))')"
 INSPECTORS="$(echo "$MANIFEST_JSON" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(", ".join(d.get("inspectors",[])))')"
 QA_ROLES="$(echo "$MANIFEST_JSON" | python3 -c 'import json,sys; d=json.load(sys.stdin); qas=d.get("qa_roles",[]); print(", ".join(q.get("name","") for q in qas))')"
+QA_CHECKLIST="$(echo "$MANIFEST_JSON" | python3 -c 'import json,sys; d=json.load(sys.stdin); print("\n".join("      - " + item for role in d.get("qa_roles",[]) for item in role.get("checklist",[])))')"
 HAS_LAUNCH="$(echo "$MANIFEST_JSON" | python3 -c 'import json,sys; d=json.load(sys.stdin); lp=d.get("launch_phase",{}); print("yes" if lp.get("enabled") else "no")')"
 LAUNCH_ASSETS="$(echo "$MANIFEST_JSON" | python3 -c 'import json,sys; d=json.load(sys.stdin); assets=d.get("launch_phase",{}).get("assets",[]); print(", ".join(a.get("type","") for a in assets))')"
 
@@ -249,6 +250,11 @@ if $DRY_RUN; then
   echo "    Template:  $MODULE_NAME"
   echo "    Loop mode: $EFFECTIVE_LOOP"
   echo "    Stage:     $FIRST_STAGE"
+  if [[ -n "$QA_ROLES" ]]; then
+    echo "    QA gate:   $QA_ROLES"
+    echo "    QA checklist:"
+    echo "$QA_CHECKLIST"
+  fi
   echo "    Task:      $PROMPT"
   echo "    Project:   blast-$(date +%s)"
   echo "    Workspace: $WORKSPACE"

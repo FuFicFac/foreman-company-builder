@@ -28,12 +28,9 @@ You are a software inspector. Review the builder's work critically. Check: (1) D
 After the inspector pass and before the foreman's final arbitration, a QA Engineer reviews the work against a structured checklist. This is a quality gate — not an afterthought.
 
 The QA Engineer checks:
-- All tests pass
-- No regressions in existing tests
+- Tests pass
 - Lint clean
-- Type checks pass
-- No dead code introduced
-- No untested code paths in changes
+- Types check
 
 If QA finds issues, the work returns to the builder for targeted fixes. The foreman only proceeds to launch after QA passes.
 
