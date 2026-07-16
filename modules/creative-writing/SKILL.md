@@ -80,7 +80,6 @@ After QA passes, the creative-writing pipeline produces launch assets:
 - **Hook** — First-line hook for social media
 - **Series callback** — Series closer that sets up the next book
 - **Funnel copy** — Landing page copy with CTA
-- **Author bio** — Updated author bio for this release
 
 These assets are generated as part of the `launch` stage, the final stage in the pipeline.
 

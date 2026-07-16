@@ -46,8 +46,7 @@ After QA passes, the marketing pipeline produces launch assets:
 
 - **Ad copy variants** — 3-5 ad copy variants for A/B testing
 - **Email sequence** — Email sequence for the campaign
-- **Landing page** — Landing page copy and structure
-- **Social posts** — Social media posts for launch
+- **Landing page copy** — Landing page copy and structure
 
 These assets are generated as part of the `launch` stage.
 

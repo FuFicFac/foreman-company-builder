@@ -93,6 +93,7 @@ The `foreman` wrapper (`scripts/foreman`) routes these subcommands:
   --provider <name>    Force a specific provider
   --dir <path>         Output directory (default: temp dir)
   --deluxe             Run Deluxe loop instead of Lean
+  --skip-launch        Stop after QA; do not generate launch assets
   --dry-run            Show what would fire without executing
 ```
 

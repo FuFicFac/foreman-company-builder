@@ -3,7 +3,7 @@
 Called by foreman-chat.sh during AI-driven onboarding.
 
 Usage:
-  foreman-brain.py --provider openai --model gpt-4 \\
+  foreman-brain.py --provider openai --model <provider-resolved-model> \\
     --system-prompt "..." --history /tmp/conv.json --user-msg "Hello"
 
 Reads conversation history from --history (JSON array of {role, content}).
@@ -40,6 +40,7 @@ def call_ollama(model, system_prompt, conversation_text):
         ["ollama", "run", model, f"{system_prompt}\n\n{conversation_text}"],
         capture_output=True, text=True, timeout=30
     )
+    result.check_returncode()
     return result.stdout.strip()
 
 
@@ -73,7 +74,8 @@ def main():
         try:
             response = call_openai(args.model, messages, api_key)
         except Exception as e:
-            response = f"(brain error: {e})"
+            print(f"(brain error: {e})", file=sys.stderr)
+            return 1
 
     elif args.provider == "xai":
         api_key = os.environ.get("XAI_API_KEY", "")
@@ -83,7 +85,8 @@ def main():
         try:
             response = call_xai(args.model, messages, api_key)
         except Exception as e:
-            response = f"(brain error: {e})"
+            print(f"(brain error: {e})", file=sys.stderr)
+            return 1
 
     elif args.provider == "ollama":
         # Ollama doesn't have a REST chat API in the same way; use CLI
@@ -91,7 +94,8 @@ def main():
         try:
             response = call_ollama(args.model, args.system_prompt, conv_text)
         except Exception as e:
-            response = f"(brain error: {e})"
+            print(f"(brain error: {e})", file=sys.stderr)
+            return 1
 
     else:
         print(f"(unsupported provider: {args.provider})")

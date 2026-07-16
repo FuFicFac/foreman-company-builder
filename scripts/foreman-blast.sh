@@ -20,6 +20,7 @@ Options:
   --provider <name>    Force a specific provider
   --dir <path>         Output directory (default: temp dir)
   --deluxe             Run Deluxe loop instead of Lean
+  --skip-launch        Stop after QA; do not generate launch assets
   --dry-run            Show what would fire without executing
   -h, --help           Show this help
 
@@ -41,6 +42,7 @@ PROVIDER=""
 DIR=""
 DELUXE=false
 DRY_RUN=false
+SKIP_LAUNCH=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -62,6 +64,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --dry-run)
       DRY_RUN=true
+      shift
+      ;;
+    --skip-launch)
+      SKIP_LAUNCH=true
       shift
       ;;
     -h|--help)
@@ -234,9 +240,13 @@ echo "  Builders:  $BUILDERS"
 echo "  Inspectors: $INSPECTORS"
 echo "  QA Roles:  $QA_ROLES"
 echo ""
-echo "  Launch:    $HAS_LAUNCH"
-if [[ "$HAS_LAUNCH" == "yes" ]]; then
+if [[ "$HAS_LAUNCH" == "yes" ]] && $SKIP_LAUNCH; then
+  echo "  Launch:    skipped by --skip-launch"
+elif [[ "$HAS_LAUNCH" == "yes" ]]; then
+  echo "  Launch:    yes"
   echo "  Launch Assets: $LAUNCH_ASSETS"
+else
+  echo "  Launch:    no"
 fi
 echo ""
 echo "  Workspace: $WORKSPACE"
@@ -305,8 +315,10 @@ if [[ -n "$PROVIDER" ]]; then
 fi
 
 # Pass --launch through to dispatch if launch is enabled
-if [[ "$HAS_LAUNCH" == "yes" ]]; then
+if [[ "$HAS_LAUNCH" == "yes" ]] && ! $SKIP_LAUNCH; then
   DISPATCH_ARGS+=(--launch)
+elif $SKIP_LAUNCH; then
+  DISPATCH_ARGS+=(--skip-launch)
 fi
 
 # Hand off to the dispatch engine

@@ -95,8 +95,7 @@
       {"type": "blurb", "description": "Back-cover blurb from the manuscript"},
       {"type": "hook", "description": "First-line hook for social media"},
       {"type": "series-callback", "description": "Series closer that sets up the next book"},
-      {"type": "funnel-copy", "description": "Landing page copy with CTA"},
-      {"type": "author-bio", "description": "Updated author bio for this release"}
+      {"type": "funnel-copy", "description": "Landing page copy with CTA"}
     ]
   }
 }

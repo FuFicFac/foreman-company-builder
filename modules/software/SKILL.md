@@ -39,10 +39,8 @@ If QA finds issues, the work returns to the builder for targeted fixes. The fore
 After QA passes, the software pipeline produces launch assets:
 
 - **Release notes** — User-facing release notes
-- **Changelog** — Developer-facing changelog
-- **README update** — Updated README with new features
+- **README** — README for the shipped software
 - **Deploy script** — Deploy script or instructions
-- **Migration guide** — Migration guide if breaking changes
 
 These assets are generated as part of the `launch` stage, the final stage in the pipeline.
 

@@ -47,9 +47,7 @@ After QA passes, the YouTube pipeline produces launch assets:
 
 - **Description** — Full video description with links and timestamps
 - **Tags** — SEO-optimized tags list
-- **Thumbnail text** — Thumbnail text overlay
 - **Community post** — Community tab post for engagement
-- **Shorts script** — Shorts clip script from the video
 
 These assets are generated as part of the `launch` stage, the final stage in the pipeline.
 

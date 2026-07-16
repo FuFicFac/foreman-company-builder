@@ -93,9 +93,7 @@
     "assets": [
       {"type": "description", "description": "Full video description with links and timestamps"},
       {"type": "tags", "description": "SEO-optimized tags list"},
-      {"type": "thumbnail-text", "description": "Thumbnail text overlay"},
-      {"type": "community-post", "description": "Community tab post for engagement"},
-      {"type": "shorts-script", "description": "Shorts clip script from the video"}
+      {"type": "community-post", "description": "Community tab post for engagement"}
     ]
   }
 }
