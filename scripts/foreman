@@ -80,6 +80,7 @@ Blast Options:
   --provider <name>    Force a specific provider
   --dir <path>         Output directory
   --deluxe             Run Deluxe loop instead of Lean
+  --skip-launch        Stop after QA; do not generate launch assets
   --dry-run            Show what would fire without executing
 EOF
     exit 0

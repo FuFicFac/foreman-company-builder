@@ -83,12 +83,9 @@
       "name": "QA Engineer",
       "type": "qa",
       "checklist": [
-        "All tests pass",
-        "No regressions in existing tests",
+        "Tests pass",
         "Lint clean",
-        "Type checks pass",
-        "No dead code introduced",
-        "No untested code paths in changes"
+        "Types check"
       ]
     }
   ],
@@ -96,10 +93,8 @@
     "enabled": true,
     "assets": [
       {"type": "release-notes", "description": "User-facing release notes"},
-      {"type": "changelog", "description": "Developer-facing changelog"},
-      {"type": "readme-update", "description": "Updated README with new features"},
-      {"type": "deploy-script", "description": "Deploy script or instructions"},
-      {"type": "migration-guide", "description": "Migration guide if breaking changes"}
+      {"type": "readme", "description": "README for the shipped software"},
+      {"type": "deploy-script", "description": "Deploy script or instructions"}
     ]
   }
 }

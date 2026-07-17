@@ -37,6 +37,7 @@ INSPECTOR_CMD_OVERRIDE=""
 PROVIDER=""
 WORKSPACE=""
 LAUNCH=false
+SKIP_LAUNCH=false
 
 usage() {
   cat <<'EOF'
@@ -57,6 +58,7 @@ Options:
                            (agent/cursor/claude/codex/ollama/hermes)
   --workspace <dir>        Working directory for agent output
   --launch                 Run launch phase after successful completion
+  --skip-launch            Stop after QA even when the template enables launch
   -h, --help               Show this help
 EOF
 }
@@ -74,6 +76,7 @@ while [[ $# -gt 0 ]]; do
     --provider)     PROVIDER="$2";   shift 2 ;;
     --workspace)    WORKSPACE="$2";  shift 2 ;;
     --launch)       LAUNCH=true;     shift   ;;
+    --skip-launch)  SKIP_LAUNCH=true; shift  ;;
     -h|--help)      usage; exit 0    ;;
     *)
       echo "Unknown option: $1" >&2
@@ -377,8 +380,10 @@ if $DRY_RUN; then
   echo "    2. Builder:      $BUILDER_CMD_RESOLVED"
   echo "    3. Inspector:    $INSPECTOR_CMD_RESOLVED"
   echo "    4. Verdict loop: pass→complete | fail→retry (up to $MAX_ATTEMPTS) | blocked→stop"
-  if [[ "$LAUNCH_ENABLED" == "yes" ]] || $LAUNCH; then
+  if ! $SKIP_LAUNCH && { [[ "$LAUNCH_ENABLED" == "yes" ]] || $LAUNCH; }; then
     echo "    5. Launch phase: generate shipping assets via foreman-brain.py"
+  elif $SKIP_LAUNCH; then
+    echo "    5. Launch phase: skipped by --skip-launch"
   fi
   echo ""
   echo "  [DRY RUN] No agents invoked. Remove --dry-run to execute."
@@ -824,7 +829,8 @@ fi
 # ─── Launch phase (P1) ──
 # If launch is enabled in the manifest (or --launch flag set) and run completed,
 # generate shipping assets using foreman-brain.py
-if [[ "$RUN_STATUS" == "completed" ]] && [[ "$QA_GATE_FAILED" == false ]] && { [[ "$LAUNCH_ENABLED" == "yes" ]] || $LAUNCH; }; then
+LAUNCH_PHASE_FAILED=false
+if [[ "$RUN_STATUS" == "completed" ]] && [[ "$QA_GATE_FAILED" == false ]] && ! $SKIP_LAUNCH && { [[ "$LAUNCH_ENABLED" == "yes" ]] || $LAUNCH; }; then
   echo -e "${B}▶ Launch Phase: generating shipping assets${NC}"
   echo ""
 
@@ -841,6 +847,7 @@ if [[ "$RUN_STATUS" == "completed" ]] && [[ "$QA_GATE_FAILED" == false ]] && { [
     # Create launch output directory
     LAUNCH_DIR="$WORKSPACE/launch"
     mkdir -p "$LAUNCH_DIR"
+    rm -f "$WORKSPACE/launch_failed.flag"
 
     # Generate each asset type via the brain
     echo "$LAUNCH_ASSETS_JSON" | python3 -c "
@@ -882,11 +889,18 @@ Generate the $asset_type now. Be concise and practical."
         echo -e "    ${G}✓${NC} $asset_type → $ASSET_FILE"
       else
         echo -e "    ${R}✗${NC} $asset_type generation failed (see $ASSET_FILE)"
+        echo "LAUNCH_FAILED" > "$WORKSPACE/launch_failed.flag"
       fi
     done
 
-    echo ""
-    echo -e "  ${G}✓ Launch assets generated in: $LAUNCH_DIR${NC}"
+    if [[ -f "$WORKSPACE/launch_failed.flag" ]]; then
+      LAUNCH_PHASE_FAILED=true
+      echo ""
+      echo -e "  ${R}✗ Launch phase failed; one or more assets were not generated.${NC}"
+    else
+      echo ""
+      echo -e "  ${G}✓ Launch assets generated in: $LAUNCH_DIR${NC}"
+    fi
   fi
   echo ""
 fi
@@ -895,7 +909,10 @@ fi
 echo "  Run 'foreman run status $RUN_ID' for full run details."
 echo ""
 
-if [[ "$RUN_STATUS" == "completed" ]] && [[ "$QA_GATE_FAILED" == true ]]; then
+if [[ "$RUN_STATUS" == "completed" ]] && [[ "$LAUNCH_PHASE_FAILED" == true ]]; then
+  echo -e "${R}✗ Dispatch completed build/inspection but FAILED the launch phase.${NC}"
+  exit 1
+elif [[ "$RUN_STATUS" == "completed" ]] && [[ "$QA_GATE_FAILED" == true ]]; then
   echo -e "${R}✗ Dispatch finished the loop but FAILED the QA gate.${NC}"
   exit 1
 elif [[ "$RUN_STATUS" == "completed" ]]; then

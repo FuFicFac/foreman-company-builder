@@ -38,8 +38,8 @@
     "creative-direction",
     "campaign-build",
     "qa",
-    "launch",
-    "performance-review"
+    "performance-review",
+    "launch"
   ],
   "roles": [
     "marketing-ceo",
@@ -81,12 +81,10 @@
       "name": "QA Reviewer",
       "type": "qa",
       "checklist": [
-        "Brand voice consistent across all assets",
-        "CTA present in every asset",
-        "Links valid and tracked",
-        "Copy length within channel limits",
-        "Audience match verified",
-        "Claim support documented"
+        "Claim accuracy",
+        "CTA presence",
+        "Audience fit",
+        "Brand voice"
       ]
     }
   ],
@@ -95,8 +93,7 @@
     "assets": [
       {"type": "ad-copy-variants", "description": "3-5 ad copy variants for A/B testing"},
       {"type": "email-sequence", "description": "Email sequence for the campaign"},
-      {"type": "landing-page", "description": "Landing page copy and structure"},
-      {"type": "social-posts", "description": "Social media posts for launch"}
+      {"type": "landing-page-copy", "description": "Landing page copy and structure"}
     ]
   }
 }

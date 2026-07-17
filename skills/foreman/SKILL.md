@@ -84,7 +84,7 @@ If someone only has one provider, they still get the full feedback loop:
 5. **Feed the verdict** into `foreman-run.sh inspect --verdict <verdict>` — the existing 3-strike state machine drives termination.
 6. **Loop** on fail (up to `--max-attempts`, default 3). At 3 strikes, `foreman-run.sh` escalates to `blocked`.
 7. **QA gate** (if module manifest defines `qa_roles`): each QA role reviews against its checklist.
-8. **Launch phase** (if manifest `launch_phase.enabled`): generates shipping assets via `foreman-brain.py`.
+8. **Launch phase** (if manifest `launch_phase.enabled`): generates shipping assets via `foreman-brain.py`; `--skip-launch` stops after QA.
 
 Use `--dry-run` to see the execution plan without invoking any agents.
 

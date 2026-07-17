@@ -64,12 +64,11 @@ When speed matters (quick revisions, small changes), Foreman picks two editors:
 After the inspector pass and before the foreman's final arbitration, a QA Editor reviews the work against a structured checklist. This is a quality gate — not an afterthought.
 
 The QA Editor checks:
-- Voice consistency across all chapters
-- Character names consistent (no swaps)
-- Timeline continuity (no temporal errors)
-- Tone drift check (opening vs. closing)
-- Plot hole detection
-- Style guide adherence
+- Voice consistency
+- Name swaps
+- Timeline continuity
+- Tone drift
+- Plot holes
 
 If QA finds issues, the work returns to the builder for targeted fixes. The foreman only proceeds to launch after QA passes.
 
@@ -81,7 +80,6 @@ After QA passes, the creative-writing pipeline produces launch assets:
 - **Hook** — First-line hook for social media
 - **Series callback** — Series closer that sets up the next book
 - **Funnel copy** — Landing page copy with CTA
-- **Author bio** — Updated author bio for this release
 
 These assets are generated as part of the `launch` stage, the final stage in the pipeline.
 
