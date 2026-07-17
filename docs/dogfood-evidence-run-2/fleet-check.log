@@ -1,0 +1,53 @@
+╔══════════════════════════════════════════╗
+║         Foreman Fleet Check             ║
+╚══════════════════════════════════════════╝
+
+=== CLI Providers ===
+  ✓ agent  (2026.07.13-7fe37d2)
+  ✓ cursor-agent  (2026.07.13-7fe37d2)
+  ✓ cursor  (unknown)
+  ✓ claude  (2.1.197 (Claude Code))
+  ✓ codex  (codex-cli 0.144.5)
+  ✓ hermes  (Hermes Agent v0.18.2 (2026.7.7.2) · upstream b41b4b3e)
+  ✓ ollama  (ollama version is 0.32.0)
+
+Found 7 provider(s)
+
+=== Cursor Composer Models ===
+Available models
+
+auto - Auto (default)
+gpt-5.3-codex-low - Codex 5.3 Low
+gpt-5.3-codex-low-fast - Codex 5.3 Low Fast
+gpt-5.3-codex - Codex 5.3
+gpt-5.3-codex-fast - Codex 5.3 Fast
+gpt-5.3-codex-high - Codex 5.3 High
+gpt-5.3-codex-high-fast - Codex 5.3 High Fast
+gpt-5.3-codex-xhigh - Codex 5.3 Extra High
+
+=== Ollama Models ===
+NAME                            ID              SIZE    MODIFIED     
+kimi-k2.5:cloud                 6d1c3246c608    -       3 weeks ago     
+kimi-k2.6:cloud                 a90cd0d1590c    -       3 weeks ago     
+glm-5.2:cloud                   ce8fd6f94793    -       4 weeks ago     
+glm-5.1:cloud                   59472abf9d0a    -       2 months ago    
+ministral-3:8b-cloud            a56a5396dfb9    -       2 months ago    
+qwen3.5:cloud                   a7bf6f7891c3    -       2 months ago    
+gemini-3-flash-preview:cloud    ebade0d31690    -       2 months ago    
+rnj-1:8b-cloud                  d8200a2fbf21    -       2 months ago    
+
+=== Paperclip ===
+
+██████╗  █████╗ ██████╗ ███████╗██████╗  ██████╗██╗     ██╗██████╗ 
+██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔════╝██║     ██║██╔══██╗
+██████╔╝███████║██████╔╝█████╗  ██████╔╝██║     ██║     ██║██████╔╝
+██╔═══╝ ██╔══██║██╔═══╝ ██╔══╝  ██╔══██╗██║     ██║     ██║██╔═══╝ 
+██║     ██║  ██║██║     ███████╗██║  ██║╚██████╗███████╗██║██║     
+╚═╝     ╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝╚═╝     
+  ───────────────────────────────────────────────────────
+  The app people use to manage AI agents for work
+
+  (Paperclip not configured)
+
+=== Role Assignment ===
+  Multi-provider mode — Foreman will route roles to best available provider

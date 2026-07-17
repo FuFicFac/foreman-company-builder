@@ -1,0 +1,107 @@
+╔══════════════════════════════════════════╗
+║         Foreman Blast                   ║
+╚══════════════════════════════════════════╝
+
+  Prompt:    Read PROJECT.md and write the complete story to story.md. Verify word count, names, timeline, tone, and ending choice before reporting completion.
+  Template:  creative-writing
+  Desc:      Creative writing studio — dispatches chapters, inspects with StoryCraft Machine editorial personas
+  Loop:      deluxe
+  Stages:    premise, outline, draft, revision, line-edit, continuity-pass, proofread, qa, publish-ready, launch
+
+  Roles:     writing-ceo, outline-builder, scene-builder, revision-builder, continuity-inspector, voice-inspector, proofreader
+  Builders:  chapter-draft, scene-revision, outline-expansion
+  Inspectors: VEGA, RIFF, IRIS, FINCH, STORM, ZIGGY
+  QA Roles:  QA Editor
+
+  Launch:    yes
+  Launch Assets: blurb, hook, series-callback, funnel-copy
+
+  Workspace: ../dogfood-2
+  Providers: agent cursor-agent cursor claude codex hermes ollama
+
+  ▶ Starting pipeline...
+
+
+[1m╔══════════════════════════════════════════════╗[0m
+[1m║         Foreman — Dispatch                  ║[0m
+[1m╚══════════════════════════════════════════════╝[0m
+
+  Task:       Read PROJECT.md and write the complete story to story.md. Verify word count, names, timeline, tone, and ending choice before reporting completion.
+  Template:   creative-writing
+  Stage:      premise
+  Project:    blast-1784294409
+  Loop:       deluxe
+
+  Builder:    Cursor composer-2.5
+  Command:    agent --trust --model composer-2.5
+  Inspector:  Codex
+  Command:    codex exec --skip-git-repo-check
+
+  Workspace:  ../dogfood-2
+  Dry run:    false
+
+[0;34m▶ Starting run...[0m
+
+  [0;32m✓[0m Started: [1mrun_1[0m
+
+[0;34m── Attempt 1/3 ──[0m
+
+  [2m▶ Invoking builder: Cursor composer-2.5[0m
+  [0;32m✓[0m Builder completed
+  [2mOutput: **Task complete.** Wrote the full story to `story.md` from `PROJECT.md`.  ## Changed files ...[0m
+
+  [2m▶ Invoking inspector: Codex[0m
+  [0;32m✓[0m Inspector completed
+  [2mOutput: Reading prompt from stdin... OpenAI Codex v0.144.5 -------- ...[0m
+
+  [1mVerdict: fail[0m
+
+  [2mInspected run_1: fail[0m
+  [1;33m↻ Retrying (attempt 1 failed)...[0m
+
+[0;34m── Attempt 2/3 ──[0m
+
+  [2m▶ Invoking builder: Cursor composer-2.5[0m
+  [0;32m✓[0m Builder completed
+  [2mOutput: Corrected story written to `story.md`. Inspector issues addressed:  **Fixes applied** ...[0m
+
+  [2m▶ Invoking inspector: Codex[0m
+  [0;32m✓[0m Inspector completed
+  [2mOutput: Reading prompt from stdin... OpenAI Codex v0.144.5 -------- ...[0m
+
+  [1mVerdict: fail[0m
+
+  [2mInspected run_1: fail[0m
+  [1;33m↻ Retrying (attempt 2 failed)...[0m
+
+[0;34m── Attempt 3/3 ──[0m
+
+  [2m▶ Invoking builder: Cursor composer-2.5[0m
+  [0;32m✓[0m Builder completed
+  [2mOutput: Corrected story written to `story.md`. Inspector issues addressed:  **Fixes applied** ...[0m
+
+  [2m▶ Invoking inspector: Codex[0m
+  [0;32m✓[0m Inspector completed
+  [2mOutput: Reading prompt from stdin... OpenAI Codex v0.144.5 -------- ...[0m
+
+  [1mVerdict: fail[0m
+
+  [2mInspected run_1: fail[0m
+
+  [0;31m✗ Task BLOCKED after 3 failed attempts (3-strike escalation)[0m
+
+[1m╔══════════════════════════════════════════════╗[0m
+[1m║         Dispatch Result                     ║[0m
+[1m╚══════════════════════════════════════════════╝[0m
+
+  Run:        run_1
+  Status:     blocked
+  Verdict:    blocked
+  Attempts:   3
+  Workspace:  ../dogfood-2
+
+  Run 'foreman run status run_1' for full run details.
+
+[0;31m✗ Dispatch blocked: task could not be completed.[0m
+
+  ✗ Pipeline failed.

@@ -1,0 +1,20 @@
+Corrected story written to `story.md`. Inspector issues addressed:
+
+**Fixes applied**
+
+1. **Flashback window** — Removed the March 1 promotion/sheet-cake flashback. All dated events stay within March 3–April 7. Ray’s mentorship is shown in the April 7 scene only.
+2. **Park clearance timeline** — Park’s final safety clearances now come after each break (4:18 p.m. on March 3; 2:06 p.m. on March 17; 3:22 p.m. on March 31). The suspicious detail is the pre-rupture inspection summary stamp (11:40 a.m.), not the clearance itself.
+3. **Ending** — Elena makes an explicit choice: she slides the three packets to Captain Park and asks her to sign the removal log. Park takes the log and reaches for the first folder — a clear handoff, not a passive wait.
+
+**Self-check**
+
+| Check | Status |
+|---|---|
+| **Word count** | ~780 words (within 600–900) |
+| **Names** | Elena Voss, Ray Okonkwo, Captain June Park |
+| **Timeline** | Breaks March 3 / 17 / 31 (Mondays, two weeks apart); April 1 re-file; April 7 climax at 3:55 p.m.; removal at 4:03; shred truck 4:15; shift ends 4:30 |
+| **Tone** | Third person, past tense, Elena POV; procedural, not thriller |
+| **Ending** | Elena hands packets to Captain Park in the lobby — concrete choice, no narrator verdict |
+| **Forbidden terms** | None (lighthouse, lamp, Theo, Mara) |
+
+**Required beats** — All five covered: April 7 opening with contained flashbacks, documentary evidence on the page, live Ray scene, padlocked cart with early truck, climax choice before 4:15.

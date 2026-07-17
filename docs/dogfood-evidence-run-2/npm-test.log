@@ -1,0 +1,200 @@
+
+> foreman-company-builder@0.1.0 test
+> bash tests/smoke/qa-role.sh && bash tests/smoke/launch-phase.sh && bash tests/smoke/qa-gate-failure.sh && bash tests/smoke/foreman-wrapper-dispatch.sh && bash tests/smoke/dispatch-dryrun.sh && bash tests/smoke/dispatch-provider-fallback.sh && bash tests/smoke/dispatch-verdict-parsing.sh && bash tests/smoke/issues-lifecycle.sh && bash tests/smoke/nobrain-onboarding.sh && bash tests/smoke/init-capability-probe.sh && bash tests/smoke/press-lifecycle.sh && bash tests/smoke/press-invalid-manifest.sh && bash tests/smoke/press-propose-lifecycle.sh && bash tests/smoke/lph-cli-smoke.sh && bash tests/smoke/run-lifecycle.sh && bash tests/smoke/run-escalation.sh && bash tests/smoke/run-invalid-transitions.sh && TMP_LEDGER=$(mktemp) && echo '{"schema_version":"foreman.runs.v0","next_id":1,"runs":[]}' > "$TMP_LEDGER" && python3 tests/json/validate-run-ledger.py "$TMP_LEDGER" && rm -f "$TMP_LEDGER" && python3 tests/json/validate-module-manifests.py modules && python3 tests/json/validate-department-primitives.py modules/departments && python3 tests/json/validate-department-catalog.py && python3 tests/json/validate-company-composition.py
+
+qa role smoke
+  ✓ creative-writing: qa role loads with 5 checks
+  ✓ software: qa role loads with 3 checks
+  ✓ marketing: qa role loads with 4 checks
+  ✓ youtube: qa role loads with 4 checks
+  ✓ Lean Blast dry run fires the QA Reviewer checklist
+qa role smoke passed
+launch phase smoke
+  ✓ creative-writing: 4 launch assets load
+  ✓ software: 3 launch assets load
+  ✓ youtube: 3 launch assets load
+  ✓ marketing: 3 launch assets load
+  ✓ build → inspect → QA → launch wrote all software assets
+  ✓ --skip-launch preserves the build/inspect/QA pipeline without assets
+  ✓ asset generation failure makes dispatch fail honestly
+launch phase smoke passed
+qa gate failure smoke
+  ✓ failed QA exits nonzero and prevents launch assets
+qa gate failure smoke passed
+foreman wrapper dispatch smoke
+  testing help route...
+  ✓ help shows usage
+  ✓ help lists init
+  ✓ help lists issues
+  ✓ help lists run
+  ✓ help lists chat
+  ✓ help lists press
+  ✓ help lists lph
+  ✓ --help alias works
+  ✓ unknown command exits non-zero (exit 1)
+  ✓ unknown command shows error
+  ✓ press route dispatches via wrapper
+  ✓ tools route dispatches via wrapper
+  ✓ init route dispatches via wrapper
+  ✓ issues route dispatches via wrapper
+  ✓ run route dispatches via wrapper
+  ✓ lph route dispatches via wrapper
+  ✓ foreman-press.py exists
+  ✓ foreman-tools.sh exists
+  ✓ foreman-init.sh exists
+  ✓ foreman-module.sh exists
+  ✓ foreman-issues.sh exists
+  ✓ foreman-chat.sh exists
+  ✓ foreman-run.sh exists
+  ✓ foreman-update.sh exists
+  ✓ fleet-check.sh exists
+  ✓ foreman-lph.py exists
+
+foreman wrapper dispatch smoke passed
+dispatch dry-run smoke
+  ✓ dispatch --dry-run shows [DRY RUN] plan
+  ✓ dispatch --dry-run declares no agents invoked
+  ✓ dispatch --dry-run plans builder command
+  ✓ dispatch --dry-run plans inspector command
+  ✓ dispatch --dry-run created no runs (no runs.json)
+  ✓ foreman <unknown> exits 1
+  ✓ foreman <unknown> shows 'Unknown command'
+dispatch dry-run smoke passed
+dispatch provider + inspector-fallback smoke
+  (skipping BUG 1 assertions — 'claude' is present on PATH in this env)
+  ✓ overridden inspector label is not the stale profile name
+  ✓ overridden inspector command is honored
+  ✓ blast --provider codex forwards '--provider codex' to dispatch
+  ✓ dispatch --provider codex resolves builder command
+  ✓ codex resolves to stdin-safe 'codex exec' form
+  ✓ codex does not resolve to the bare interactive TUI command
+  ✓ hermes resolves to stdin-safe 'hermes -z "$(cat)"' form
+  ✓ hermes does not resolve to the bare interactive TUI command
+
+dispatch provider + inspector-fallback smoke passed
+dispatch verdict-parsing smoke
+  ✓ no-verdict run exits non-zero (rc=1)
+  ✓ missing verdict hit the default-to-fail branch (not a mid-loop death)
+  ✓ missing verdicts counted as strikes (retry/escalation engaged)
+  ✓ ANSI-noisy explicit verdict parsed as pass (rc=0)
+  ✓ QA-gate failure exits non-zero (rc=1)
+  ✓ QA failure reported honestly in final result
+  ✓ launch phase skipped after QA failure
+  ✓ cursor-code-mangled QA verdict parsed as pass (rc=0)
+verdict-parsing smoke passed
+foreman issues smoke
+  testing list (empty)...
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh list
+  ✓ empty list shows header
+  ✓ empty list shows no issues
+  testing add...
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh add Fix the homepage bug
+  ✓ add shows created message
+  ✓ add shows title
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh add Write marketing copy
+  ✓ add second issue
+  testing add with special characters...
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh add Fix the user's bug
+  ✓ special char add succeeds
+  ✓ special char title persisted correctly
+  testing list (populated)...
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh list
+  ✓ list shows issue 1
+  ✓ list shows issue 2
+  ✓ list shows issue 1 title
+  ✓ list shows issue 2 title
+  testing show...
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh show 1
+  ✓ show displays id
+  ✓ show displays title
+  ✓ show displays status
+  testing assign...
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh assign 1 builder
+  ✓ assign confirms
+  ✓ assign shows role
+  ✓ assignee persisted in JSON
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh list
+  ✓ list shows assignee
+  testing close...
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh close 1
+  ✓ close confirms
+  ✓ issue 1 status is closed in JSON
+  zsh /Users/lastresort/Projects/foreman-dispatch-2026-07-16/foreman-company-builder/scripts/foreman-issues.sh list
+  ✓ list still shows open issue 2
+  ✓ closed issue 1 not in open list
+  ✓ next_id is 4
+  ✓ show missing issue reports error
+  ✓ empty title rejected
+
+foreman issues smoke passed
+no-brain onboarding fallback smoke
+  testing software type...
+  ✓ software shows company type menu
+  ✓ software asks for project name
+  ✓ software type saved persisted (software)
+  testing physical_product type...
+  ✓ physical_product shows menu
+  ✓ physical_product asks what you sell
+  ✓ physical_product type saved persisted (physical_product)
+  testing local_service type...
+  ✓ local_service shows menu
+  ✓ local_service asks service type
+  ✓ local_service type saved persisted (local_service)
+  testing creator type...
+  ✓ creator shows menu
+  ✓ creator asks niche
+  ✓ creator type saved persisted (creator)
+  testing publishing type...
+  ✓ publishing shows menu
+  ✓ publishing asks focus
+  ✓ publishing asks formats
+  ✓ publishing asks sell direct
+  ✓ publishing type saved persisted (publishing)
+  testing education_community type...
+  ✓ education shows menu
+  ✓ education asks topic
+  ✓ education_community type saved persisted (education_community)
+  testing invalid choice...
+  ✓ invalid choice rejected
+  ✓ invalid choice exits non-zero (exit 1)
+  ✓ menu has all 6 options
+  ✓ menu shows 2) Physical
+  ✓ menu shows 3) Local
+  ✓ menu shows 4) Creator
+  ✓ menu shows 5) Publishing
+  ✓ menu shows 6) Education
+
+no-brain onboarding fallback smoke passed
+  certified=[cursor,codex] independent=true builder=agent inspector=codex
+  ✓ cursor (probe passed) is certified
+  ✓ codex (probe passed) is certified
+  ✓ ollama (probe FAILED) is excluded from certified
+  ✓ builder is a certified provider
+  ✓ independent_inspection flag is true
+  ✓ inspector is a DIFFERENT provider from builder
+
+init capability-probe smoke passed (6 checks)
+lph cli smoke: ok
+Started run_1
+run ledger valid
+Paused run_1
+Resumed run_1
+Inspected run_1: pass
+run lifecycle smoke passed
+Inspected run_1: fail
+  ✓ single fail does not escalate (status=failed, strike=1, escalation=none)
+Resumed run_1
+Inspected run_1: fail
+  ✓ two fails do not escalate (status=failed, strike=2, escalation=none)
+Resumed run_1
+Inspected run_1: fail
+  ✓ three fails trigger escalation (status=blocked, strike=3, escalation=escalated)
+run ledger valid
+escalation smoke passed
+Cancelled run_1
+invalid transition smoke passed
+run ledger valid
+module manifests valid
+department primitives valid (17 department manifests, 17 catalog departments, 26 capabilities)
+department catalog valid (17 departments, 26 capabilities)
+company composition valid (6 company types)
