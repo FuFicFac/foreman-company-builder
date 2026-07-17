@@ -1,0 +1,68 @@
+
+[1m╔══════════════════════════════════════════════╗[0m
+[1m║            Foreman — Init                   ║[0m
+[1m║   Paperclip is the company.                  ║[0m
+[1m║   Foreman runs the crew.                      ║[0m
+[1m╚══════════════════════════════════════════════╝[0m
+
+[0;34mStep 2: Discover CLIs[0m
+
+  [0;32m✓[0m [1mCursor Agent[0m [2m(/Users/lastresort/.local/bin/agent)[0m
+    [0;32m✓[0m Models: [2mcomposer-2.5[0m / composer-2.5-fast
+  [0;32m✓[0m [1mClaude Code[0m [2m(2.1.197 (Claude Code))[0m
+  [0;32m✓[0m [1mCodex[0m [2m(/Users/lastresort/.local/bin/codex)[0m
+  [0;32m✓[0m [1mOllama[0m [2m(ollama version is 0.32.0, 9 models)[0m
+  [0;32m✓[0m [1mHermes[0m [2m(/Users/lastresort/.local/bin/hermes)[0m
+
+[0;34mStep 3: API Keys & Brain[0m [2m(Foreman needs a brain for orchestration and chat)[0m
+
+  [2m  ○ OpenAI (not found — set OPENAI_API_KEY or paste below)[0m
+  [2m  ○ xAI / Grok (not found — set XAI_API_KEY or paste below)[0m
+  [2m  ○ Google / Gemini (not found — set GOOGLE_API_KEY or paste below)[0m
+  [2m  ○ Anthropic / Claude (not found — expensive for programmatic use)[0m
+
+
+[0;34mStep 3.5: Verify CLIs work[0m [2m(one tiny job each)[0m
+
+  [0;32m✓[0m [1mCursor Agent[0m [2m— works[0m
+  [0;31m✗[0m Claude Code [2m— installed but did not run a job (skipped)[0m
+  [0;32m✓[0m [1mCodex[0m [2m— works[0m
+  [0;32m✓[0m [1mOllama[0m [2m— works[0m
+  [2m  ○ Hermes — no stdin mode, not eligible as builder/inspector[0m
+
+[0;34mStep 4: Role assignments[0m [2m(certified providers only)[0m
+
+  [1mInspector[0m  (review, judgment):  [0;32mCodex[0m
+  [1mBuilder[0m    (code, implement):  [0;32mCursor composer-2.5[0m
+  [1mCheap[0m      (classify, brainstorm): [0;32mOllama (cheapest)[0m
+  [1mBrain[0m      (orchestration, chat): [0;36mollama/kimi-k2.5:cloud[0m
+  [1mFleet[0m      (mode):             [0;32mmulti-provider[0m (3 certified / 5 found)
+  [0;32m✓[0m [2mIndependent inspection: builder and inspector are different providers[0m
+
+[0;34mStep 5: Services[0m [2m(detect running platforms, register Foreman)[0m
+
+  [2m  ○ Paperclip (not running)[0m
+  [0;32m✓[0m [1mOpenClaw[0m [2m(OpenClaw 2026.7.1 (2d2ddc4))[0m
+    [2m10 agent(s) detected[0m
+
+  [0;32m✓[0m OpenClaw detected. Integration note saved.
+
+[0;32m✓[0m Profile saved to [2m../dogfood-2/.foreman/profile.json[0m
+[0;32m✓[0m API key references saved to [2m../dogfood-2/.foreman/secrets.env[0m [2m(gitignored, chmod 600)[0m
+
+[1m╔══════════════════════════════════════════════╗[0m
+[1m║         Foreman is ready.                    ║[0m
+[1m╚══════════════════════════════════════════════╝[0m
+
+  Inspector:  [0;32mCodex[0m
+  Builder:    [0;32mCursor composer-2.5[0m
+  Cheap:      [0;32mOllama (cheapest)[0m
+  Brain:      [0;36mollama/kimi-k2.5:cloud[0m
+  Mode:       [0;32mmulti-provider[0m
+
+  [2mforeman dispatch --task "Fix the bug"[0m
+  [2mforeman blast "Fix the bug"[0m  [2m# zero-friction entry[0m
+  [2mforeman fleet[0m  [2m# re-scan[0m
+  [2mforeman init[0m  [2m# reconfigure[0m
+  [2mforeman chat[0m  [2m# talk to the brain[0m
+
