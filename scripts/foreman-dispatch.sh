@@ -687,8 +687,13 @@ PROMPT
     echo -e "  ${Y}⚠ No explicit VERDICT line found; defaulting to: $VERDICT${NC}"
   fi
 
-  # Extract notes (everything before the VERDICT line, truncated)
-  INSPECTOR_NOTES=$(echo "$INSPECTOR_OUTPUT" | sed '/VERDICT:/Id' | head -10 | tr '\n' ' ' | sed 's/  */ /g' | cut -c1-500)
+  # Extract notes: the inspector's findings sit at the END of its output, just
+  # before the VERDICT line — the head is provider preamble (banners,
+  # model/workdir dumps). Keep the LAST lines/chars before the verdict so the
+  # ledger records the actual findings, not the preamble. The awk keeps the
+  # TRAILING 500 chars (truncate from the front, not the back).
+  # '|| true': empty result must not kill the script under set -e/pipefail.
+  INSPECTOR_NOTES=$(echo "$INSPECTOR_OUTPUT" | sed '/VERDICT:/Id' | grep -vE '^[[:space:]]*$' | tail -10 | tr '\n' ' ' | sed 's/  */ /g; s/ $//' | awk '{n=length($0); print (n>500) ? substr($0,n-499) : $0}' || true)
 
   echo -e "  ${BOLD}Verdict: ${VERDICT}${NC}"
   echo ""
@@ -805,22 +810,28 @@ On the LAST line, emit: VERDICT: pass  or  VERDICT: fail"
     else
       echo -e "    ${R}✗${NC} $qa_name: fail"
       echo "QA_FAILED" > "$WORKSPACE/qa_failed.flag"
+      # Capture the reviewer's actual findings (tail of output, before the
+      # verdict line) so the ledger records why QA failed, not just that it did.
+      QA_NOTES=$(echo "$QA_OUTPUT_CLEAN" | sed '/VERDICT:/Id' | grep -vE '^[[:space:]]*$' | tail -10 | tr '\n' ' ' | sed 's/  */ /g; s/ $//' | awk '{n=length($0); print (n>300) ? substr($0,n-299) : $0}' || true)
+      echo "$qa_name: $QA_NOTES" >> "$WORKSPACE/qa_failed_notes.txt"
     fi
   done
 
   if [[ -f "$WORKSPACE/qa_failed.flag" ]]; then
-    # The run is already in the terminal 'completed' state, so the ledger
-    # cannot take a fail verdict here (invalid transition). Do not pretend
-    # otherwise: report the QA failure honestly, skip the launch phase, and
-    # exit non-zero at the end. QA output files in the workspace hold the
-    # reviewers' reasons.
     QA_GATE_FAILED=true
+    # Record the QA failure as the run's terminal state so the ledger — not
+    # just the exit code and transcripts — shows the true outcome.
+    QA_FAIL_NOTES=$(tr '\n' ' ' < "$WORKSPACE/qa_failed_notes.txt" 2>/dev/null | sed 's/  */ /g' | cut -c1-500 || true)
+    QA_LEDGER_OUT=$("$RUNS_SCRIPT" qa "$RUN_ID" --result fail --notes "$QA_FAIL_NOTES" 2>&1) || \
+      echo -e "  ${Y}⚠ Could not record QA failure in ledger: $QA_LEDGER_OUT${NC}" >&2
     echo ""
     echo -e "  ${R}✗ QA gate FAILED. Work completed the loop but did not pass QA review.${NC}"
     echo -e "  ${DIM}See qa_*.txt in: $WORKSPACE${NC}"
     echo -e "  ${DIM}Launch phase will be skipped.${NC}"
   else
     QA_GATE_FAILED=false
+    QA_LEDGER_OUT=$("$RUNS_SCRIPT" qa "$RUN_ID" --result pass 2>&1) || \
+      echo -e "  ${Y}⚠ Could not record QA pass in ledger: $QA_LEDGER_OUT${NC}" >&2
     echo -e "  ${G}✓ QA gate passed${NC}"
   fi
   echo ""
@@ -889,15 +900,20 @@ Generate the $asset_type now. Be concise and practical."
         echo -e "    ${G}✓${NC} $asset_type → $ASSET_FILE"
       else
         echo -e "    ${R}✗${NC} $asset_type generation failed (see $ASSET_FILE)"
-        echo "LAUNCH_FAILED" > "$WORKSPACE/launch_failed.flag"
+        echo "$asset_type" >> "$WORKSPACE/launch_failed.flag"
       fi
     done
 
     if [[ -f "$WORKSPACE/launch_failed.flag" ]]; then
       LAUNCH_PHASE_FAILED=true
+      FAILED_ASSETS=$(tr '\n' ' ' < "$WORKSPACE/launch_failed.flag" | sed 's/ *$//')
+      LAUNCH_LEDGER_OUT=$("$RUNS_SCRIPT" launch "$RUN_ID" --result fail --notes "asset generation failed: $FAILED_ASSETS" 2>&1) || \
+        echo -e "  ${Y}⚠ Could not record launch failure in ledger: $LAUNCH_LEDGER_OUT${NC}" >&2
       echo ""
       echo -e "  ${R}✗ Launch phase failed; one or more assets were not generated.${NC}"
     else
+      LAUNCH_LEDGER_OUT=$("$RUNS_SCRIPT" launch "$RUN_ID" --result pass 2>&1) || \
+        echo -e "  ${Y}⚠ Could not record launch pass in ledger: $LAUNCH_LEDGER_OUT${NC}" >&2
       echo ""
       echo -e "  ${G}✓ Launch assets generated in: $LAUNCH_DIR${NC}"
     fi
