@@ -37,11 +37,10 @@ for kv in "workdir: /tmp" "model: stub-model" "provider: stub" "approval: never"
   echo "$kv"
 done
 echo ""
-echo "Assessment of the builder's work follows."
-echo "The implementation compiles and the happy path behaves as described."
-echo "However, the change is missing unit tests for the error path."
-echo "The failure branch silently swallows the exception instead of reporting it."
-echo "Integration risk: the retry helper is not wired into the dispatch loop."
+# Short findings after the FINDINGS: marker — the shape where a pure tail
+# heuristic would still leak trailing preamble lines into the notes.
+echo "FINDINGS:"
+echo "The change is missing unit tests for the error path."
 echo "These issues are fixable by the builder."
 echo "VERDICT: fail"
 EOF
@@ -85,8 +84,9 @@ for i, a in enumerate(run["attempts"], start=1):
     assert a["verdict"] == "fail", a
     notes = a["inspector_notes"]
     assert "missing unit tests" in notes, f"findings absent from notes: {notes!r}"
-    assert "Reading prompt from stdin" not in notes and "StubCLI" not in notes, \
-        f"provider preamble leaked into notes: {notes!r}"
+    for banned in ("Reading prompt from stdin", "StubCLI", "session id",
+                   "sandbox", "reasoning", "FINDINGS"):
+        assert banned not in notes, f"provider preamble/marker leaked into notes: {notes!r}"
 print("  ✓ 3 failed attempts recorded with real findings, no provider preamble")
 PY
 

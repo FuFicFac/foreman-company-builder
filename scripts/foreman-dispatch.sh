@@ -518,6 +518,21 @@ echo ""
 #   - fail → strike_count++, status=failed (then blocked at 3 strikes)
 #   - blocked → status=blocked
 
+# Extract the inspector's findings for the ledger. Prefer the explicit
+# FINDINGS: block the prompts request — everything after the last line that is
+# exactly 'FINDINGS:' — which structurally excludes provider preamble (banners,
+# model/workdir dumps always precede the marker). Fall back to the
+# tail-of-output heuristic for CLIs/models that ignore the marker; either way
+# keep the TRAILING chars (findings sit just before the VERDICT line).
+extract_notes() {
+  local output="$1" maxlen="$2" block
+  block=$(echo "$output" | awk 'toupper($0) ~ /^[[:space:]]*FINDINGS:[[:space:]]*$/{buf=""; found=1; next} found{buf=buf $0 "\n"} END{printf "%s", buf}')
+  if [[ -z "${block//[[:space:]]/}" ]]; then
+    block="$output"
+  fi
+  echo "$block" | sed '/VERDICT:/Id' | grep -vE '^[[:space:]]*$' | tail -10 | tr '\n' ' ' | sed 's/  */ /g; s/ $//' | awk -v m="$maxlen" '{n=length($0); print (n>m) ? substr($0,n-m+1) : $0}' || true
+}
+
 BUILDER_PROMPT_FILE="$WORKSPACE/builder_prompt.txt"
 BUILDER_OUTPUT_FILE="$WORKSPACE/builder_output.txt"
 INSPECTOR_PROMPT_FILE="$WORKSPACE/inspector_prompt.txt"
@@ -645,6 +660,8 @@ Use "fail" if there are issues that the builder can fix.
 Use "blocked" if the problem requires human intervention or cannot be resolved by the builder.
 
 Before the verdict line, provide your assessment and any issues found.
+Start your assessment with a line containing exactly:
+FINDINGS:
 PROMPT
 
   # ── Step 4: Invoke the inspector ──
@@ -687,13 +704,7 @@ PROMPT
     echo -e "  ${Y}⚠ No explicit VERDICT line found; defaulting to: $VERDICT${NC}"
   fi
 
-  # Extract notes: the inspector's findings sit at the END of its output, just
-  # before the VERDICT line — the head is provider preamble (banners,
-  # model/workdir dumps). Keep the LAST lines/chars before the verdict so the
-  # ledger records the actual findings, not the preamble. The awk keeps the
-  # TRAILING 500 chars (truncate from the front, not the back).
-  # '|| true': empty result must not kill the script under set -e/pipefail.
-  INSPECTOR_NOTES=$(echo "$INSPECTOR_OUTPUT" | sed '/VERDICT:/Id' | grep -vE '^[[:space:]]*$' | tail -10 | tr '\n' ' ' | sed 's/  */ /g; s/ $//' | awk '{n=length($0); print (n>500) ? substr($0,n-499) : $0}' || true)
+  INSPECTOR_NOTES=$(extract_notes "$INSPECTOR_OUTPUT" 500)
 
   echo -e "  ${BOLD}Verdict: ${VERDICT}${NC}"
   echo ""
@@ -788,6 +799,8 @@ TASK: $TASK
 BUILDER OUTPUT:
 $(cat "$BUILDER_OUTPUT_FILE")
 
+Start your assessment with a line containing exactly:
+FINDINGS:
 On the LAST line, emit: VERDICT: pass  or  VERDICT: fail"
 
     QA_OUT_FILE="$WORKSPACE/qa_${qa_name// /_}.txt"
@@ -812,7 +825,7 @@ On the LAST line, emit: VERDICT: pass  or  VERDICT: fail"
       echo "QA_FAILED" > "$WORKSPACE/qa_failed.flag"
       # Capture the reviewer's actual findings (tail of output, before the
       # verdict line) so the ledger records why QA failed, not just that it did.
-      QA_NOTES=$(echo "$QA_OUTPUT_CLEAN" | sed '/VERDICT:/Id' | grep -vE '^[[:space:]]*$' | tail -10 | tr '\n' ' ' | sed 's/  */ /g; s/ $//' | awk '{n=length($0); print (n>300) ? substr($0,n-299) : $0}' || true)
+      QA_NOTES=$(extract_notes "$QA_OUTPUT_CLEAN" 300)
       echo "$qa_name: $QA_NOTES" >> "$WORKSPACE/qa_failed_notes.txt"
     fi
   done
