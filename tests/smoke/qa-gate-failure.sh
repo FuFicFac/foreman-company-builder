@@ -80,4 +80,23 @@ if [[ -d "$WORKSPACE/launch" ]]; then
 fi
 
 echo "  ✓ failed QA exits nonzero and prevents launch assets"
+
+# The ledger must record the QA failure as a terminal state, with per-attempt
+# evidence — not leave the run marked 'completed' with an empty attempts array.
+python3 - "$FOREMAN_CONFIG_DIR/runs.json" <<'PY'
+import json, sys
+state = json.load(open(sys.argv[1]))
+run = state["runs"][-1]
+assert run["status"] == "qa_failed", f"expected qa_failed, got {run['status']}"
+assert len(run["attempts"]) == 1, f"expected 1 attempt, got {len(run['attempts'])}"
+a = run["attempts"][0]
+assert a["attempt"] == 1 and a["verdict"] == "pass", a
+assert "satisfies the task" in a["inspector_notes"], a
+qa = run["qa_results"][-1]
+assert qa["result"] == "fail", qa
+assert "QA checklist fails" in qa["notes"], qa
+assert any(e["type"] == "qa_failed" for e in run["events"]), run["events"]
+print("  ✓ ledger records terminal qa_failed with attempt + QA findings")
+PY
+
 echo "qa gate failure smoke passed"
