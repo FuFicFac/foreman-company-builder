@@ -12,6 +12,7 @@ chmod +x "$SOURCE/scripts/foreman"
 git -C "$SOURCE" init -q
 git -C "$SOURCE" add .
 git -C "$SOURCE" -c user.name='Foreman Test' -c user.email='foreman-test@example.invalid' commit -qm 'fixture'
+git -C "$SOURCE" branch -M main
 
 mkdir -p "$INSTALL"
 printf '{"version":"old"}\n' > "$INSTALL/profile.json"
