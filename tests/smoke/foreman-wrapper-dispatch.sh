@@ -57,6 +57,9 @@ assert_contains "unknown command shows error" "$UNKNOWN_OUT" "Unknown command"
 TMPDIR_TEST=$(mktemp -d)
 trap 'rm -rf "$TMPDIR_TEST"' EXIT
 export FOREMAN_CONFIG_DIR="$TMPDIR_TEST"
+export FOREMAN_PRINTING_PRESS_BIN="$ROOT/tests/fixtures/printing-press"
+export FOREMAN_SKIP_PROBE=1
+export FOREMAN_ENABLE_OPENCLAW=0
 
 # press: --help should show usage (via wrapper)
 PRESS_OUT=$("$FOREMAN" press --help 2>&1 || true)

@@ -24,7 +24,7 @@ The creative-writing and software templates are the two we have run end-to-end m
 ## Known issues (we know, it's filed)
 
 - **QA failure ends the run** rather than sending the builder back to fix what QA found (issue #15). If QA fails your run, the QA reviewer's reasons are in `qa_*.txt` in the workspace — rerun with a sharper prompt for now.
-- **Existing `~/.foreman` directory**: if you have a config-only `~/.foreman` from an earlier setup, the installer's clone will fail (issue #16). Move it aside first: `mv ~/.foreman ~/.foreman.bak`, install, then copy your `profile.json` back.
+- **Existing `~/.foreman` directory**: the installer preserves config-only runtime state in a timestamped backup, installs a fresh checkout, and restores known state files. Keep the reported backup path if you need to recover any additional local files.
 - **Inspector CLIs must work headless.** Claude Code needs a headless-capable login for `claude -p`. If your configured inspector can't run a job, Foreman now detects that before dispatching and falls back to another live provider automatically — but a two-provider setup makes this seamless.
 - **Ollama reasoning models are slow inspectors.** A verdict can take a couple of minutes. Working as intended, just don't assume it hung.
 
