@@ -1,0 +1,36 @@
+# Foreman Heartbeat — 2026-08-12
+
+Project: The Quiet Hours Ledger
+Stage: partial draft
+Mode: hermes
+Goal: finish chapter 1 continuity pass and produce a heartbeat-ready workspace
+
+Status: YELLOW — 1 run(s) failed (retryable)
+
+## Run Summary
+- Passed (completed): 8
+- Ready (running/paused): 3
+- Blocked: 0
+- Escalated: 0
+- Needs human: 0
+- Failed (retryable): 1
+
+## Moved
+- run_1: Write a 150-word landing-page hero section for a dog-walking business (creative-writing/dispatch-1782656446) — completed
+- run_4: Write a 150-word landing-page hero section for a dog-walking business (creative-writing/blast-1782660003) — completed
+- run_7: write a 300-word flash fiction about a lighthouse keeper who repairs clockwork birds (creative-writing/blast-1783724756) — completed
+- run_8: write a 300-word flash fiction about a lighthouse keeper who repairs clockwork birds (creative-writing/blast-1783725299) — completed
+- run_9: write a 300-word flash fiction about a lighthouse keeper who repairs clockwork birds (creative-writing/blast-1783725785) — completed
+- run_10: write a 300-word flash fiction about a lighthouse keeper who repairs clockwork birds (creative-writing/blast-1783726054) — completed
+- run_11: build a small python CLI script that converts fahrenheit to celsius with input validation (software/blast-1783734844) — completed
+- run_12: write a 150-word drabble about a night watchman who collects lost buttons (creative-writing/blast-1783735143) — completed
+
+## Blocked / Needs human
+- Nothing blocked or waiting on human.
+
+## Next
+- Retry run_6 (write a 300-word flash fiction about a lighthouse keeper who repairs clockwork birds) — foreman-run.sh resume run_6
+
+## Evidence
+- Run ledger: /Users/lastresort/.foreman/runs.json
+- Total runs: 12
