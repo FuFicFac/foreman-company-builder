@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+case "${1:-}" in
+  list)
+    echo "No Printing Press CLIs installed (hermetic test fixture)."
+    ;;
+  *)
+    echo "printing-press fixture: unsupported command ${1:-<none>}" >&2
+    exit 2
+    ;;
+esac

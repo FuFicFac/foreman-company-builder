@@ -60,13 +60,31 @@ case "${1:-}" in
 esac
 STUB
 
+# Stub optional provider CLIs so capability probing never reaches host installs.
+# Claude is present but fails its probe; Hermes is only version-discoverable.
+cat > "$BIN/claude" << 'STUB'
+#!/usr/bin/env bash
+case "${1:-}" in
+  --version) echo "Claude test" ;;
+  *) cat >/dev/null 2>&1; echo "I will not comply" ;;
+esac
+STUB
+
+cat > "$BIN/hermes" << 'STUB'
+#!/usr/bin/env bash
+case "${1:-}" in
+  --version) echo "Hermes test" ;;
+  *) echo "Hermes test" ;;
+esac
+STUB
+
 # Stub `curl`: make Paperclip/service detection a no-op (no real network/registration).
 cat > "$BIN/curl" << 'STUB'
 #!/usr/bin/env bash
 exit 1
 STUB
 
-chmod +x "$BIN/agent" "$BIN/codex" "$BIN/ollama" "$BIN/curl"
+chmod +x "$BIN/agent" "$BIN/codex" "$BIN/ollama" "$BIN/claude" "$BIN/hermes" "$BIN/curl"
 
 export FOREMAN_CONFIG_DIR="$WORK/cfg"
 export PATH="$BIN:$PATH"

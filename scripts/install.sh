@@ -8,7 +8,8 @@ REPO="FuFicFac/foreman-company-builder"
 BRANCH="main"
 INSTALL_DIR="${FOREMAN_INSTALL_DIR:-$HOME/.foreman}"
 
-G='\033[0;32m' B='\033[0;34m' BOLD='\033[1m' DIM='\033[2m' NC='\033[0m'
+R='\033[0;31m' G='\033[0;32m' B='\033[0;34m' BOLD='\033[1m' DIM='\033[2m' NC='\033[0m'
+REPO_URL="${FOREMAN_REPO_URL:-https://github.com/${REPO}.git}"
 
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════════════╗${NC}"
@@ -24,13 +25,48 @@ if ! command -v git >/dev/null 2>&1; then
   exit 1
 fi
 
-# Clone or update
+# Clone or update. A config-only ~/.foreman is common from an older install;
+# preserve it beside the checkout instead of asking git to clone into it.
+clone_target="${INSTALL_DIR}.clone.$$"
+while [[ -e "$clone_target" ]]; do
+  clone_target="${INSTALL_DIR}.clone.$RANDOM"
+done
+
 if [[ -d "$INSTALL_DIR/.git" ]]; then
   echo -e "${B}Updating Foreman...${NC}"
   cd "$INSTALL_DIR" && git pull origin "$BRANCH" 2>&1
+elif [[ -e "$INSTALL_DIR" ]]; then
+  backup_dir="${INSTALL_DIR}.backup-$(date +%Y%m%d%H%M%S)"
+  backup_number=1
+  while [[ -e "$backup_dir" ]]; do
+    backup_dir="${INSTALL_DIR}.backup-$(date +%Y%m%d%H%M%S)-$backup_number"
+    backup_number=$((backup_number + 1))
+  done
+  echo -e "${B}Preserving existing Foreman data in ${DIM}$backup_dir${NC}"
+  mv "$INSTALL_DIR" "$backup_dir"
+  if ! git clone --depth 1 -b "$BRANCH" "$REPO_URL" "$clone_target" 2>&1; then
+    mv "$backup_dir" "$INSTALL_DIR"
+    [[ -e "$clone_target" ]] && rm -rf "$clone_target"
+    echo -e "${R}✗ Could not install Foreman; existing data was restored.${NC}" >&2
+    exit 1
+  fi
+  mv "$clone_target" "$INSTALL_DIR"
+  # Restore runtime state without overwriting the freshly cloned product.
+  for state_file in profile.json fleet.json runs.json issues.json secrets.env openclaw-integration.md; do
+    if [[ -f "$backup_dir/$state_file" ]]; then
+      cp -p "$backup_dir/$state_file" "$INSTALL_DIR/$state_file"
+    fi
+  done
+  echo -e "${G}✓${NC} Existing runtime state preserved; full backup remains at ${DIM}$backup_dir${NC}"
 else
   echo -e "${B}Installing Foreman...${NC}"
-  git clone --depth 1 -b "$BRANCH" "https://github.com/${REPO}.git" "$INSTALL_DIR" 2>&1
+  mkdir -p "$(dirname "$INSTALL_DIR")"
+  if ! git clone --depth 1 -b "$BRANCH" "$REPO_URL" "$clone_target" 2>&1; then
+    [[ -e "$clone_target" ]] && rm -rf "$clone_target"
+    echo -e "${R}✗ Could not install Foreman.${NC}" >&2
+    exit 1
+  fi
+  mv "$clone_target" "$INSTALL_DIR"
 fi
 
 # Make scripts executable

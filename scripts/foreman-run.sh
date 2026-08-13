@@ -20,11 +20,13 @@ Usage:
   foreman-run.sh resume <run_id>
   foreman-run.sh cancel <run_id>
   foreman-run.sh inspect <run_id> [--verdict pass|fail|blocked|needs-human] [--notes "..."]
+  foreman-run.sh qa <run_id> --result pass|fail [--notes "..."]
+  foreman-run.sh launch <run_id> --result pass|fail [--notes "..."]
 EOF
 }
 
 case "$ACTION" in
-  start|status|list|pause|resume|cancel|inspect)
+  start|status|list|pause|resume|cancel|inspect|qa|launch)
     FOREMAN_CONFIG_DIR="$CONFIG_DIR" RUNS_FILE="$RUNS_FILE" REPO_ROOT="$REPO_ROOT" ACTION="$ACTION" python3 - "$@" <<'PY'
 import json
 import os
@@ -39,7 +41,7 @@ repo_root = Path(os.environ["REPO_ROOT"])
 action = os.environ["ACTION"]
 args = sys.argv[1:]
 
-TERMINAL = {"cancelled", "completed", "blocked", "needs_human"}
+TERMINAL = {"cancelled", "completed", "blocked", "needs_human", "qa_failed", "launch_failed"}
 
 
 def now():
@@ -242,6 +244,15 @@ def cmd_inspect():
         raise SystemExit("--verdict must be pass, fail, blocked, or needs-human")
     inspection = {"verdict": verdict, "notes": notes, "timestamp": now()}
     run["inspections"].append(inspection)
+    # Every inspect verdict corresponds to one builder attempt — mirror it into
+    # the attempts array so the ledger holds durable per-attempt evidence.
+    attempts = run.setdefault("attempts", [])
+    attempts.append({
+        "attempt": len(attempts) + 1,
+        "verdict": verdict,
+        "inspector_notes": notes,
+        "timestamp": inspection["timestamp"],
+    })
     if verdict == "pass":
         run["status"] = "completed"
     elif verdict == "fail":
@@ -262,6 +273,40 @@ def cmd_inspect():
     save_state(state)
     print(f"Inspected {run['id']}: {verdict}")
 
+
+def _post_completion_outcome(kind):
+    # Records the QA-gate / launch-phase outcome for a run that already
+    # completed the inspector loop. A failure here is terminal: qa_failed /
+    # launch_failed, so the ledger — not just exit codes — shows the truth.
+    if not args:
+        raise SystemExit(f"{kind} requires run_id")
+    flags = parse_flags(args[1:])
+    result = flags.get("result")
+    notes = flags.get("notes", "")
+    if result not in {"pass", "fail"}:
+        raise SystemExit("--result must be pass or fail")
+    state = load_state()
+    run = find_run(state, args[0])
+    if run["status"] != "completed":
+        raise SystemExit(f"{kind} outcome only applies to completed runs; current status is {run['status']}")
+    entry = {"result": result, "notes": notes, "timestamp": now()}
+    run.setdefault(f"{kind}_results", []).append(entry)
+    if result == "fail":
+        run["status"] = f"{kind}_failed"
+        event(run, f"{kind}_failed", notes=notes)
+    else:
+        event(run, f"{kind}_passed")
+    save_state(state)
+    print(f"Recorded {kind} {result} for {run['id']}")
+
+
+def cmd_qa():
+    _post_completion_outcome("qa")
+
+
+def cmd_launch():
+    _post_completion_outcome("launch")
+
 if action in {"list", "status"}:
     cmd_status()
 elif action == "start":
@@ -274,6 +319,10 @@ elif action == "cancel":
     cmd_cancel()
 elif action == "inspect":
     cmd_inspect()
+elif action == "qa":
+    cmd_qa()
+elif action == "launch":
+    cmd_launch()
 PY
     ;;
   help|--help|-h)

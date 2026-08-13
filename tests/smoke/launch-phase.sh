@@ -93,6 +93,18 @@ for asset in release-notes readme deploy-script; do
 done
 echo "  ✓ build → inspect → QA → launch wrote all software assets"
 
+python3 - "$FOREMAN_CONFIG_DIR/runs.json" <<'PY'
+import json, sys
+run = json.load(open(sys.argv[1]))["runs"][-1]
+assert run["status"] == "completed", run["status"]
+assert len(run["attempts"]) == 1 and run["attempts"][0]["verdict"] == "pass", run["attempts"]
+assert run["qa_results"][-1]["result"] == "pass", run["qa_results"]
+assert run["launch_results"][-1]["result"] == "pass", run["launch_results"]
+types = [e["type"] for e in run["events"]]
+assert "qa_passed" in types and "launch_passed" in types, types
+print("  ✓ ledger records attempt, QA pass, and launch pass")
+PY
+
 SKIPPED_WORKSPACE="$TMP/skipped-project"
 SKIPPED_OUTPUT="$($FOREMAN dispatch --task "Build without shipping assets" \
   --template software --project launch-skip-smoke --workspace "$SKIPPED_WORKSPACE" \
@@ -118,5 +130,16 @@ if [[ $FAILED_RC -eq 0 ]] || ! grep -qF "FAILED the launch phase" <<<"$FAILED_OU
   exit 1
 fi
 echo "  ✓ asset generation failure makes dispatch fail honestly"
+
+python3 - "$FOREMAN_CONFIG_DIR/runs.json" <<'PY'
+import json, sys
+run = json.load(open(sys.argv[1]))["runs"][-1]
+assert run["status"] == "launch_failed", run["status"]
+launch = run["launch_results"][-1]
+assert launch["result"] == "fail", launch
+assert "release-notes" in launch["notes"], launch
+assert any(e["type"] == "launch_failed" for e in run["events"]), [e["type"] for e in run["events"]]
+print("  ✓ ledger records terminal launch_failed with failed asset names")
+PY
 
 echo "launch phase smoke passed"

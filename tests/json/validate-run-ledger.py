@@ -3,7 +3,7 @@ import json
 import sys
 from pathlib import Path
 
-ALLOWED = {"running", "paused", "cancelled", "completed", "failed", "blocked", "needs_human"}
+ALLOWED = {"running", "paused", "cancelled", "completed", "failed", "blocked", "needs_human", "qa_failed", "launch_failed"}
 REQUIRED = {"id", "module", "project", "stage", "task", "status", "created_at", "updated_at", "events"}
 
 path = Path(sys.argv[1])

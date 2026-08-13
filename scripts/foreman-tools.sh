@@ -18,9 +18,14 @@ G='\033[0;32m' R='\033[0;31m' Y='\033[1;33m' B='\033[0;34m' BOLD='\033[1m' DIM='
 
 ACTION="${1:-doctor}"
 shift || true
+PRINTING_PRESS_BIN="${FOREMAN_PRINTING_PRESS_BIN:-}"
 
 pp() {
-  npx -y @mvanhorn/printing-press "$@"
+  if [[ -n "$PRINTING_PRESS_BIN" ]]; then
+    "$PRINTING_PRESS_BIN" "$@"
+  else
+    npx -y @mvanhorn/printing-press "$@"
+  fi
 }
 
 ensure_go_bin_path() {
@@ -32,7 +37,12 @@ ensure_go_bin_path() {
 }
 
 require_printing_press() {
-  if ! command -v npx >/dev/null 2>&1; then
+  if [[ -n "$PRINTING_PRESS_BIN" ]]; then
+    if [[ ! -x "$PRINTING_PRESS_BIN" ]]; then
+      echo -e "${R}✗ FOREMAN_PRINTING_PRESS_BIN is not executable.${NC}"
+      exit 1
+    fi
+  elif ! command -v npx >/dev/null 2>&1; then
     echo -e "${R}✗ npx is required for Printing Press.${NC}"
     exit 1
   fi

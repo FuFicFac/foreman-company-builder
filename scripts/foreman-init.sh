@@ -211,37 +211,46 @@ echo ""
 BRAIN_PROVIDER=""
 BRAIN_MODEL=""
 BRAIN_KEY_ENV=""
+PASTE_KEY=""
+
+read_api_key() {
+  local prompt="$1"
+  echo -e "${BOLD}${prompt}${NC} (or press Enter to skip) \c"
+  # API keys must never be echoed into a terminal or captured in a screenshot.
+  read -r -s PASTE_KEY
+  echo ""
+}
 
 if [[ "$SKIP_PROMPTS" != "--yes" ]]; then
   # Let user paste keys for any provider that wasn't found
   if [[ "$HAS_OPENAI" == false ]]; then
-    echo -e "${BOLD}Paste OpenAI API key?${NC} (or press Enter to skip) \c"
-    read -r PASTE_KEY
+    read_api_key "Paste OpenAI API key?"
     if [[ -n "$PASTE_KEY" ]]; then
       export OPENAI_API_KEY="$PASTE_KEY"
       HAS_OPENAI=true
       echo -e "  ${G}✓${NC} OpenAI key saved for this session"
     fi
+    PASTE_KEY=""
   fi
 
   if [[ "$HAS_XAI" == false ]]; then
-    echo -e "${BOLD}Paste xAI / Grok API key?${NC} (or press Enter to skip) \c"
-    read -r PASTE_KEY
+    read_api_key "Paste xAI / Grok API key?"
     if [[ -n "$PASTE_KEY" ]]; then
       export XAI_API_KEY="$PASTE_KEY"
       HAS_XAI=true
       echo -e "  ${G}✓${NC} xAI key saved for this session"
     fi
+    PASTE_KEY=""
   fi
 
   if [[ "$HAS_GOOGLE" == false ]]; then
-    echo -e "${BOLD}Paste Google / Gemini API key?${NC} (or press Enter to skip) \c"
-    read -r PASTE_KEY
+    read_api_key "Paste Google / Gemini API key?"
     if [[ -n "$PASTE_KEY" ]]; then
       export GOOGLE_API_KEY="$PASTE_KEY"
       HAS_GOOGLE=true
       echo -e "  ${G}✓${NC} Google key saved for this session"
     fi
+    PASTE_KEY=""
   fi
 
   echo ""
@@ -514,6 +523,10 @@ echo -e "${B}Step 5: Services${NC} ${DIM}(detect running platforms, register For
 echo ""
 
 PAPERCLIP_URL="" PAPERCLIP_COMPANY="" OPENCLAW_DETECTED=false
+# OpenClaw is an optional integration target, never a Foreman dependency.
+# Keep it off the normal init path; users who explicitly opt in can still
+# generate the integration note without allowing a broken CLI to abort setup.
+OPENCLAW_ENABLED="${FOREMAN_ENABLE_OPENCLAW:-0}"
 
 # Paperclip — check common ports
 PC_PORTS=(3100 3000 8080)
@@ -531,20 +544,28 @@ if [[ "$PC_FOUND" == false ]]; then
   echo -e "  ${DIM}  ○ Paperclip (not running)${NC}"
 fi
 
-# OpenClaw — check for CLI + gateway
-if command -v openclaw >/dev/null 2>&1; then
-  OPENCLAW_DETECTED=true
-  OC_VER=$(openclaw --version 2>/dev/null | head -1 || echo "available")
-  echo -e "  ${G}✓${NC} ${BOLD}OpenClaw${NC} ${DIM}($OC_VER)${NC}"
-  # Check for running agents
-  OC_AGENTS=$(openclaw status 2>/dev/null | grep -c 'agent' || echo "0")
-  [[ "$OC_AGENTS" -gt 0 ]] && echo -e "    ${DIM}$OC_AGENTS agent(s) detected${NC}"
-else
-  echo -e "  ${DIM}  ○ OpenClaw (not found)${NC}"
+# OpenClaw — opt-in check for CLI + gateway. It is not part of core init.
+if [[ "$OPENCLAW_ENABLED" == "1" ]]; then
+  if command -v openclaw >/dev/null 2>&1; then
+    OC_VER=$(_with_timeout 5 openclaw --version 2>/dev/null | head -1 || true)
+    if [[ -n "$OC_VER" ]]; then
+      OPENCLAW_DETECTED=true
+      echo -e "  ${G}✓${NC} ${BOLD}OpenClaw${NC} ${DIM}($OC_VER)${NC}"
+      # Count in awk so an empty/non-matching status is always numeric. The
+      # status call is best-effort and can never fail Foreman initialization.
+      OC_STATUS=$(_with_timeout 5 openclaw status 2>/dev/null || true)
+      OC_AGENTS=$(printf '%s\n' "$OC_STATUS" | awk '/agent/{count++} END{print count+0}')
+      [[ "$OC_AGENTS" -gt 0 ]] && echo -e "    ${DIM}$OC_AGENTS agent(s) detected${NC}"
+    else
+      echo -e "  ${Y}⚠${NC} OpenClaw was opted in but did not answer its version check; continuing without it"
+    fi
+  else
+    echo -e "  ${DIM}  ○ OpenClaw opt-in requested but CLI not found${NC}"
+  fi
 fi
 
 # Telegram bots — check for common indicators
-if [[ -d "$HOME/.openclaw" ]]; then
+if [[ "$OPENCLAW_ENABLED" == "1" ]] && [[ -d "$HOME/.openclaw" ]]; then
   TG_CONFIG=$(find "$HOME/.openclaw" -name 'config*' -maxdepth 1 2>/dev/null | head -1 || true)
   if [[ -n "$TG_CONFIG" ]]; then
     echo -e "  ${G}✓${NC} ${BOLD}OpenClaw config${NC} ${DIM}($TG_CONFIG)${NC}"
