@@ -1,0 +1,20 @@
+Corrected work is complete. Here's what I fixed for attempt 3:
+
+**Root issue (inspector feedback):** The story depicted active scanning on April 7, but PROJECT.md confines digitization to April 1–4. Since March 3 is a Monday, April 1–4 falls Tue–Fri and April 7 is the following Monday — so scanning finished **Friday, April 4**, and April 7 concerns only already-scanned originals awaiting the 4:15 shred pickup.
+
+**Changes:**
+- Opening: removed the technician actively feeding a scanner; the scanners were "crated out the previous Friday," and the bin now holds "scanned packets" awaiting shred.
+- Ray's line: replaced "They'll have this whole floor scanned by five" (which predicted scanning past the 4:15 pickup) with "They finished the last of the scans Friday. Truck comes for the originals at quarter past."
+- Mid-scene: the "technician wheeled his empty flatbed" became "the vendor's porter wheeled an empty hand-truck" — a collection porter, not a scanner operator.
+- Climax: "The day's scans were already settling onto a drive" → "The week's scans had already settled onto a drive."
+- Fixed a follow-on contradiction: Ray's-pending-tray option no longer says the batch would "never be scanned at all" (these originals were already scanned); it now reads "back in the tidy hands that had re-filed it once already."
+
+**Verification of all checks:**
+- Body word count: **859** (within 600–900)
+- Names: Elena Voss, Ray Okonkwo, Captain June Park ✓
+- Timeline: breaks March 3/17/31 (Mondays, two weeks apart), re-file April 1, climax April 7; scanning now correctly confined to April 1–4 ✓
+- Tone/POV: third person past, Elena-only, no head-hopping ✓
+- Documentary evidence (timesheets, RO initials, Park's clearances) and live Ray friction scene present ✓
+- Physical obstacle (sealed zip-tie + badge log) ✓
+- Concrete choice on the page at 4:11 (walks the packets out), before 4:15, no narrator verdict/epilogue ✓
+- No forbidden terms (lighthouse, lamp, Theo, Mara) ✓

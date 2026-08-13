@@ -35,3 +35,18 @@ The creative-writing and software templates are the two we have run end-to-end m
 3. Tell us the first moment you were confused. That's a docs bug.
 
 File issues: https://github.com/FuFicFac/foreman-company-builder/issues
+
+## Certification status (2026-08-13)
+
+Wave 6 dogfood run 3 on `main` @ `a26eb9c` (after PR #22) completed the full product loop live:
+
+- builder Claude Opus + independent Codex inspector
+- attempts 1–2 inspector **fail** (honest catches), attempt 3 inspector **pass**
+- QA Editor **pass**
+- launch assets produced (`blurb`, `hook`, `series-callback`, `funnel-copy`)
+- durable run ledger evidence: `docs/dogfood-evidence-run-3/`
+
+LPH package path verified: `foreman lph new → doctor` OK on a synthetic manuscript workspace.
+
+Public domain / marketing flip remains a separate human step (DNS + announce). Guided beta is ready once installers land on that certified main.
+
