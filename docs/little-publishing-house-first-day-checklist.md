@@ -40,3 +40,17 @@ Tester-ready means:
 - one deliverable can be produced safely;
 - a closeout report names evidence and next steps;
 - no public/paid/irreversible action happens without approval.
+
+## Verified CLI path (2026-08-13)
+
+These commands work on current main after install:
+
+```bash
+foreman lph new ./my-book --title "My Book" --stage "partial draft" --mode hermes --goal "chapter 1 continuity"
+foreman lph doctor ./my-book
+foreman lph heartbeat ./my-book
+```
+
+Certification companion workspace: `dogfood-wave6-lph/` (synthetic *The Quiet Hours Ledger*).
+Doctor returned OK; heartbeat prints project title/stage/mode/goal from `foreman-lph.json`.
+

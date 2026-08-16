@@ -60,13 +60,15 @@ foreman blast "Fix the dropdown z-index using createPortal"
 
 That's it. `foreman blast` is the main entry point. You give it a prompt, it auto-detects the right capability template (software, creative-writing, publishing, marketing, youtube), loads roles from your fleet, and fires the builder → inspector → arbitration loop.
 
-### One-line install (coming soon)
+### One-line install
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/FuFicFac/foreman-company-builder/main/scripts/install.sh | zsh
 ```
 
 A vanity URL (`get.foreman.dev`) is planned but not yet wired. Use the raw GitHub URL above for now.
+
+**Certification:** Wave 6 run 3 (2026-08-13) completed live builder→inspector→QA→launch with durable ledger evidence after PR #22. See `docs/dogfood-wave-6.md` and `BETA.md`.
 
 ## CLI Commands
 

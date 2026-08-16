@@ -29,3 +29,22 @@ Result: **blocked at the three-strike inspector gate**.
 - Dry-run substitutions: none.
 
 The committed run-2 evidence is in [`docs/dogfood-evidence-run-2/`](dogfood-evidence-run-2/). It contains the full Blast, fleet-check, and init logs; the run ledger; the fixed project brief; the final story; Foreman's final builder and inspector prompt/output files; and a per-attempt transcript preserving every inspector finding and verdict.
+
+## Run 3 — 2026-08-13 (certification after PR #22)
+
+Result: **GREEN — inspector pass + QA pass + launch assets; durable ledger evidence on run_13.**
+
+- Repo HEAD: `a26eb9c` (PR #22 durable run-ledger evidence merged).
+- Builder: live Claude `opus` (`claude -p --model opus --dangerously-skip-permissions`).
+- Inspector: live independent Codex (`codex exec --skip-git-repo-check`).
+- Attempt 1: inspector **fail** — ending choice (scan onto vendor flatbed) did not clearly preserve anything beyond the vendor’s normal pre-shred scan.
+- Attempt 2: inspector **fail** — still treated digitization as active on April 7; brief confines vendor digitization to April 1–4.
+- Attempt 3: inspector **pass** — chronology and choice corrected; story on page before 4:15 with physical cost.
+- QA Editor: **pass** (checklist: voice, names, timeline, tone, plot holes).
+- Launch: **produced** `blurb`, `hook`, `series-callback`, `funnel-copy` under workspace `launch/`.
+- Dry-run substitutions: none.
+- Workspace evidence: [`docs/dogfood-evidence-run-3/`](dogfood-evidence-run-3/) and live `dogfood-wave6-run3/`.
+- Companion LPH track: `dogfood-wave6-lph/` — `lph new → doctor: OK` on synthetic manuscript *The Quiet Hours Ledger*; heartbeat reports project correctly (global ledger may still show older unrelated YELLOW runs).
+
+This is the certification shape: honest catches on attempts 1–2 beside one honest clean completion on attempt 3 with durable ledger attempts[] evidence.
+

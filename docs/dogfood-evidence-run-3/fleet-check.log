@@ -1,0 +1,55 @@
+╔══════════════════════════════════════════╗
+║         Foreman Fleet Check             ║
+╚══════════════════════════════════════════╝
+
+=== CLI Providers ===
+  ✓ agent  (2026.08.04-aaa8809)
+  ✓ cursor-agent  (2026.08.04-aaa8809)
+  ✓ cursor  (unknown)
+  ✓ claude  (2.1.197 (Claude Code))
+  ✓ codex  (codex-cli 0.144.5)
+  ✓ hermes  (Hermes Agent v0.19.1 (2026.7.30) · upstream 8555c6d6
+unknown)
+  ✓ ollama  (ollama version is 0.32.9)
+
+Found 7 provider(s)
+
+=== Cursor Composer Models ===
+Available models
+
+auto - Auto (default)
+gpt-5.3-codex-low - Codex 5.3 Low
+gpt-5.3-codex-low-fast - Codex 5.3 Low Fast
+gpt-5.3-codex - Codex 5.3
+gpt-5.3-codex-fast - Codex 5.3 Fast
+gpt-5.3-codex-high - Codex 5.3 High
+gpt-5.3-codex-high-fast - Codex 5.3 High Fast
+gpt-5.3-codex-xhigh - Codex 5.3 Extra High
+
+=== Ollama Models ===
+NAME                            ID              SIZE    MODIFIED     
+kimi-k3:cloud                   630e737485bd    -       4 days ago      
+kimi-k2.5:cloud                 6d1c3246c608    -       7 weeks ago     
+kimi-k2.6:cloud                 a90cd0d1590c    -       7 weeks ago     
+glm-5.2:cloud                   ce8fd6f94793    -       7 weeks ago     
+glm-5.1:cloud                   59472abf9d0a    -       3 months ago    
+ministral-3:8b-cloud            a56a5396dfb9    -       3 months ago    
+qwen3.5:cloud                   a7bf6f7891c3    -       3 months ago    
+gemini-3-flash-preview:cloud    ebade0d31690    -       3 months ago    
+rnj-1:8b-cloud                  d8200a2fbf21    -       3 months ago    
+
+=== Paperclip ===
+
+██████╗  █████╗ ██████╗ ███████╗██████╗  ██████╗██╗     ██╗██████╗ 
+██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔════╝██║     ██║██╔══██╗
+██████╔╝███████║██████╔╝█████╗  ██████╔╝██║     ██║     ██║██████╔╝
+██╔═══╝ ██╔══██║██╔═══╝ ██╔══╝  ██╔══██╗██║     ██║     ██║██╔═══╝ 
+██║     ██║  ██║██║     ███████╗██║  ██║╚██████╗███████╗██║██║     
+╚═╝     ╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝╚═╝     
+  ───────────────────────────────────────────────────────
+  The app people use to manage AI agents for work
+
+  (Paperclip not configured)
+
+=== Role Assignment ===
+  Multi-provider mode — Foreman will route roles to best available provider
