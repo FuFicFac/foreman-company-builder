@@ -1,0 +1,59 @@
+{
+  "name": "buzz-academy",
+  "version": "0.1.0",
+  "company_type": "education_community",
+  "description": "A guided Foreman Company for learning Buzz by shipping one real multi-agent result.",
+  "departments": [
+    "executive",
+    "product-delivery",
+    "operations",
+    "customer-success",
+    "quality-inspection",
+    "knowledge",
+    "risk-continuity"
+  ],
+  "capabilities": [
+    "strategic-planning",
+    "product-delivery",
+    "operations-sop",
+    "customer-success",
+    "quality-inspection",
+    "knowledge-documentation",
+    "risk-continuity"
+  ],
+  "workflow": [
+    "intake",
+    "stage-confirmation",
+    "identity-safety",
+    "workspace-fluency",
+    "first-agent-result",
+    "multi-agent-handoff",
+    "independent-inspection",
+    "human-approval",
+    "ship",
+    "closeout"
+  ],
+  "human_approval_gates": [
+    "public-publish",
+    "identity-change",
+    "paid-action",
+    "private-data-share",
+    "destructive-action",
+    "scope-change"
+  ],
+  "required_evidence": [
+    "learner-goal",
+    "stage-confirmation",
+    "artifact",
+    "inspection-verdict",
+    "approval-record-if-needed",
+    "closeout-report"
+  ],
+  "loop_mode": "lean",
+  "high_stakes_loop": "deluxe",
+  "twelve_factor_profile": {
+    "pause_resume_runs": true,
+    "unified_execution_and_business_state": true,
+    "stateless_reducer_loop": true
+  }
+}
