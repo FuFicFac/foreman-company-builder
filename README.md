@@ -183,6 +183,23 @@ foreman lph heartbeat /tmp/my-book
 
 Use `--mode hermes` when the README/workspace is enough and Hermes will run the work. Use `--mode paperclip` when Paperclip should act as the visible external Kanban/company board.
 
+### Buzz Academy
+
+Buzz Academy is an education/community Foreman Company package for teaching Buzz through one real, evidence-backed multi-agent result.
+
+```text
+companies/buzz-academy/
+  COMPANY.md
+  TEAM.md
+  WORKFLOWS.md
+  APPROVAL_GATES.md
+  HEARTBEAT.md
+  COMPOSITION.json
+  workspace-template/
+```
+
+It composes seven Foreman departments around identity safety, workspace fluency, agent setup, multi-agent handoffs, independent inspection, human approval gates, and verified closeout. The first-tester path intentionally teaches only what is needed to ship one bounded artifact.
+
 ## Capability Templates + Tool Supply
 
 Foreman templates are capability bundles, not stereotypes. A publishing company is not only a writing room — if it sells ePubs directly, it may need Shopify, Stripe, Gumroad, email marketing, launch operations, support, and analytics.
