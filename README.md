@@ -1,5 +1,13 @@
 # Foreman Company Builder
 
+## Course student kit
+
+Start with the [portable Foreman student kit](student-kit/README.md) for the AI Matters to You lesson. It contains the agent charter, company templates, handoff protocol, and a worked pilot. It runs as instructions in an existing AI workspace; it does not require the CLI described below.
+
+The current template direction is one accountable Foreman with bounded Builder and Inspector roles. The earlier CLI implementation and its documentation remain below for existing users. A versioned student ZIP can be built with `python3 scripts/package-student-kit.py --output-dir /path/to/downloads` from a clean committed checkout. The archive contains only the student kit, its license, and a provenance manifest.
+
+## Earlier CLI implementation
+
 > **Foreman** is the dispatch, verification, and operating-discipline layer for AI agent companies.
 
 **Foreman keeps agent companies honest. Paperclip shows the work. Hermes runs the crew.**
